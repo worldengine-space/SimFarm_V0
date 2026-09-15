@@ -19,6 +19,11 @@ final class GameViewController: UIViewController, WKScriptMessageHandler,
         configuration.userContentController.addUserScript(WKUserScript(
             source: Self.fileBridge, injectionTime: .atDocumentStart, forMainFrameOnly: true
         ))
+        if ProcessInfo.processInfo.arguments.contains("--self-test") {
+            configuration.userContentController.addUserScript(WKUserScript(
+                source: SmokeTest.script, injectionTime: .atDocumentEnd, forMainFrameOnly: true
+            ))
+        }
         webView = WKWebView(frame: .zero, configuration: configuration)
         webView.navigationDelegate = self
         webView.isOpaque = false
@@ -40,6 +45,13 @@ final class GameViewController: UIViewController, WKScriptMessageHandler,
         guard message.frameInfo.isMainFrame,
               message.frameInfo.securityOrigin.protocol == "simfarm",
               let payload = message.body as? [String: String] else { return }
+        if payload["action"] == "smoke", ProcessInfo.processInfo.arguments.contains("--self-test") {
+            if let result = try? JSONSerialization.data(withJSONObject: payload),
+               let directory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+                try? result.write(to: directory.appendingPathComponent("smoke.json"), options: .atomic)
+            }
+            return
+        }
         if payload["action"] == "import" {
             let picker = UIDocumentPickerViewController(forOpeningContentTypes: [.data], asCopy: true)
             picker.delegate = self

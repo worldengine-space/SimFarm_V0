@@ -18,7 +18,14 @@ final class BundledWebContent: NSObject, WKURLSchemeHandler {
             return
         }
         do {
-            let bytes = try Data(contentsOf: file)
+            var bytes = try Data(contentsOf: file)
+            if ProcessInfo.processInfo.arguments.contains("--self-test"), relativePath == "game.js" {
+                var script = String(decoding: bytes, as: UTF8.self)
+                if let end = script.range(of: "})();", options: .backwards) {
+                    script.insert(contentsOf: "globalThis.__simfarmIOSState = () => ({ ready, stage });\n", at: end.lowerBound)
+                    bytes = Data(script.utf8)
+                }
+            }
             let mimeTypes = [
                 "html": "text/html", "js": "application/javascript", "css": "text/css",
                 "json": "application/json", "webmanifest": "application/manifest+json",
@@ -26,10 +33,12 @@ final class BundledWebContent: NSObject, WKURLSchemeHandler {
             ]
             let mime = mimeTypes[file.pathExtension] ??
                 UTType(filenameExtension: file.pathExtension)?.preferredMIMEType ?? "application/octet-stream"
-            let response = URLResponse(
-                url: requestURL, mimeType: mime, expectedContentLength: bytes.count,
-                textEncodingName: mime.hasPrefix("text/") ? "utf-8" : nil
-            )
+            guard let response = HTTPURLResponse(
+                url: requestURL, statusCode: 200, httpVersion: "HTTP/1.1",
+                headerFields: ["Content-Type": mime, "Content-Length": String(bytes.count)]
+            ) else {
+                throw URLError(.badServerResponse)
+            }
             urlSchemeTask.didReceive(response)
             urlSchemeTask.didReceive(bytes)
             urlSchemeTask.didFinish()

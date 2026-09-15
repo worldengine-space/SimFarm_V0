@@ -41,13 +41,22 @@ jobs:
           xcrun simctl boot "$simulator_id"
           xcrun simctl bootstatus "$simulator_id" -b
           xcrun simctl install "$simulator_id" build/ios-simulator/Build/Products/Release-iphonesimulator/SimFarm.app
-          xcrun simctl launch "$simulator_id" space.worldengine.simfarm
-          sleep 10
+          xcrun simctl launch "$simulator_id" space.worldengine.simfarm --self-test
+          app_data=$(xcrun simctl get_app_container "$simulator_id" space.worldengine.simfarm data)
+          for attempt in $(seq 1 120); do
+            if [ -f "$app_data/Documents/smoke.json" ]; then break; fi
+            sleep 2
+          done
           xcrun simctl io "$simulator_id" screenshot dist/SimFarm-iPhone-simulator.png
+          cp "$app_data/Documents/smoke.json" dist/SimFarm-iPhone-smoke.json
+          cat dist/SimFarm-iPhone-smoke.json
+          python3 -c 'import json; result=json.load(open("dist/SimFarm-iPhone-smoke.json")); assert result["status"] == "passed", result' 
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: SimFarm-iOS-${{ matrix.target }}-unsigned
           path: |
             dist/SimFarm-iOS-${{ matrix.target }}-unsigned.zip
             dist/SimFarm-iPhone-simulator.png
+            dist/SimFarm-iPhone-smoke.json
           if-no-files-found: error
