@@ -35,7 +35,8 @@ for (const name of [
 }
 // The hook is inert in normal launches and stays inside the packaged copy.
 const gameFile = path.join(source, "game/game.js");
-let gameSource = await fs.readFile(gameFile, "utf8");
+// Git on Windows may check out source sections with CRLF line endings.
+let gameSource = (await fs.readFile(gameFile, "utf8")).replaceAll("\r\n", "\n");
 const testHook = `  if (window.__sfDesktopTestEnabled) window.__sfDesktopTest = {
     ready: () => ready,
     exercise() {
