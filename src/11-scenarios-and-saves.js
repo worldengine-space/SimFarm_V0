@@ -818,6 +818,12 @@ function downloadSfmFile(filename = currentSaveName) {
   const bytes = serializeSfmBytes();
   if (!bytes) return null;
   currentSaveName = normalizeSfmFilename(filename);
+  // Native hosts provide their platform's save/share dialog. Browser builds
+  // keep using a standard file download when no host bridge is installed.
+  if (typeof globalThis.SimFarmHost?.saveFile === "function") {
+    globalThis.SimFarmHost.saveFile(currentSaveName, encodeState(bytes));
+    return bytes;
+  }
   const urlApi = globalThis.URL;
   if (
     typeof Blob === "undefined" ||

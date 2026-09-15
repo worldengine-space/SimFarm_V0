@@ -743,6 +743,38 @@ async function main() {
   runtime.sandbox.URL.createObjectURL = originalCreateUrl;
   api.closeWindow();
 
+  // Mobile hosts receive the exact native save, without a second browser
+  // download. Bridge errors must still propagate to the existing save UI.
+  api.importBytes(fixture, "MOBILE.SFM");
+  let hostExport;
+  runtime.sandbox.SimFarmHost = {
+    saveFile(name, base64) {
+      hostExport = { name, bytes: Buffer.from(base64, "base64") };
+    },
+  };
+  const browserDownloadCount = runtime.downloads.length;
+  api.download("MOBILE.SFM");
+  assert(hostExport.name === "MOBILE.SFM", "native host filename differs");
+  assertBytes(hostExport.bytes, fixture, "native host payload");
+  assert(
+    runtime.downloads.length === browserDownloadCount,
+    "native save also downloaded in browser",
+  );
+  runtime.sandbox.SimFarmHost.saveFile = () => {
+    throw new Error("Native export unavailable");
+  };
+  let nativeExportFailure;
+  try {
+    api.download();
+  } catch (error) {
+    nativeExportFailure = error;
+  }
+  assert(
+    nativeExportFailure?.message === "Native export unavailable",
+    "native save concealed failure",
+  );
+  delete runtime.sandbox.SimFarmHost;
+
   console.log(
     "native save compatibility: all 8 scenarios, saved Speed/Pause cadence, serialized season, process-state persistence, invalid imports, cache failures and export failures verified",
   );

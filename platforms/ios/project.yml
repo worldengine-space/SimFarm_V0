@@ -1,0 +1,35 @@
+name: SimFarm
+options:
+  bundleIdPrefix: space.worldengine
+  deploymentTarget:
+    iOS: '16.0'
+settings:
+  base:
+    SWIFT_VERSION: '5.0'
+    MARKETING_VERSION: '0.1.0'
+    CURRENT_PROJECT_VERSION: 1
+targets:
+  SimFarm:
+    type: application
+    platform: iOS
+    sources:
+      - Sources
+      - path: Web
+        type: folder
+        buildPhase: resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: space.worldengine.simfarm
+        TARGETED_DEVICE_FAMILY: '1,2'
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: SimFarm
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: 'UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight'
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: 'UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight'
+        CODE_SIGN_STYLE: Automatic
+schemes:
+  SimFarm:
+    build:
+      targets:
+        SimFarm: all

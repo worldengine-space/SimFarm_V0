@@ -6,7 +6,7 @@ A playable JavaScript reconstruction of the 1993 farming simulation, built with 
 
 This is the **Codex version** from the four-model SimFarm experiment. The game runs directly on HTML Canvas; it does not run a DOS emulator.
 
-[World Engine](https://worldengine.space) · [Twitter / X](https://x.com/lukastencer) · [LinkedIn](https://www.linkedin.com/in/lukastencer/)
+[World Engine](https://worldengine.space) · [Twitter / X](https://x.com/worldenginespc) · [LinkedIn](https://www.linkedin.com/company/world-engine-space)
 
 ## Run locally
 
