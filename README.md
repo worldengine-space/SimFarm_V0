@@ -8,9 +8,9 @@
 
 # SimFarm V0
 
-## [▶ Play now in your browser](https://worldengine-space.github.io/SimFarm_V0/)
+## [▶ Play now in your browser](https://worldengine.space/play)
 
-**No installation or account needed to play in your browser.** Click a platform icon above to download the app or web bundle. Native iPhone installation is pending Apple setup; the iPhone card explains what remains.
+**No installation or account needed to play in your browser.** Visit the World Engine portal to play; an optional account keeps supported saves and your avatar across devices, with a chat room for each game. Click a platform icon above to download the app or web bundle. Native iPhone installation is pending Apple setup; the iPhone card explains what remains.
 
 ![SimFarm title screen, captured from the Codex browser reconstruction](docs/screenshots/title.png)
 
