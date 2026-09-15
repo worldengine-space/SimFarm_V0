@@ -43,9 +43,9 @@ public final class LaunchSmokeTest {
         screenshot("01-launcher.png");
         tapElement("document.getElementById('launch-game')", 0.5, 0.5);
         waitFor("document.getElementById('launch-screen').hidden && window.smokeData >= 5");
-        // The loading/error screen has few colours. Loaded artwork has a full palette.
+        // The loading/error screen has few colours. The original startup artwork uses a 16-colour palette.
         waitFor("(()=>{const p=document.getElementById('simfarm').getContext('2d').getImageData(0,0,640,480).data;"
-                + "const c=new Set();for(let i=0;i<p.length;i+=64)c.add(p[i]+','+p[i+1]+','+p[i+2]);return c.size>50;})()");
+                + "const c=new Set();for(let i=0;i<p.length;i+=64)c.add(p[i]+','+p[i+1]+','+p[i+2]);return c.size>8;})()");
         screenshot("02-game-title.png");
         // Startup presents/title screens advance on taps; region Play is at (165,244).
         tapCanvas(320, 200);
