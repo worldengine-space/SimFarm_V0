@@ -1,3 +1,21 @@
+# Play SimFarm
+
+## [▶ Play now in your browser](https://worldengine-space.github.io/SimFarm_V0/)
+
+**No installation or account needed.** Choose a download if you prefer a desktop or Android app:
+
+| Platform | Play / download | Getting started |
+| --- | --- | --- |
+| **Web** | [Play now](https://worldengine-space.github.io/SimFarm_V0/) | Open the link and press Play after the World Engine intro. |
+| **Windows PC** | [Download Windows ZIP](https://github.com/worldengine-space/SimFarm_V0/releases/latest/download/SimFarm-V0-Windows-x64.zip) | Extract the whole ZIP, then open `SimFarm.exe`. Windows 10/11, 64-bit. |
+| **Mac** | [Download Mac ZIP](https://github.com/worldengine-space/SimFarm_V0/releases/latest/download/SimFarm-V0-macOS-universal.zip) | Unzip and open **SimFarm V0**. Intel and Apple Silicon; macOS 13+. |
+| **Android** | [Download APK](https://github.com/worldengine-space/SimFarm_V0/releases/latest/download/SimFarm-0.1.0-android-debug.apk) | Open the APK and allow installation from your browser when asked. Android 8+. |
+| **iPhone / iPad** | [Play in Safari](https://worldengine-space.github.io/SimFarm_V0/) | For a home-screen app: **Share → Add to Home Screen**. Play in landscape. |
+
+The web app becomes available offline after its first complete download. Keep the page open until it says **Ready to play offline.** Phone controls include a keyboard for save names and a secondary-click control.
+
+Desktop downloads are development builds without publisher signing. If macOS blocks opening, use **System Settings → Privacy & Security → Open Anyway**. The iPhone link is an installable web app; native iOS builds for developers are listed under [platform builds](docs/PLATFORMS.md).
+
 ![SimFarm title screen, captured from the Codex browser reconstruction](docs/screenshots/title.png)
 
 # SimFarm V0 — the Codex reconstruction
@@ -8,7 +26,7 @@ This is the **Codex version** from the four-model SimFarm experiment. The game r
 
 [World Engine](https://worldengine.space) · [Twitter / X](https://x.com/worldenginespc) · [LinkedIn](https://www.linkedin.com/company/world-engine-space)
 
-## Run locally
+## Run from source
 
 With **Node.js 22 or newer**:
 
@@ -31,6 +49,10 @@ Open **http://localhost:8000**. The built game is included, so playing does not 
 The interface follows the original mouse controls, including press-and-drag tool menus and some hold-to-view help controls. Click the game to give it keyboard focus and enable browser audio.
 
 ## Screenshots
+
+### World Engine introduction
+
+![The five-second World Engine intro with its golden orbital landscape](docs/screenshots/world-engine-splash.png)
 
 ### On the farm
 

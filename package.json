@@ -11,8 +11,13 @@
     "build": "node scripts/build.mjs",
     "build:check": "node scripts/build.mjs --check",
     "test": "npm run build:check && node --check game.js && node tests/run.cjs",
-    "format": "prettier --write src scripts tests index.html styles.css package.json",
-    "format:check": "prettier --check src scripts tests index.html styles.css package.json"
+    "format": "prettier --write src scripts tests index.html styles.css package.json launcher.js manifest.webmanifest",
+    "format:check": "prettier --check src scripts tests index.html styles.css package.json launcher.js manifest.webmanifest",
+    "build:web": "node scripts/build-web.mjs",
+    "build:windows": "node scripts/build-windows.mjs",
+    "build:macos": "node scripts/build-macos.mjs",
+    "build:android": "node scripts/build-android.mjs",
+    "build:ios": "bash scripts/build-ios.sh"
   },
   "devDependencies": {
     "prettier": "3.6.2",

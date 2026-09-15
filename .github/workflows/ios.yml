@@ -21,6 +21,7 @@ permissions:
 jobs:
   compile:
     runs-on: macos-15
+    timeout-minutes: 20
     strategy:
       matrix:
         target: [simulator, device]

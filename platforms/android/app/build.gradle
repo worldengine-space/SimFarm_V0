@@ -1,0 +1,30 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'space.worldengine.simfarm'
+    compileSdk { version = release(37) }
+    defaultConfig {
+        applicationId 'space.worldengine.simfarm'
+        minSdk 26
+        targetSdk 36
+        versionCode 1
+        versionName '0.1.0'
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+// Always rebuild the bundled offline game, including when building in Android Studio.
+def prepareGame = tasks.register('prepareGame', Exec) {
+    workingDir rootProject.projectDir.toPath().resolve('../..').toFile()
+    commandLine 'node', 'scripts/build-android.mjs', '--assets-only'
+}
+tasks.named('preBuild').configure { dependsOn prepareGame }
+
+dependencies {
+    androidTestImplementation 'androidx.test:runner:1.6.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+}

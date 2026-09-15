@@ -1,6 +1,8 @@
 :root {
   color-scheme: dark;
-  background: #000;
+  background: #10130f;
+  color: #f4f4ed;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 * {
   box-sizing: border-box;
@@ -14,6 +16,161 @@ body {
 body {
   background: #000;
   overflow: hidden;
+}
+[hidden] {
+  display: none !important;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+a:hover {
+  color: #ddc06b;
+}
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid #ddc06b;
+  outline-offset: 7px;
+}
+#launch-screen {
+  height: 100dvh;
+  min-height: 100svh;
+  overflow: auto;
+  padding: max(26px, env(safe-area-inset-top))
+    max(32px, env(safe-area-inset-right)) max(26px, env(safe-area-inset-bottom))
+    max(32px, env(safe-area-inset-left));
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: radial-gradient(ellipse at 50% 43%, #252d20 0%, #10130f 64%);
+}
+#launch-screen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.14;
+  background-image:
+    linear-gradient(#798366 1px, transparent 1px),
+    linear-gradient(90deg, #798366 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse, #000, transparent 74%);
+}
+.launch-topline,
+.launch-footer {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  font:
+    11px/1.5 "SFMono-Regular",
+    Consolas,
+    monospace;
+  letter-spacing: 0.09em;
+}
+.launch-topline {
+  color: #a6af9c;
+  border-top: 1px solid #404838;
+  padding-top: 14px;
+}
+.launch-content {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 0;
+  text-align: center;
+}
+.studio-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  font:
+    14px/1.5 "SFMono-Regular",
+    Consolas,
+    monospace;
+  letter-spacing: 0.15em;
+}
+.launch-eyebrow {
+  margin: 45px 0 12px;
+  color: #ddc06b;
+  font:
+    10px/1.5 "SFMono-Regular",
+    Consolas,
+    monospace;
+  letter-spacing: 0.17em;
+}
+h1 {
+  font-size: clamp(60px, 9vw, 106px);
+  font-weight: 450;
+  line-height: 1;
+  letter-spacing: -0.065em;
+  margin: 0;
+}
+h1 span {
+  font:
+    15px/1 "SFMono-Regular",
+    Consolas,
+    monospace;
+  color: #ddc06b;
+  letter-spacing: 0;
+  vertical-align: top;
+  display: inline-block;
+  margin: 12px 0 0 12px;
+}
+.launch-description {
+  color: #b8c0af;
+  font-size: 16px;
+  line-height: 1.65;
+  margin: 24px 0 28px;
+}
+#launch-game {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 58px;
+  min-height: 54px;
+  padding: 14px 23px;
+  border: 1px solid #ddc06b;
+  background: #ddc06b;
+  color: #151810;
+  font-weight: 500;
+  line-height: 1.5;
+  font-family: inherit;
+  font-size: 16px;
+  cursor: pointer;
+}
+#launch-game:hover {
+  background: #efd487;
+}
+#launch-game:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+#launch-game span {
+  font-size: 23px;
+}
+.launch-hint,
+#launch-status {
+  color: #929f88;
+  font-size: 11px;
+  margin: 13px 0 0;
+}
+#launch-status {
+  min-height: 15px;
+}
+.launch-footer {
+  border-top: 1px solid #404838;
+  padding-top: 18px;
+  font-size: 12px;
+  letter-spacing: 0;
+}
+.launch-socials {
+  display: flex;
+  gap: 25px;
 }
 main {
   width: 100vw;
@@ -30,4 +187,163 @@ main {
   outline: 0;
   cursor: none;
   touch-action: none;
+}
+@media (max-width: 480px) {
+  #launch-screen {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+  .launch-topline {
+    font-size: 9px;
+  }
+  .launch-socials {
+    gap: 18px;
+  }
+  .studio-brand img {
+    width: 68px;
+    height: 68px;
+  }
+  .launch-eyebrow {
+    margin-top: 35px;
+  }
+}
+@media (max-height: 600px) and (orientation: landscape) {
+  .launch-content {
+    padding: 12px 0;
+  }
+  .studio-brand {
+    flex-direction: row;
+    gap: 10px;
+    font-size: 11px;
+  }
+  .studio-brand img {
+    width: 34px;
+    height: 34px;
+  }
+  .launch-eyebrow {
+    margin-top: 12px;
+  }
+  h1 {
+    font-size: 56px;
+  }
+  .launch-description {
+    margin: 12px 0;
+    font-size: 13px;
+  }
+  .launch-hint {
+    margin-top: 8px;
+  }
+  #launch-game {
+    min-height: 42px;
+    padding: 7px 20px;
+  }
+  .launch-footer {
+    padding-top: 10px;
+  }
+}
+#launch-background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.7;
+}
+#launch-screen::before {
+  z-index: 1;
+  opacity: 1;
+  mask-image: none;
+  background: linear-gradient(180deg, #05070599, #0b100bd9 48%, #090d09ef);
+}
+.launch-topline,
+.launch-content,
+.launch-footer {
+  z-index: 2;
+}
+#launch-countdown {
+  min-height: 15px;
+  color: #ddc06b;
+  font-size: 11px;
+  margin: 12px 0 0;
+}
+#touch-tools {
+  display: none;
+}
+@media (any-pointer: coarse) {
+  body.playing main {
+    height: calc(100dvh - 48px - env(safe-area-inset-bottom));
+  }
+  body.playing #simfarm {
+    width: min(
+      100vw,
+      calc((100dvh - 48px - env(safe-area-inset-bottom)) * 4 / 3)
+    );
+    height: min(
+      calc(100dvh - 48px - env(safe-area-inset-bottom)),
+      calc(100vw * 3 / 4)
+    );
+  }
+  #touch-tools {
+    display: block;
+    position: fixed;
+    z-index: 5;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding-bottom: env(safe-area-inset-bottom);
+    background: #10130f;
+    border-top: 1px solid #404838;
+  }
+  .touch-toolbar {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 5px 10px;
+  }
+  #touch-tools button {
+    min-height: 36px;
+    border: 1px solid #59614f;
+    border-radius: 4px;
+    padding: 7px 14px;
+    background: #22291d;
+    color: #f4f4ed;
+    font-size: 13px;
+    line-height: 1.2;
+    font-family: inherit;
+    touch-action: manipulation;
+  }
+  #touch-tools button[aria-pressed="true"] {
+    color: #151810;
+    background: #ddc06b;
+  }
+  #touch-keyboard {
+    padding: 12px max(12px, env(safe-area-inset-right)) 8px
+      max(12px, env(safe-area-inset-left));
+    max-width: 520px;
+    margin: 0 auto;
+  }
+  #touch-keyboard label {
+    font-size: 12px;
+    display: block;
+    margin-bottom: 7px;
+    color: #b8c0af;
+  }
+  #touch-text {
+    width: 100%;
+    border: 1px solid #6b755e;
+    border-radius: 4px;
+    background: #10130f;
+    color: #fff;
+    padding: 9px;
+    font: 16px/1.2 sans-serif;
+  }
+  .touch-key-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .touch-key-row button {
+    flex: 1;
+  }
 }

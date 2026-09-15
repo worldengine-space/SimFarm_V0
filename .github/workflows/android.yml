@@ -1,0 +1,72 @@
+name: Android build and device smoke test
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/android.yml'
+      - 'platforms/android/**'
+      - 'scripts/**'
+      - 'src/**'
+      - 'assets/**'
+      - 'branding/**'
+      - 'data/**'
+      - '*.js'
+      - '*.html'
+      - '*.css'
+      - '*.webmanifest'
+      - 'package*.json'
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: android-actions/setup-android@v3
+      - uses: gradle/actions/setup-gradle@v4
+      - run: npm ci
+      - name: Install compilation SDK
+        run: sdkmanager 'platforms;android-37.0' 'build-tools;36.0.0'
+      - name: Compile installable APK and device tests
+        run: |
+          npm run build:android
+          cd platforms/android
+          ./gradlew assembleDebugAndroidTest lintDebug --no-daemon
+      - name: Enable KVM acceleration
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Play offline on Android 15
+        uses: reactivecircus/android-emulator-runner@v2.35.0
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_2
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: bash platforms/android/smoke-test.sh
+      - name: Upload APK and runtime evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: SimFarm-Android-debug
+          path: |
+            dist/SimFarm-0.1.0-android-debug.apk
+            dist/android-smoke/
+            dist/android-logcat.txt
+            platforms/android/app/build/reports/androidTests/
+            platforms/android/app/build/reports/lint-results-debug.html
+          if-no-files-found: error

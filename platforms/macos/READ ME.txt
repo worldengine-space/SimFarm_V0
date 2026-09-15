@@ -1,0 +1,13 @@
+SimFarm V0 for macOS
+
+Requires macOS 13 or later. Supports Intel and Apple Silicon.
+Move SimFarm V0.app to Applications and open it.
+
+This development build is ad-hoc signed, not Apple notarized. macOS may require
+approval in System Settings > Privacy & Security after the first launch.
+
+The entire game is bundled and runs offline. Use the game File menu to save or
+open .SFM files. The app also preserves the last saved farm between launches.
+Command-Q quits; Control-Command-F toggles full screen.
+
+Project: https://worldengine.space

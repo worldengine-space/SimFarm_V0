@@ -18,6 +18,9 @@ esac
 xcodebuild -project platforms/ios/SimFarm.xcodeproj -scheme SimFarm \
   -configuration Release -destination "$destination" \
   -derivedDataPath "build/ios-$build_target" CODE_SIGNING_ALLOWED=NO build
+# Fail if the app compiled without its offline game resources.
+test -f "build/ios-$build_target/Build/Products/$product/SimFarm.app/Web/index.html"
+test -f "build/ios-$build_target/Build/Products/$product/SimFarm.app/Web/game.js"
 mkdir -p dist
 ditto -c -k --sequesterRsrc --keepParent \
   "build/ios-$build_target/Build/Products/$product/SimFarm.app" \

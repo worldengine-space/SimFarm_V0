@@ -1,0 +1,11 @@
+{
+  "name": "simfarm-v0-desktop",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Offline Windows desktop host for SimFarm V0",
+  "main": "main.cjs",
+  "devDependencies": {
+    "@electron/packager": "20.3.0",
+    "electron": "44.3.0"
+  }
+}

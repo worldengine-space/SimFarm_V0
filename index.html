@@ -6,12 +6,88 @@
       name="viewport"
       content="width=device-width,initial-scale=1,viewport-fit=cover"
     />
-    <meta name="theme-color" content="#000000" />
-    <title>SimFarm — browser rebuild</title>
+    <meta name="theme-color" content="#10130f" />
+    <meta
+      name="description"
+      content="SimFarm V0 — a playable browser reconstruction by Codex, presented by World Engine."
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="SimFarm V0" />
+    <title>SimFarm V0 · World Engine</title>
+    <link rel="icon" href="branding/world-engine.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="branding/icon-180.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <main>
+    <section id="launch-screen" aria-labelledby="launch-title">
+      <img
+        id="launch-background"
+        src="branding/world-engine-background.png"
+        alt=""
+        fetchpriority="high"
+      />
+      <div class="launch-topline">
+        <span>RECONSTRUCTED WORLDS</span><span>NO. 001 / V0</span>
+      </div>
+      <div class="launch-content">
+        <a
+          class="studio-brand"
+          href="https://worldengine.space"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            src="branding/world-engine.svg"
+            width="88"
+            height="88"
+            alt="World Engine logo"
+          />
+          <span>worldengine.space</span>
+        </a>
+        <p class="launch-eyebrow">A WORLD ENGINE EXPERIMENT</p>
+        <h1 id="launch-title">SimFarm<span>V0</span></h1>
+        <p class="launch-description">
+          An old world. A new way in.<br />Reconstructed with Codex. Ready to
+          play.
+        </p>
+        <button id="launch-game" type="button" disabled>
+          Play SimFarm <span aria-hidden="true">↗</span>
+        </button>
+        <p id="launch-countdown" role="status">Preparing your world…</p>
+        <p class="launch-hint">Mouse or touch · Landscape works best</p>
+        <p id="launch-status" role="status" aria-live="polite"></p>
+      </div>
+      <footer class="launch-footer">
+        <a
+          href="https://worldengine.space"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Website ↗</a
+        >
+        <div class="launch-socials">
+          <a
+            href="https://x.com/worldenginespc"
+            target="_blank"
+            rel="noopener noreferrer"
+            >X / Twitter ↗</a
+          >
+          <a
+            id="studio-linkedin"
+            href="https://www.linkedin.com/company/world-engine-space"
+            target="_blank"
+            rel="noopener noreferrer"
+            >LinkedIn ↗</a
+          >
+        </div>
+      </footer>
+      <noscript>JavaScript is required to play SimFarm.</noscript>
+    </section>
+    <main id="game-stage" hidden>
       <canvas
         id="simfarm"
         width="640"
@@ -26,6 +102,44 @@
         hidden
       />
     </main>
-    <script src="game.js"></script>
+    <div id="touch-tools" hidden>
+      <div id="touch-keyboard" hidden>
+        <label for="touch-text">Type a name or amount</label>
+        <input
+          id="touch-text"
+          type="text"
+          autocomplete="off"
+          autocapitalize="off"
+          spellcheck="false"
+          placeholder="Tap here to type"
+        />
+        <div class="touch-key-row">
+          <button
+            type="button"
+            data-game-key="Backspace"
+            aria-label="Backspace"
+          >
+            ⌫
+          </button>
+          <button type="button" data-game-key="Escape">Esc</button>
+          <button type="button" data-game-key="Enter">Enter</button>
+          <button type="button" id="close-touch-keyboard">Done</button>
+        </div>
+      </div>
+      <div class="touch-toolbar">
+        <button
+          id="toggle-touch-keyboard"
+          type="button"
+          aria-expanded="false"
+          aria-controls="touch-keyboard"
+        >
+          Keyboard
+        </button>
+        <button id="touch-secondary" type="button" aria-pressed="false">
+          Right-click: off
+        </button>
+      </div>
+    </div>
+    <script src="launcher.js"></script>
   </body>
 </html>
