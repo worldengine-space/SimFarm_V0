@@ -43,7 +43,9 @@ enum SmokeTest {
         const pixels = canvas.getContext("2d").getImageData(0, 0, 640, 480).data;
         const colors = new Set();
         for (let i = 0; i < pixels.length; i += 16) colors.add(pixels[i] + "," + pixels[i+1] + "," + pixels[i+2]);
-        if (colors.size < 20) throw new Error("Game canvas lacks rendered scenery");
+        // The original artwork uses a 16-color palette. Reference farm
+        // screenshots contain 15 colors, so require most of that palette.
+        if (colors.size < 10) throw new Error("Game canvas lacks rendered scenery (" + colors.size + " colors)");
         report("passed", "Play countdown, asset/data loading, touch navigation, region start and rendered farm passed");
       } catch (error) { report("failed", error.message); }
     })();

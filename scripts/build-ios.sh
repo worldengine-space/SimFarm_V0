@@ -25,4 +25,13 @@ mkdir -p dist
 ditto -c -k --sequesterRsrc --keepParent \
   "build/ios-$build_target/Build/Products/$product/SimFarm.app" \
   "dist/SimFarm-iOS-$build_target-unsigned.zip"
+if [ "$build_target" = device ]; then
+  # Standard IPA layout, deliberately unsigned until an Apple team signs it.
+  ipa_staging=$(mktemp -d)
+  mkdir -p "$ipa_staging/Payload"
+  ditto "build/ios-device/Build/Products/$product/SimFarm.app" "$ipa_staging/Payload/SimFarm.app"
+  ditto -c -k --keepParent "$ipa_staging/Payload" dist/SimFarm-iOS-device-unsigned.ipa
+  rm -rf "$ipa_staging"
+  echo 'Built dist/SimFarm-iOS-device-unsigned.ipa (requires Apple signing before installation)'
+fi
 echo "Built dist/SimFarm-iOS-$build_target-unsigned.zip"

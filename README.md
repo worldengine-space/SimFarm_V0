@@ -1,4 +1,4 @@
-# Play SimFarm
+# SimFarm V0
 
 ## [▶ Play now in your browser](https://worldengine-space.github.io/SimFarm_V0/)
 
@@ -7,18 +7,18 @@
 | Platform | Play / download | Getting started |
 | --- | --- | --- |
 | **Web** | [Play now](https://worldengine-space.github.io/SimFarm_V0/) | Open the link and press Play after the World Engine intro. |
-| **Windows PC** | [Download Windows ZIP](https://github.com/worldengine-space/SimFarm_V0/releases/latest/download/SimFarm-V0-Windows-x64.zip) | Extract the whole ZIP, then open `SimFarm.exe`. Windows 10/11, 64-bit. |
-| **Mac** | [Download Mac ZIP](https://github.com/worldengine-space/SimFarm_V0/releases/latest/download/SimFarm-V0-macOS-universal.zip) | Unzip and open **SimFarm V0**. Intel and Apple Silicon; macOS 13+. |
+| **Windows PC** | [Download Windows EXE](https://github.com/worldengine-space/SimFarm_V0/releases/latest/download/SimFarm-V0-Windows.exe) | Open the one-file app. Everything is included; no installation or extraction. Windows 10/11, 64-bit. |
+| **Mac** | [Download Mac installer](https://github.com/worldengine-space/SimFarm_V0/releases/latest/download/SimFarm-V0-macOS.pkg) | Open the installer, then launch **SimFarm V0** from Applications. Intel and Apple Silicon; macOS 13+. |
 | **Android** | [Download APK](https://github.com/worldengine-space/SimFarm_V0/releases/latest/download/SimFarm-0.1.0-android-debug.apk) | Open the APK and allow installation from your browser when asked. Android 8+. |
 | **iPhone / iPad** | [Play in Safari](https://worldengine-space.github.io/SimFarm_V0/) | For a home-screen app: **Share → Add to Home Screen**. Play in landscape. |
 
 The web app becomes available offline after its first complete download. Keep the page open until it says **Ready to play offline.** Phone controls include a keyboard for save names and a secondary-click control.
 
-Desktop downloads are development builds without publisher signing. If macOS blocks opening, use **System Settings → Privacy & Security → Open Anyway**. The iPhone link is an installable web app; native iOS builds for developers are listed under [platform builds](docs/PLATFORMS.md).
+The desktop and Android downloads each contain the complete offline game in one file. Your operating system may ask you to confirm opening or installing it. Desktop builds do not yet have publisher signing; if macOS blocks opening, use **System Settings → Privacy & Security → Open Anyway**. A native iPhone install link is pending Apple signing; the Safari game above is available now. See [platform builds](docs/PLATFORMS.md) for native iOS developer builds.
 
 ![SimFarm title screen, captured from the Codex browser reconstruction](docs/screenshots/title.png)
 
-# SimFarm V0 — the Codex reconstruction
+## The Codex reconstruction
 
 A playable JavaScript reconstruction of the 1993 farming simulation, built with Codex as part of [World Engine](https://worldengine.space). Grow crops, raise livestock, buy machinery, manage the farm's finances, and contend with changing weather and disasters—all in a browser, with the original 640 × 480 presentation.
 

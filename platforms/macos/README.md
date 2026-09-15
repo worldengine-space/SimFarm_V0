@@ -12,8 +12,10 @@ npm run build
 npm run build:macos
 ```
 
-Output: `dist/SimFarm-V0-macOS-universal.zip` with an Intel/Apple Silicon app for
-macOS 13 or newer. The build is ad-hoc signed and is not Apple notarized.
+Output: `dist/SimFarm-V0-macOS.pkg`. Double-click this single installer to put
+SimFarm V0 into Applications. It supports Intel/Apple Silicon on macOS 13 or newer.
+An optional `dist/SimFarm-V0-macOS-universal.zip` is also produced. The app is
+ad-hoc signed; the package is not publisher signed or Apple notarized.
 
 The build output also reports the staged app path. Run its executable with
 `--self-test` to exercise bundled asset loading, starting a farm, save export /

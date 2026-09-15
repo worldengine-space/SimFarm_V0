@@ -57,6 +57,7 @@ jobs:
           name: SimFarm-iOS-${{ matrix.target }}-unsigned
           path: |
             dist/SimFarm-iOS-${{ matrix.target }}-unsigned.zip
+            dist/SimFarm-iOS-${{ matrix.target }}-unsigned.ipa
             dist/SimFarm-iPhone-simulator.png
             dist/SimFarm-iPhone-smoke.json
           if-no-files-found: error

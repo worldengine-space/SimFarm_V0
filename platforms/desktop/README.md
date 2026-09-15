@@ -1,9 +1,13 @@
 # Windows desktop host
 
-The Windows build bundles Electron and every game asset. It runs offline under
-`simfarm://game/`, a stable origin that preserves local saves between launches.
-The game cannot access Node.js. File input and downloads use Chromium's native
-file dialogs; approved website and social links open in the system browser.
+Download `SimFarm-V0-Windows.exe` and double-click it. This single portable file
+contains Electron and every game asset, launches without an installer, and runs
+offline on 64-bit Windows 10/11. Saves stay in your normal Windows app-data folder
+between launches. The optional ZIP is for manual unpacking.
+
+The game runs under `simfarm://game/`, a stable origin that preserves local saves.
+It cannot access Node.js. File input and downloads use native file dialogs;
+approved website and social links open in the system browser.
 
 From the repository root:
 
@@ -14,22 +18,20 @@ npm ci --prefix platforms/desktop --ignore-scripts
 npm run build:windows
 ```
 
-Output: `dist/SimFarm-V0-Windows-x64.zip`. Extract the entire archive and open
-`SimFarm.exe`. The package supports 64-bit Windows 10 and 11 and is unsigned.
-A macOS/Linux build machine can assemble it, but Windows is required for a full
-runtime test. Electron downloads require an internet connection during the build.
+The build downloads pinned Electron and packaging tools and writes the portable
+EXE and optional ZIP into `dist/`. The executable is not publisher signed.
 
 ## Runtime smoke test
 
-The Windows GitHub Actions workflow builds and launches the packaged executable.
+The Windows GitHub Actions workflow builds and starts the actual portable EXE.
 It verifies the splash, farm creation, bundled assets, save-file export/import,
-and restoring the saved farm after reloading. It uploads the ZIP, screenshots,
-and JSON test report.
+and restoring the saved farm after reloading. It uploads the EXE, ZIP,
+screenshots, and JSON test report.
 
 To run the same test locally in PowerShell:
 
 ```powershell
-.\SimFarm.exe --self-test --test-output=C:\Temp\simfarm-test
+.\SimFarm-V0-Windows.exe --self-test --test-output=C:\Temp\simfarm-test
 ```
 
 The test writes `splash.png`, `game.png`, `TEST.SFM`, and `result.json`, and exits

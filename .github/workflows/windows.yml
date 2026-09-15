@@ -26,9 +26,7 @@ jobs:
       - name: Run packaged Windows app
         shell: pwsh
         run: |
-          Expand-Archive -LiteralPath dist/SimFarm-V0-Windows-x64.zip -DestinationPath .build/windows
-          $exe = Get-ChildItem .build/windows -Filter SimFarm.exe -Recurse | Select-Object -First 1
-          if (-not $exe) { throw "Packaged executable missing" }
+          $exe = Get-Item dist/SimFarm-V0-Windows.exe
           $output = Join-Path $env:GITHUB_WORKSPACE '.build/windows-test'
           $process = Start-Process -FilePath $exe.FullName -ArgumentList @('--self-test', "--test-output=$output") -PassThru
           if (-not $process.WaitForExit(120000)) { $process.Kill(); throw "Windows runtime test timed out" }
@@ -41,6 +39,7 @@ jobs:
         with:
           name: SimFarm-Windows-x64
           path: |
+            dist/SimFarm-V0-Windows.exe
             dist/SimFarm-V0-Windows-x64.zip
             .build/windows-test/
           if-no-files-found: error

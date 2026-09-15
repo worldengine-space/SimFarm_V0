@@ -12,8 +12,6 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
@@ -114,22 +112,22 @@ public final class LaunchSmokeTest {
         down.recycle(); up.recycle();
     }
 
+    @android.annotation.TargetApi(31)
     private void screenshot(String name) throws Exception {
         Bitmap bitmap = instrumentation.getUiAutomation().takeScreenshot();
         assertNotNull("Android screenshot", bitmap);
-        File folder = new File(instrumentation.getTargetContext().getExternalFilesDir(null), "smoke");
-        assertTrue(folder.isDirectory() || folder.mkdirs());
-        try (FileOutputStream output = new FileOutputStream(new File(folder, name))) {
+        // Stream into shell-owned Downloads so Gradle's app cleanup cannot erase evidence.
+        assertTrue("Screenshot export requires Android 12+ test device", android.os.Build.VERSION.SDK_INT >= 31);
+        android.os.ParcelFileDescriptor[] pipes = instrumentation.getUiAutomation()
+                .executeShellCommandRw("mkdir -p /sdcard/Download/SimFarmSmoke; cat > /sdcard/Download/SimFarmSmoke/" + name);
+        try (android.os.ParcelFileDescriptor.AutoCloseOutputStream output =
+                new android.os.ParcelFileDescriptor.AutoCloseOutputStream(pipes[1])) {
             assertTrue(bitmap.compress(Bitmap.CompressFormat.PNG, 100, output));
         }
-        bitmap.recycle();
-        // Keep evidence outside app storage, which Gradle may remove after testing.
-        String copy = "mkdir -p /sdcard/Download/SimFarmSmoke && cp "
-                + new File(folder, name).getAbsolutePath() + " /sdcard/Download/SimFarmSmoke/" + name;
         try (android.os.ParcelFileDescriptor.AutoCloseInputStream output =
-                new android.os.ParcelFileDescriptor.AutoCloseInputStream(
-                        instrumentation.getUiAutomation().executeShellCommand(copy))) {
-            while (output.read() != -1) { /* Wait until the shell copy completes. */ }
+                new android.os.ParcelFileDescriptor.AutoCloseInputStream(pipes[0])) {
+            while (output.read() != -1) { /* Wait until the shell write completes. */ }
         }
+        bitmap.recycle();
     }
 }

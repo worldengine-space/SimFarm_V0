@@ -5,7 +5,7 @@
   "description": "Offline Windows desktop host for SimFarm V0",
   "main": "main.cjs",
   "devDependencies": {
-    "@electron/packager": "20.3.0",
-    "electron": "44.3.0"
+    "electron": "44.3.0",
+    "electron-builder": "26.15.3"
   }
 }

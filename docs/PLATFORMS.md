@@ -42,3 +42,6 @@ on a normal iPhone. To install a native build, open the project in Xcode and
 select your Apple development team; TestFlight/App Store distribution also
 requires Apple distribution signing. No Apple signing credentials are included
 in this repository.
+
+Developer downloads: [unsigned iPhone app](https://github.com/worldengine-space/SimFarm_V0/releases/latest/download/SimFarm-iOS-device-unsigned.zip)
+and [iOS Simulator app](https://github.com/worldengine-space/SimFarm_V0/releases/latest/download/SimFarm-iOS-simulator-unsigned.zip).

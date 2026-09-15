@@ -157,9 +157,53 @@ execFileSync("ditto", [
   distribution,
   output,
 ]);
+// A single standard installer puts the universal app into /Applications.
+const installerRoot = path.join(stage, "installer-root");
+fs.mkdirSync(installerRoot, { recursive: true });
+fs.cpSync(app, path.join(installerRoot, path.basename(app)), {
+  recursive: true,
+});
+const installer = path.join(root, "dist/SimFarm-V0-macOS.pkg");
+const components = path.join(stage, "components.plist");
+fs.writeFileSync(
+  components,
+  `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><array><dict>
+<key>RootRelativeBundlePath</key><string>SimFarm V0.app</string>
+<key>BundleIsRelocatable</key><false/>
+<key>BundleIsVersionChecked</key><true/>
+<key>BundleHasStrictIdentifier</key><true/>
+<key>BundleOverwriteAction</key><string>upgrade</string>
+</dict></array></plist>`,
+);
+execFileSync(
+  "pkgbuild",
+  [
+    "--root",
+    installerRoot,
+    "--component-plist",
+    components,
+    "--identifier",
+    "space.worldengine.simfarm",
+    "--version",
+    "0.1.0",
+    "--install-location",
+    "/Applications",
+    installer,
+  ],
+  { stdio: "inherit" },
+);
 console.log(
   JSON.stringify(
-    { app, zip: output, bytes: fs.statSync(output).size, stage },
+    {
+      app,
+      installer,
+      installerBytes: fs.statSync(installer).size,
+      zip: output,
+      bytes: fs.statSync(output).size,
+      stage,
+    },
     null,
     2,
   ),

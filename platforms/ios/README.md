@@ -35,4 +35,6 @@ TestFlight or App Store distribution additionally requires an Apple Developer me
 - `Sources/GameViewController.swift`: embeds the game, handles navigation, and bridges save import/export to [UIDocumentPickerViewController](https://developer.apple.com/documentation/uikit/uidocumentpickerviewcontroller) and the iOS share sheet.
 - `scripts/bundle-ios.mjs`: copies the current browser build into the offline app bundle.
 
-Compiling proves source and SDK compatibility. Device gameplay, audio, touch controls, save round-trips, and background/resume behavior still require a signed device or simulator run.
+The CI simulator launch adds `--self-test`, which clicks the shared Play button after its countdown, waits for all game assets/data, sends synthetic touch pointer events through title/region selection, starts a farm, and verifies that its canvas contains rendered scenery. It saves a JSON result and screenshot alongside the unsigned app artifact. The observer and automation are only enabled by this argument; ordinary launches follow the player-controlled flow.
+
+Compilation and the simulator smoke test do not replace hands-on device testing. Real touch gestures, audio, Files/share-sheet save round-trips, and background/resume behavior still need a signed iPhone run.
