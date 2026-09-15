@@ -1,0 +1,22 @@
+{
+  "name": "simfarm-v0",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Codex browser recreation of SimFarm for WorldEngine",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node scripts/serve.mjs",
+    "build": "node scripts/build.mjs",
+    "build:check": "node scripts/build.mjs --check",
+    "test": "npm run build:check && node --check game.js && node tests/run.cjs",
+    "format": "prettier --write src scripts tests index.html styles.css package.json",
+    "format:check": "prettier --check src scripts tests index.html styles.css package.json"
+  },
+  "devDependencies": {
+    "prettier": "3.6.2",
+    "@napi-rs/canvas": "1.0.8",
+    "pngjs": "7.0.0"
+  }
+}

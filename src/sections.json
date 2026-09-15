@@ -1,0 +1,18 @@
+[
+  "01-configuration.js",
+  "02-assets-and-state.js",
+  "03-loading-and-audio.js",
+  "04-world-generation.js",
+  "05-interface-and-finance.js",
+  "06-market-and-inventory.js",
+  "07-map-and-irrigation.js",
+  "08-machinery.js",
+  "09-field-schedules.js",
+  "10-rendering.js",
+  "11-scenarios-and-saves.js",
+  "12-interface-actions.js",
+  "13-land-and-tools.js",
+  "14-disasters.js",
+  "15-livestock-and-placement.js",
+  "16-input-and-calendar.js"
+]

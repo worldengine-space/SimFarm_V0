@@ -1,0 +1,228 @@
+{
+  "bitmaps": [
+    "about.png",
+    "airpwndo.png",
+    "airpwndo-rain.png",
+    "airpwndo-frost.png",
+    "bankhelp.png",
+    "bankterm.png",
+    "buywndo.png",
+    "cashflow.png",
+    "choscrop.png",
+    "cntlbtnh.png",
+    "edithelp.png",
+    "evaluate.png",
+    "examine.png",
+    "farmburo.png",
+    "fdstatus.png",
+    "filegenr.png",
+    "futures.png",
+    "lzrdlogo.png",
+    "maphelp.png",
+    "mapwndo.png",
+    "popup.png",
+    "sellwndo.png",
+    "twnchoic.png",
+    "weather.png",
+    "editeasy.png"
+  ],
+  "screens": [
+    "defworld.png",
+    "scenario.png",
+    "prsnt480.png",
+    "prsnt350.png",
+    "sftitle.png"
+  ],
+  "sprites": [
+    "airplane.png",
+    "apshadow.png",
+    "cowman1.png",
+    "cowman2.png",
+    "cowman3.png",
+    "cropdust.png",
+    "swarm.png",
+    "tornado.png"
+  ],
+  "tiles": [
+    {
+      "file": "far-mapc.png",
+      "count": 960,
+      "width": 2,
+      "height": 2,
+      "planes": 4
+    },
+    {
+      "file": "buttons.png",
+      "count": 18,
+      "width": 48,
+      "height": 24,
+      "planes": 4
+    },
+    {
+      "file": "cursors.png",
+      "count": 12,
+      "width": 16,
+      "height": 16,
+      "planes": 4
+    },
+    {
+      "file": "ega16til.png",
+      "count": 880,
+      "width": 16,
+      "height": 16,
+      "planes": 4
+    },
+    {
+      "file": "ega16til-rain.png",
+      "count": 880,
+      "width": 16,
+      "height": 16,
+      "planes": 4,
+      "palette": "rain"
+    },
+    {
+      "file": "ega16til-frost.png",
+      "count": 880,
+      "width": 16,
+      "height": 16,
+      "planes": 4,
+      "palette": "frost"
+    },
+    {
+      "file": "fldgrph.png",
+      "count": 20,
+      "width": 48,
+      "height": 24,
+      "planes": 4
+    },
+    {
+      "file": "mskdtile.png",
+      "count": 194,
+      "width": 16,
+      "height": 16,
+      "planes": 5
+    },
+    {
+      "file": "mskdtile-rain.png",
+      "count": 194,
+      "width": 16,
+      "height": 16,
+      "planes": 5,
+      "palette": "rain"
+    },
+    {
+      "file": "mskdtile-frost.png",
+      "count": 194,
+      "width": 16,
+      "height": 16,
+      "planes": 5,
+      "palette": "frost"
+    },
+    {
+      "file": "twnevent.png",
+      "count": 160,
+      "width": 16,
+      "height": 16,
+      "planes": 4
+    },
+    {
+      "file": "twnevent-rain.png",
+      "count": 160,
+      "width": 16,
+      "height": 16,
+      "planes": 4,
+      "palette": "rain"
+    },
+    {
+      "file": "twnevent-frost.png",
+      "count": 160,
+      "width": 16,
+      "height": 16,
+      "planes": 4,
+      "palette": "frost"
+    },
+    {
+      "file": "wethvane.png",
+      "count": 2,
+      "width": 32,
+      "height": 32,
+      "planes": 4
+    }
+  ],
+  "libraries": [
+    {
+      "file": "alltiles.png",
+      "library": "first",
+      "version": 1,
+      "count": 80,
+      "width": 112,
+      "height": 64,
+      "planes": 4
+    },
+    {
+      "file": "alltiles-rain.png",
+      "library": "first",
+      "version": 1,
+      "count": 80,
+      "width": 112,
+      "height": 64,
+      "planes": 4,
+      "palette": "rain"
+    },
+    {
+      "file": "alltiles-frost.png",
+      "library": "first",
+      "version": 1,
+      "count": 80,
+      "width": 112,
+      "height": 64,
+      "planes": 4,
+      "palette": "frost"
+    },
+    {
+      "file": "wethgrnd.png",
+      "library": "btm",
+      "version": 1,
+      "count": 4,
+      "width": 112,
+      "height": 32,
+      "planes": 4
+    },
+    {
+      "file": "wethsky.png",
+      "library": "sky",
+      "version": 1,
+      "count": 4,
+      "width": 112,
+      "height": 32,
+      "planes": 4
+    }
+  ],
+  "sounds": [
+    "bird1.wav",
+    "bird2.wav",
+    "boos.wav",
+    "bulldoze.wav",
+    "cheers.wav",
+    "click.wav",
+    "compbeep.wav",
+    "cow1.wav",
+    "cow2.wav",
+    "explode.wav",
+    "flood.wav",
+    "horse1.wav",
+    "pig.wav",
+    "plane.wav",
+    "plopitem.wav",
+    "ploptool.wav",
+    "rooster.wav",
+    "sheep1.wav",
+    "sheep2.wav",
+    "smack.wav",
+    "swarm.wav",
+    "thunder.wav",
+    "tornado.wav",
+    "uhoh.wav",
+    "wind.wav"
+  ]
+}

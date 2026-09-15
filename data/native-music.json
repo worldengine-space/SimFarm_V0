@@ -1,0 +1,120 @@
+{
+  "method": "Original SIMFARM.EXE Miles sequence player, SBP2FM.ADV, SIMFARM.OPL instrument bank; offline DOSBox oracle; lossless PCM16 export",
+  "hardwareConfig": "reference/SimFarm/SIMFARM.CFG",
+  "sourceHashes": {
+    "SIMFARM.EXE": "8b86a2d3d07e0b6f77ce491e27e538feeccf5d1af149f42bc0f6a0631c3e58ce",
+    "SIMFARM.CFG": "e1627dff670d9a17fb836e1078e9f070d69eeb7afea25c68b159007e49e9a5d3",
+    "SOUND/SBP2FM.ADV": "57ead2cb321cd4942b39087385e95584cf9b2fe256f540408ff3f532aa0ae581",
+    "SOUND/SIMFARM.OPL": "a3b073668f8f2c5c420392dbafbe3edc6d78ae21738485437c4220e2eef3b5b4",
+    "SOUND/SIMFARM.AD": "a41e84296a4e66ab5e402b94afdcd89db210378312181b2efc0e4f78b4cb9cd9"
+  },
+  "tracks": {
+    "alien": {
+      "firstNoteSeconds": 0,
+      "sequenceSeconds": 23.858333333333334,
+      "loop": null,
+      "sampleRate": 44100,
+      "sampleCount": 1156393,
+      "durationSeconds": 26.22206349206349,
+      "captureStartSample": 65388,
+      "captureEndSample": 1221781,
+      "sourceXmiSha256": "1f3a529c0fdb61e0fd82953fcef9cdd1ecfc6e0483c5b9640b0b216d0d24eb1a",
+      "rawCaptureSha256": "a417ac1024fa27e663edd20679a9c64af38a46a9756040e250a88b02bb8e9801",
+      "wavSha256": "450881fbfcf22590b988fd157a9d3548a05d2ea38bb281dba38b66563bfa87f2"
+    },
+    "amain": {
+      "firstNoteSeconds": 1.55,
+      "sequenceSeconds": 61.175,
+      "loop": null,
+      "sampleRate": 44100,
+      "sampleCount": 2707326,
+      "durationSeconds": 61.39061224489796,
+      "captureStartSample": 65516,
+      "captureEndSample": 2772842,
+      "sourceXmiSha256": "3711c3d7b0449e90e2f0450677816d4074aefd8bb75ad64b548ad088c66d9a69",
+      "rawCaptureSha256": "aff66224a1c1f9f2a53b173618e40128dc6165e63d23ae8a56f506b246013230",
+      "wavSha256": "d83735029aab3aeb5da8e51b4cab270fc2f04059b84c5260263077b1bbe15c31"
+    },
+    "carnival": {
+      "firstNoteSeconds": 0,
+      "sequenceSeconds": 49.125,
+      "loop": null,
+      "sampleRate": 44100,
+      "sampleCount": 2166413,
+      "durationSeconds": 49.12501133786848,
+      "captureStartSample": 65782,
+      "captureEndSample": 2232195,
+      "sourceXmiSha256": "caae91a48c8a9a0edb414146358bc5b67e00299be376e480e93187fb85ac095b",
+      "rawCaptureSha256": "682a0964e0cc915de14236b1f01d700ecad8db8207e9fd925538192087e4c671",
+      "wavSha256": "7e80db2fb163ad07157310d5c2776ff968be2e4389f312e85eae3fcf4fe2f6c3"
+    },
+    "cowman": {
+      "firstNoteSeconds": 0,
+      "sequenceSeconds": 62.475,
+      "loop": null,
+      "sampleRate": 44100,
+      "sampleCount": 2832453,
+      "durationSeconds": 64.22795918367346,
+      "captureStartSample": 65727,
+      "captureEndSample": 2898180,
+      "sourceXmiSha256": "3e70f9615ab0cdd01f0db4bb5cbfff8cf00b99e6ab6a276aaa65b7134ba00b12",
+      "rawCaptureSha256": "5f87cb66acdcd0808f6f7dfe8b1dfe3fd1c21fbd553cc39cb42a5f9b1105afeb",
+      "wavSha256": "b33131e803a166f6f0e1e6ab6010acf7b153837bc797a073b9ef7e6857e17469"
+    },
+    "dfarm": {
+      "firstNoteSeconds": 0,
+      "sequenceSeconds": 62.53333333333333,
+      "loop": null,
+      "sampleRate": 44100,
+      "sampleCount": 2768589,
+      "durationSeconds": 62.77979591836735,
+      "captureStartSample": 64868,
+      "captureEndSample": 2833457,
+      "sourceXmiSha256": "07d2aaef738bb03b5131b84277e38ef7aa257bcca11c9defb029e3c43f8061f3",
+      "rawCaptureSha256": "b4a8cde2a75267cc49d79adf3466c5aa0a6a12a8be9dafeea515ba9285015f26",
+      "wavSha256": "0818cfe90721d997f3c1c7029f2a44038a9690e47ad2c362f3b452a79030d4dd"
+    },
+    "ffarm": {
+      "firstNoteSeconds": 0,
+      "sequenceSeconds": 35.86666666666667,
+      "loop": null,
+      "sampleRate": 44100,
+      "sampleCount": 1619181,
+      "durationSeconds": 36.71612244897959,
+      "captureStartSample": 65507,
+      "captureEndSample": 1684688,
+      "sourceXmiSha256": "ff7ab8e1db63d2f39a0b80c044bf9a2bbef2ac1d3b2900028b6d8b704a3f47a7",
+      "rawCaptureSha256": "a9917a73be2bcf66899793fa68c6fbbf7e7ab50211087b13f8082f6955293cf5",
+      "wavSha256": "6b03e3cc78be2c251bd524718ee88591043fb3e0f12f0ba1ed8ca544f3f5ce00"
+    },
+    "genfarm": {
+      "firstNoteSeconds": 0,
+      "sequenceSeconds": 61.958333333333336,
+      "loop": {
+        "startSeconds": 59.99166666666667,
+        "endSeconds": 119.98333333333333
+      },
+      "sampleRate": 44100,
+      "sampleCount": 5291265,
+      "durationSeconds": 119.98333333333333,
+      "captureStartSample": 65723,
+      "captureEndSample": 5356988,
+      "sourceXmiSha256": "662c27606f2ca4386f95c32ce40c86b1e505e992e941fa74d88595e8cd7bc5a2",
+      "rawCaptureSha256": "4979f057c607fe91efda1f6e6d8deab817c62a5d2122741226b4f1882c4d50d6",
+      "wavSha256": "0c20dee8a257710d4ac664288a142517bc1e234f634a5582e07ea8b6ad2bcff8"
+    },
+    "rodeo": {
+      "firstNoteSeconds": 0,
+      "sequenceSeconds": 44.333333333333336,
+      "loop": null,
+      "sampleRate": 44100,
+      "sampleCount": 2006116,
+      "durationSeconds": 45.49015873015873,
+      "captureStartSample": 65329,
+      "captureEndSample": 2071445,
+      "sourceXmiSha256": "1e10f94da75f9646e2318225b8fb3e73c7bfb63e3c8db028fffa699864bf141a",
+      "rawCaptureSha256": "281ae5140d10c4eec51ef9faba608721fbf45de2ae02a224ce856f5190f8586e",
+      "wavSha256": "f8807869b5df8c73c42c1415c4f6c2c48bce8ef5952204a5d17d4bf72f03e1c1"
+    }
+  }
+}

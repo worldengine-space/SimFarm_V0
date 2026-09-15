@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#000000" />
+    <title>SimFarm — browser rebuild</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main>
+      <canvas
+        id="simfarm"
+        width="640"
+        height="480"
+        tabindex="0"
+        aria-label="SimFarm browser rebuild"
+      ></canvas>
+      <input
+        id="simfarm-save-file"
+        type="file"
+        accept=".sfm,.ssm,application/octet-stream"
+        hidden
+      />
+    </main>
+    <script src="game.js"></script>
+  </body>
+</html>

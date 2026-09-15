@@ -1,0 +1,731 @@
+{
+  "formatVersion": 1,
+  "image": "assets/original/font/egafont.png",
+  "firstByte": 32,
+  "count": 120,
+  "glyphWidth": 8,
+  "glyphHeight": 8,
+  "columns": 16,
+  "glyphs": [
+    {
+      "byte": 32,
+      "character": " ",
+      "column": 0,
+      "row": 0
+    },
+    {
+      "byte": 33,
+      "character": "!",
+      "column": 1,
+      "row": 0
+    },
+    {
+      "byte": 34,
+      "character": "\"",
+      "column": 2,
+      "row": 0
+    },
+    {
+      "byte": 35,
+      "character": "#",
+      "column": 3,
+      "row": 0
+    },
+    {
+      "byte": 36,
+      "character": "$",
+      "column": 4,
+      "row": 0
+    },
+    {
+      "byte": 37,
+      "character": "%",
+      "column": 5,
+      "row": 0
+    },
+    {
+      "byte": 38,
+      "character": "&",
+      "column": 6,
+      "row": 0
+    },
+    {
+      "byte": 39,
+      "character": "'",
+      "column": 7,
+      "row": 0
+    },
+    {
+      "byte": 40,
+      "character": "(",
+      "column": 8,
+      "row": 0
+    },
+    {
+      "byte": 41,
+      "character": ")",
+      "column": 9,
+      "row": 0
+    },
+    {
+      "byte": 42,
+      "character": "*",
+      "column": 10,
+      "row": 0
+    },
+    {
+      "byte": 43,
+      "character": "+",
+      "column": 11,
+      "row": 0
+    },
+    {
+      "byte": 44,
+      "character": ",",
+      "column": 12,
+      "row": 0
+    },
+    {
+      "byte": 45,
+      "character": "-",
+      "column": 13,
+      "row": 0
+    },
+    {
+      "byte": 46,
+      "character": ".",
+      "column": 14,
+      "row": 0
+    },
+    {
+      "byte": 47,
+      "character": "/",
+      "column": 15,
+      "row": 0
+    },
+    {
+      "byte": 48,
+      "character": "0",
+      "column": 0,
+      "row": 1
+    },
+    {
+      "byte": 49,
+      "character": "1",
+      "column": 1,
+      "row": 1
+    },
+    {
+      "byte": 50,
+      "character": "2",
+      "column": 2,
+      "row": 1
+    },
+    {
+      "byte": 51,
+      "character": "3",
+      "column": 3,
+      "row": 1
+    },
+    {
+      "byte": 52,
+      "character": "4",
+      "column": 4,
+      "row": 1
+    },
+    {
+      "byte": 53,
+      "character": "5",
+      "column": 5,
+      "row": 1
+    },
+    {
+      "byte": 54,
+      "character": "6",
+      "column": 6,
+      "row": 1
+    },
+    {
+      "byte": 55,
+      "character": "7",
+      "column": 7,
+      "row": 1
+    },
+    {
+      "byte": 56,
+      "character": "8",
+      "column": 8,
+      "row": 1
+    },
+    {
+      "byte": 57,
+      "character": "9",
+      "column": 9,
+      "row": 1
+    },
+    {
+      "byte": 58,
+      "character": ":",
+      "column": 10,
+      "row": 1
+    },
+    {
+      "byte": 59,
+      "character": ";",
+      "column": 11,
+      "row": 1
+    },
+    {
+      "byte": 60,
+      "character": "<",
+      "column": 12,
+      "row": 1
+    },
+    {
+      "byte": 61,
+      "character": "=",
+      "column": 13,
+      "row": 1
+    },
+    {
+      "byte": 62,
+      "character": ">",
+      "column": 14,
+      "row": 1
+    },
+    {
+      "byte": 63,
+      "character": "?",
+      "column": 15,
+      "row": 1
+    },
+    {
+      "byte": 64,
+      "character": "@",
+      "column": 0,
+      "row": 2
+    },
+    {
+      "byte": 65,
+      "character": "A",
+      "column": 1,
+      "row": 2
+    },
+    {
+      "byte": 66,
+      "character": "B",
+      "column": 2,
+      "row": 2
+    },
+    {
+      "byte": 67,
+      "character": "C",
+      "column": 3,
+      "row": 2
+    },
+    {
+      "byte": 68,
+      "character": "D",
+      "column": 4,
+      "row": 2
+    },
+    {
+      "byte": 69,
+      "character": "E",
+      "column": 5,
+      "row": 2
+    },
+    {
+      "byte": 70,
+      "character": "F",
+      "column": 6,
+      "row": 2
+    },
+    {
+      "byte": 71,
+      "character": "G",
+      "column": 7,
+      "row": 2
+    },
+    {
+      "byte": 72,
+      "character": "H",
+      "column": 8,
+      "row": 2
+    },
+    {
+      "byte": 73,
+      "character": "I",
+      "column": 9,
+      "row": 2
+    },
+    {
+      "byte": 74,
+      "character": "J",
+      "column": 10,
+      "row": 2
+    },
+    {
+      "byte": 75,
+      "character": "K",
+      "column": 11,
+      "row": 2
+    },
+    {
+      "byte": 76,
+      "character": "L",
+      "column": 12,
+      "row": 2
+    },
+    {
+      "byte": 77,
+      "character": "M",
+      "column": 13,
+      "row": 2
+    },
+    {
+      "byte": 78,
+      "character": "N",
+      "column": 14,
+      "row": 2
+    },
+    {
+      "byte": 79,
+      "character": "O",
+      "column": 15,
+      "row": 2
+    },
+    {
+      "byte": 80,
+      "character": "P",
+      "column": 0,
+      "row": 3
+    },
+    {
+      "byte": 81,
+      "character": "Q",
+      "column": 1,
+      "row": 3
+    },
+    {
+      "byte": 82,
+      "character": "R",
+      "column": 2,
+      "row": 3
+    },
+    {
+      "byte": 83,
+      "character": "S",
+      "column": 3,
+      "row": 3
+    },
+    {
+      "byte": 84,
+      "character": "T",
+      "column": 4,
+      "row": 3
+    },
+    {
+      "byte": 85,
+      "character": "U",
+      "column": 5,
+      "row": 3
+    },
+    {
+      "byte": 86,
+      "character": "V",
+      "column": 6,
+      "row": 3
+    },
+    {
+      "byte": 87,
+      "character": "W",
+      "column": 7,
+      "row": 3
+    },
+    {
+      "byte": 88,
+      "character": "X",
+      "column": 8,
+      "row": 3
+    },
+    {
+      "byte": 89,
+      "character": "Y",
+      "column": 9,
+      "row": 3
+    },
+    {
+      "byte": 90,
+      "character": "Z",
+      "column": 10,
+      "row": 3
+    },
+    {
+      "byte": 91,
+      "character": "[",
+      "column": 11,
+      "row": 3
+    },
+    {
+      "byte": 92,
+      "character": "\\",
+      "column": 12,
+      "row": 3
+    },
+    {
+      "byte": 93,
+      "character": "]",
+      "column": 13,
+      "row": 3
+    },
+    {
+      "byte": 94,
+      "character": "^",
+      "column": 14,
+      "row": 3
+    },
+    {
+      "byte": 95,
+      "character": "_",
+      "column": 15,
+      "row": 3
+    },
+    {
+      "byte": 96,
+      "character": "`",
+      "column": 0,
+      "row": 4
+    },
+    {
+      "byte": 97,
+      "character": "a",
+      "column": 1,
+      "row": 4
+    },
+    {
+      "byte": 98,
+      "character": "b",
+      "column": 2,
+      "row": 4
+    },
+    {
+      "byte": 99,
+      "character": "c",
+      "column": 3,
+      "row": 4
+    },
+    {
+      "byte": 100,
+      "character": "d",
+      "column": 4,
+      "row": 4
+    },
+    {
+      "byte": 101,
+      "character": "e",
+      "column": 5,
+      "row": 4
+    },
+    {
+      "byte": 102,
+      "character": "f",
+      "column": 6,
+      "row": 4
+    },
+    {
+      "byte": 103,
+      "character": "g",
+      "column": 7,
+      "row": 4
+    },
+    {
+      "byte": 104,
+      "character": "h",
+      "column": 8,
+      "row": 4
+    },
+    {
+      "byte": 105,
+      "character": "i",
+      "column": 9,
+      "row": 4
+    },
+    {
+      "byte": 106,
+      "character": "j",
+      "column": 10,
+      "row": 4
+    },
+    {
+      "byte": 107,
+      "character": "k",
+      "column": 11,
+      "row": 4
+    },
+    {
+      "byte": 108,
+      "character": "l",
+      "column": 12,
+      "row": 4
+    },
+    {
+      "byte": 109,
+      "character": "m",
+      "column": 13,
+      "row": 4
+    },
+    {
+      "byte": 110,
+      "character": "n",
+      "column": 14,
+      "row": 4
+    },
+    {
+      "byte": 111,
+      "character": "o",
+      "column": 15,
+      "row": 4
+    },
+    {
+      "byte": 112,
+      "character": "p",
+      "column": 0,
+      "row": 5
+    },
+    {
+      "byte": 113,
+      "character": "q",
+      "column": 1,
+      "row": 5
+    },
+    {
+      "byte": 114,
+      "character": "r",
+      "column": 2,
+      "row": 5
+    },
+    {
+      "byte": 115,
+      "character": "s",
+      "column": 3,
+      "row": 5
+    },
+    {
+      "byte": 116,
+      "character": "t",
+      "column": 4,
+      "row": 5
+    },
+    {
+      "byte": 117,
+      "character": "u",
+      "column": 5,
+      "row": 5
+    },
+    {
+      "byte": 118,
+      "character": "v",
+      "column": 6,
+      "row": 5
+    },
+    {
+      "byte": 119,
+      "character": "w",
+      "column": 7,
+      "row": 5
+    },
+    {
+      "byte": 120,
+      "character": "x",
+      "column": 8,
+      "row": 5
+    },
+    {
+      "byte": 121,
+      "character": "y",
+      "column": 9,
+      "row": 5
+    },
+    {
+      "byte": 122,
+      "character": "z",
+      "column": 10,
+      "row": 5
+    },
+    {
+      "byte": 123,
+      "character": "{",
+      "column": 11,
+      "row": 5
+    },
+    {
+      "byte": 124,
+      "character": "|",
+      "column": 12,
+      "row": 5
+    },
+    {
+      "byte": 125,
+      "character": "}",
+      "column": 13,
+      "row": 5
+    },
+    {
+      "byte": 126,
+      "character": "~",
+      "column": 14,
+      "row": 5
+    },
+    {
+      "byte": 127,
+      "character": "",
+      "column": 15,
+      "row": 5
+    },
+    {
+      "byte": 128,
+      "character": "Ç",
+      "column": 0,
+      "row": 6
+    },
+    {
+      "byte": 129,
+      "character": "ü",
+      "column": 1,
+      "row": 6
+    },
+    {
+      "byte": 130,
+      "character": "é",
+      "column": 2,
+      "row": 6
+    },
+    {
+      "byte": 131,
+      "character": "â",
+      "column": 3,
+      "row": 6
+    },
+    {
+      "byte": 132,
+      "character": "ä",
+      "column": 4,
+      "row": 6
+    },
+    {
+      "byte": 133,
+      "character": "à",
+      "column": 5,
+      "row": 6
+    },
+    {
+      "byte": 134,
+      "character": "å",
+      "column": 6,
+      "row": 6
+    },
+    {
+      "byte": 135,
+      "character": "ç",
+      "column": 7,
+      "row": 6
+    },
+    {
+      "byte": 136,
+      "character": "ê",
+      "column": 8,
+      "row": 6
+    },
+    {
+      "byte": 137,
+      "character": "ë",
+      "column": 9,
+      "row": 6
+    },
+    {
+      "byte": 138,
+      "character": "è",
+      "column": 10,
+      "row": 6
+    },
+    {
+      "byte": 139,
+      "character": "ï",
+      "column": 11,
+      "row": 6
+    },
+    {
+      "byte": 140,
+      "character": "î",
+      "column": 12,
+      "row": 6
+    },
+    {
+      "byte": 141,
+      "character": "ì",
+      "column": 13,
+      "row": 6
+    },
+    {
+      "byte": 142,
+      "character": "Ä",
+      "column": 14,
+      "row": 6
+    },
+    {
+      "byte": 143,
+      "character": "Å",
+      "column": 15,
+      "row": 6
+    },
+    {
+      "byte": 144,
+      "character": "É",
+      "column": 0,
+      "row": 7
+    },
+    {
+      "byte": 145,
+      "character": "æ",
+      "column": 1,
+      "row": 7
+    },
+    {
+      "byte": 146,
+      "character": "Æ",
+      "column": 2,
+      "row": 7
+    },
+    {
+      "byte": 147,
+      "character": "ô",
+      "column": 3,
+      "row": 7
+    },
+    {
+      "byte": 148,
+      "character": "ö",
+      "column": 4,
+      "row": 7
+    },
+    {
+      "byte": 149,
+      "character": "ò",
+      "column": 5,
+      "row": 7
+    },
+    {
+      "byte": 150,
+      "character": "û",
+      "column": 6,
+      "row": 7
+    },
+    {
+      "byte": 151,
+      "character": "ù",
+      "column": 7,
+      "row": 7
+    }
+  ]
+}

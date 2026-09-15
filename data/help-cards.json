@@ -1,0 +1,4416 @@
+{
+  "formatVersion": 1,
+  "cards": [
+    {
+      "number": 1,
+      "file": "card1.hc",
+      "byteLength": 198,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            24,
+            32
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            0,
+            144,
+            32
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            59,
+            264,
+            32
+          ]
+        },
+        {
+          "offset": 21,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            34,
+            24,
+            112
+          ]
+        },
+        {
+          "offset": 28,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            42,
+            144,
+            112
+          ]
+        },
+        {
+          "offset": 35,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            32,
+            264,
+            112
+          ]
+        },
+        {
+          "offset": 42,
+          "opcode": 139,
+          "name": "closeButton",
+          "arguments": [
+            336,
+            200
+          ]
+        },
+        {
+          "offset": 47,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            24,
+            192,
+            320
+          ],
+          "value": "Welcome to the town's Farm Bureau.  Click on any picture to get information."
+        },
+        {
+          "offset": 131,
+          "opcode": 131,
+          "name": "cardHotspot",
+          "arguments": [
+            24,
+            32,
+            136,
+            96,
+            2
+          ]
+        },
+        {
+          "offset": 142,
+          "opcode": 131,
+          "name": "cardHotspot",
+          "arguments": [
+            144,
+            32,
+            256,
+            96,
+            10
+          ]
+        },
+        {
+          "offset": 153,
+          "opcode": 131,
+          "name": "cardHotspot",
+          "arguments": [
+            264,
+            32,
+            376,
+            96,
+            26
+          ]
+        },
+        {
+          "offset": 164,
+          "opcode": 131,
+          "name": "cardHotspot",
+          "arguments": [
+            24,
+            112,
+            136,
+            176,
+            30
+          ]
+        },
+        {
+          "offset": 175,
+          "opcode": 131,
+          "name": "cardHotspot",
+          "arguments": [
+            144,
+            112,
+            256,
+            176,
+            40
+          ]
+        },
+        {
+          "offset": 186,
+          "opcode": 131,
+          "name": "cardHotspot",
+          "arguments": [
+            264,
+            112,
+            376,
+            176,
+            5
+          ]
+        },
+        {
+          "offset": 197,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "file": "card2.hc",
+      "byteLength": 464,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 9,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            128,
+            24,
+            144
+          ],
+          "value": "Field Icon Index "
+        },
+        {
+          "offset": 34,
+          "opcode": 140,
+          "name": "mainTiles",
+          "arguments": [
+            64,
+            48,
+            2,
+            1,
+            539
+          ]
+        },
+        {
+          "offset": 45,
+          "opcode": 140,
+          "name": "mainTiles",
+          "arguments": [
+            64,
+            64,
+            2,
+            1,
+            541
+          ]
+        },
+        {
+          "offset": 56,
+          "opcode": 140,
+          "name": "mainTiles",
+          "arguments": [
+            64,
+            88,
+            2,
+            1,
+            631
+          ]
+        },
+        {
+          "offset": 67,
+          "opcode": 140,
+          "name": "mainTiles",
+          "arguments": [
+            64,
+            104,
+            2,
+            1,
+            633
+          ]
+        },
+        {
+          "offset": 78,
+          "opcode": 140,
+          "name": "mainTiles",
+          "arguments": [
+            64,
+            128,
+            2,
+            1,
+            607
+          ]
+        },
+        {
+          "offset": 89,
+          "opcode": 140,
+          "name": "mainTiles",
+          "arguments": [
+            64,
+            144,
+            2,
+            1,
+            609
+          ]
+        },
+        {
+          "offset": 100,
+          "opcode": 140,
+          "name": "mainTiles",
+          "arguments": [
+            64,
+            168,
+            2,
+            1,
+            615
+          ]
+        },
+        {
+          "offset": 111,
+          "opcode": 140,
+          "name": "mainTiles",
+          "arguments": [
+            64,
+            184,
+            2,
+            1,
+            617
+          ]
+        },
+        {
+          "offset": 122,
+          "opcode": 140,
+          "name": "mainTiles",
+          "arguments": [
+            200,
+            48,
+            2,
+            1,
+            611
+          ]
+        },
+        {
+          "offset": 133,
+          "opcode": 140,
+          "name": "mainTiles",
+          "arguments": [
+            200,
+            64,
+            2,
+            1,
+            613
+          ]
+        },
+        {
+          "offset": 144,
+          "opcode": 140,
+          "name": "mainTiles",
+          "arguments": [
+            200,
+            88,
+            2,
+            1,
+            619
+          ]
+        },
+        {
+          "offset": 155,
+          "opcode": 140,
+          "name": "mainTiles",
+          "arguments": [
+            200,
+            104,
+            2,
+            1,
+            621
+          ]
+        },
+        {
+          "offset": 166,
+          "opcode": 140,
+          "name": "mainTiles",
+          "arguments": [
+            200,
+            128,
+            2,
+            1,
+            603
+          ]
+        },
+        {
+          "offset": 177,
+          "opcode": 140,
+          "name": "mainTiles",
+          "arguments": [
+            200,
+            144,
+            2,
+            1,
+            605
+          ]
+        },
+        {
+          "offset": 188,
+          "opcode": 140,
+          "name": "mainTiles",
+          "arguments": [
+            200,
+            168,
+            2,
+            1,
+            623
+          ]
+        },
+        {
+          "offset": 199,
+          "opcode": 140,
+          "name": "mainTiles",
+          "arguments": [
+            200,
+            184,
+            2,
+            1,
+            625
+          ]
+        },
+        {
+          "offset": 210,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            96,
+            48,
+            88
+          ],
+          "value": "Type of crop planted in field"
+        },
+        {
+          "offset": 247,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            96,
+            88,
+            88
+          ],
+          "value": "Low soil nutrients"
+        },
+        {
+          "offset": 273,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            96,
+            128,
+            88
+          ],
+          "value": "Too much water in soil"
+        },
+        {
+          "offset": 303,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            96,
+            168,
+            88
+          ],
+          "value": "Not enough water in soil"
+        },
+        {
+          "offset": 335,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            232,
+            48,
+            88
+          ],
+          "value": "High soil toxicity"
+        },
+        {
+          "offset": 361,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            232,
+            88,
+            88
+          ],
+          "value": "Too many weeds in field"
+        },
+        {
+          "offset": 392,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            232,
+            128,
+            88
+          ],
+          "value": "High levels of pests in field"
+        },
+        {
+          "offset": 429,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            232,
+            168,
+            88
+          ],
+          "value": "Crop infected with disease"
+        },
+        {
+          "offset": 463,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "file": "card5.hc",
+      "byteLength": 184,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            33,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            6
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            104,
+            96,
+            176
+          ],
+          "value": "Livestock Information"
+        },
+        {
+          "offset": 61,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            136,
+            120,
+            240
+          ],
+          "value": "Cow~Life: 20 Years~Eats: 1/4 Bales of Feed Each Month~Mates: 15-20 Months~Gestates: 10 Months"
+        },
+        {
+          "offset": 162,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 183,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "file": "card6.hc",
+      "byteLength": 189,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            29,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            7
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            240,
+            200,
+            14,
+            5
+          ]
+        },
+        {
+          "offset": 41,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            104,
+            96,
+            176
+          ],
+          "value": "Livestock Information"
+        },
+        {
+          "offset": 70,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            136,
+            120,
+            240
+          ],
+          "value": "Pig~Life: 15 Years~Eats: 1/8 Bales of Feed Each Month~Mates: 8 Months~Gestates: 11 Months"
+        },
+        {
+          "offset": 167,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 188,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "file": "card7.hc",
+      "byteLength": 191,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            27,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            8
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            240,
+            200,
+            14,
+            6
+          ]
+        },
+        {
+          "offset": 41,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            104,
+            96,
+            176
+          ],
+          "value": "Livestock Information"
+        },
+        {
+          "offset": 70,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            136,
+            120,
+            240
+          ],
+          "value": "Sheep~Life: 10 Years~Eats: 1/16 Bales of Feed Each Month~Mates: 3 Months~Gestates: 6 Months"
+        },
+        {
+          "offset": 169,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 190,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "file": "card8.hc",
+      "byteLength": 184,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            31,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            14,
+            7
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            104,
+            96,
+            176
+          ],
+          "value": "Livestock Information"
+        },
+        {
+          "offset": 61,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            136,
+            120,
+            240
+          ],
+          "value": "Horse~Life: 20 Years~Eats: 1/4 Bales of Feed Each Month~Mates: 4 Years~Gestates: 11-12 Months"
+        },
+        {
+          "offset": 162,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 183,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "file": "card10.hc",
+      "byteLength": 85,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            0,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            11
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            128,
+            96,
+            136
+          ],
+          "value": "Crop Information"
+        },
+        {
+          "offset": 56,
+          "opcode": 137,
+          "name": "cropDetail",
+          "arguments": [
+            0,
+            136,
+            120
+          ]
+        },
+        {
+          "offset": 63,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 84,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "file": "card11.hc",
+      "byteLength": 94,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            1,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            12
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            240,
+            200,
+            14,
+            10
+          ]
+        },
+        {
+          "offset": 41,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            128,
+            96,
+            136
+          ],
+          "value": "Crop Information"
+        },
+        {
+          "offset": 65,
+          "opcode": 137,
+          "name": "cropDetail",
+          "arguments": [
+            1,
+            136,
+            120
+          ]
+        },
+        {
+          "offset": 72,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 93,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "file": "card12.hc",
+      "byteLength": 94,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            2,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            13
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            240,
+            200,
+            14,
+            11
+          ]
+        },
+        {
+          "offset": 41,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            128,
+            96,
+            136
+          ],
+          "value": "Crop Information"
+        },
+        {
+          "offset": 65,
+          "opcode": 137,
+          "name": "cropDetail",
+          "arguments": [
+            2,
+            136,
+            120
+          ]
+        },
+        {
+          "offset": 72,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 93,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 13,
+      "file": "card13.hc",
+      "byteLength": 94,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            3,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            14
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            240,
+            200,
+            14,
+            12
+          ]
+        },
+        {
+          "offset": 41,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            128,
+            96,
+            136
+          ],
+          "value": "Crop Information"
+        },
+        {
+          "offset": 65,
+          "opcode": 137,
+          "name": "cropDetail",
+          "arguments": [
+            3,
+            136,
+            120
+          ]
+        },
+        {
+          "offset": 72,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 93,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 14,
+      "file": "card14.hc",
+      "byteLength": 94,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            4,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            15
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            240,
+            200,
+            14,
+            13
+          ]
+        },
+        {
+          "offset": 41,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            128,
+            96,
+            136
+          ],
+          "value": "Crop Information"
+        },
+        {
+          "offset": 65,
+          "opcode": 137,
+          "name": "cropDetail",
+          "arguments": [
+            4,
+            136,
+            120
+          ]
+        },
+        {
+          "offset": 72,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 93,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 15,
+      "file": "card15.hc",
+      "byteLength": 94,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            5,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            16
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            240,
+            200,
+            14,
+            14
+          ]
+        },
+        {
+          "offset": 41,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            128,
+            96,
+            136
+          ],
+          "value": "Crop Information"
+        },
+        {
+          "offset": 65,
+          "opcode": 137,
+          "name": "cropDetail",
+          "arguments": [
+            5,
+            136,
+            120
+          ]
+        },
+        {
+          "offset": 72,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 93,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 16,
+      "file": "card16.hc",
+      "byteLength": 94,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            6,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            17
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            240,
+            200,
+            14,
+            15
+          ]
+        },
+        {
+          "offset": 41,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            128,
+            96,
+            136
+          ],
+          "value": "Crop Information"
+        },
+        {
+          "offset": 65,
+          "opcode": 137,
+          "name": "cropDetail",
+          "arguments": [
+            6,
+            136,
+            120
+          ]
+        },
+        {
+          "offset": 72,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 93,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 17,
+      "file": "card17.hc",
+      "byteLength": 94,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            7,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            18
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            240,
+            200,
+            14,
+            16
+          ]
+        },
+        {
+          "offset": 41,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            128,
+            96,
+            136
+          ],
+          "value": "Crop Information"
+        },
+        {
+          "offset": 65,
+          "opcode": 137,
+          "name": "cropDetail",
+          "arguments": [
+            7,
+            136,
+            120
+          ]
+        },
+        {
+          "offset": 72,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 93,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 18,
+      "file": "card18.hc",
+      "byteLength": 94,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            8,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            19
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            240,
+            200,
+            14,
+            17
+          ]
+        },
+        {
+          "offset": 41,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            128,
+            96,
+            136
+          ],
+          "value": "Crop Information"
+        },
+        {
+          "offset": 65,
+          "opcode": 137,
+          "name": "cropDetail",
+          "arguments": [
+            8,
+            136,
+            120
+          ]
+        },
+        {
+          "offset": 72,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 93,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 19,
+      "file": "card19.hc",
+      "byteLength": 94,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            9,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            20
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            240,
+            200,
+            14,
+            18
+          ]
+        },
+        {
+          "offset": 41,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            128,
+            96,
+            136
+          ],
+          "value": "Crop Information"
+        },
+        {
+          "offset": 65,
+          "opcode": 137,
+          "name": "cropDetail",
+          "arguments": [
+            9,
+            136,
+            120
+          ]
+        },
+        {
+          "offset": 72,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 93,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "file": "card20.hc",
+      "byteLength": 94,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            10,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            21
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            240,
+            200,
+            14,
+            19
+          ]
+        },
+        {
+          "offset": 41,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            128,
+            96,
+            136
+          ],
+          "value": "Crop Information"
+        },
+        {
+          "offset": 65,
+          "opcode": 137,
+          "name": "cropDetail",
+          "arguments": [
+            10,
+            136,
+            120
+          ]
+        },
+        {
+          "offset": 72,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 93,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 21,
+      "file": "card21.hc",
+      "byteLength": 94,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            11,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            22
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            240,
+            200,
+            14,
+            20
+          ]
+        },
+        {
+          "offset": 41,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            128,
+            96,
+            136
+          ],
+          "value": "Crop Information"
+        },
+        {
+          "offset": 65,
+          "opcode": 137,
+          "name": "cropDetail",
+          "arguments": [
+            11,
+            136,
+            120
+          ]
+        },
+        {
+          "offset": 72,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 93,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 22,
+      "file": "card22.hc",
+      "byteLength": 94,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            12,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            23
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            240,
+            200,
+            14,
+            21
+          ]
+        },
+        {
+          "offset": 41,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            128,
+            96,
+            136
+          ],
+          "value": "Crop Information"
+        },
+        {
+          "offset": 65,
+          "opcode": 137,
+          "name": "cropDetail",
+          "arguments": [
+            12,
+            136,
+            120
+          ]
+        },
+        {
+          "offset": 72,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 93,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 23,
+      "file": "card23.hc",
+      "byteLength": 94,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            13,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            24
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            240,
+            200,
+            14,
+            22
+          ]
+        },
+        {
+          "offset": 41,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            128,
+            96,
+            136
+          ],
+          "value": "Crop Information"
+        },
+        {
+          "offset": 65,
+          "opcode": 137,
+          "name": "cropDetail",
+          "arguments": [
+            13,
+            136,
+            120
+          ]
+        },
+        {
+          "offset": 72,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 93,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 24,
+      "file": "card24.hc",
+      "byteLength": 94,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            14,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            25
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            240,
+            200,
+            14,
+            23
+          ]
+        },
+        {
+          "offset": 41,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            128,
+            96,
+            136
+          ],
+          "value": "Crop Information"
+        },
+        {
+          "offset": 65,
+          "opcode": 137,
+          "name": "cropDetail",
+          "arguments": [
+            14,
+            136,
+            120
+          ]
+        },
+        {
+          "offset": 72,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 93,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 25,
+      "file": "card25.hc",
+      "byteLength": 85,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            15,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            14,
+            24
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            128,
+            96,
+            136
+          ],
+          "value": "Crop Information"
+        },
+        {
+          "offset": 56,
+          "opcode": 137,
+          "name": "cropDetail",
+          "arguments": [
+            15,
+            136,
+            120
+          ]
+        },
+        {
+          "offset": 63,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 84,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 26,
+      "file": "card26.hc",
+      "byteLength": 285,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            52,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            27
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            120,
+            96,
+            176
+          ],
+          "value": "Spray Information"
+        },
+        {
+          "offset": 57,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            136,
+            120,
+            240
+          ],
+          "value": "Fertilizer is used to raise the level of nutrients in fields.  Although the fertilizer in SimFarm is natural and won't raise toxicity levels, crop rotation is an alternate method to raise nutrients."
+        },
+        {
+          "offset": 263,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 284,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 27,
+      "file": "card27.hc",
+      "byteLength": 244,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            53,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            28
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            240,
+            200,
+            14,
+            26
+          ]
+        },
+        {
+          "offset": 41,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            120,
+            96,
+            176
+          ],
+          "value": "Spray Information"
+        },
+        {
+          "offset": 66,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            136,
+            120,
+            240
+          ],
+          "value": "Pesticide is used to lower the level of pests in fields.  Two sprayings will be sufficient.  Try not to spray too much or you will toxify the field."
+        },
+        {
+          "offset": 222,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 243,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 28,
+      "file": "card28.hc",
+      "byteLength": 241,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            54,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            29
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            240,
+            200,
+            14,
+            27
+          ]
+        },
+        {
+          "offset": 41,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            120,
+            96,
+            176
+          ],
+          "value": "Spray Information"
+        },
+        {
+          "offset": 66,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            136,
+            120,
+            240
+          ],
+          "value": "Herbicide is used to kill off excess weeds in fields.  Two sprayings will be sufficient.  Try not to spray too much or you will toxify the field."
+        },
+        {
+          "offset": 219,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 240,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 29,
+      "file": "card29.hc",
+      "byteLength": 228,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            55,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            14,
+            28
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            120,
+            96,
+            176
+          ],
+          "value": "Spray Information"
+        },
+        {
+          "offset": 57,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            136,
+            120,
+            240
+          ],
+          "value": "Fungicide is used to cure disease-infected crops.  Two sprayings will be sufficient.  Try not to spray too much or you will toxify the field."
+        },
+        {
+          "offset": 206,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 227,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 30,
+      "file": "card30.hc",
+      "byteLength": 222,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            34,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            31
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            104,
+            96,
+            176
+          ],
+          "value": "Machinery Information"
+        },
+        {
+          "offset": 61,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            136,
+            120,
+            240
+          ],
+          "value": "Tractors are used for pulling plows, planters, sprayers, and trailers.  They cost $400 new and occupy one (1) space in a structure."
+        },
+        {
+          "offset": 200,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 221,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 31,
+      "file": "card31.hc",
+      "byteLength": 243,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            35,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            32
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            240,
+            200,
+            14,
+            30
+          ]
+        },
+        {
+          "offset": 41,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            104,
+            96,
+            176
+          ],
+          "value": "Machinery Information"
+        },
+        {
+          "offset": 70,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            136,
+            120,
+            240
+          ],
+          "value": "Plows are used to ready a field for planting.  A tractor is required for pulling.  Plows cost $200 new and occupy one (1) space in a structure."
+        },
+        {
+          "offset": 221,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 242,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 32,
+      "file": "card32.hc",
+      "byteLength": 304,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            36,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            33
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            240,
+            200,
+            14,
+            31
+          ]
+        },
+        {
+          "offset": 41,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            104,
+            96,
+            176
+          ],
+          "value": "Machinery Information"
+        },
+        {
+          "offset": 70,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            136,
+            120,
+            240
+          ],
+          "value": "Planters are used for planting seed in fields.  A tractor is required for pulling and seed is required for planting.  Planters cost $200 new and occupy one (1) space in a structure.  Seed costs will vary."
+        },
+        {
+          "offset": 282,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 303,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 33,
+      "file": "card33.hc",
+      "byteLength": 323,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            37,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            34
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            240,
+            200,
+            14,
+            32
+          ]
+        },
+        {
+          "offset": 41,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            104,
+            96,
+            176
+          ],
+          "value": "Machinery Information"
+        },
+        {
+          "offset": 70,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            136,
+            120,
+            240
+          ],
+          "value": "Sprayers are used to spray fertilizer, pesticide, herbicide and fungicide on fields.  A tractor is required for pulling and chemicals are needed for spraying.  Sprayers cost $200 new and occupy one (1) space in a structure."
+        },
+        {
+          "offset": 301,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 322,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 34,
+      "file": "card34.hc",
+      "byteLength": 323,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            38,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            35
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            240,
+            200,
+            14,
+            33
+          ]
+        },
+        {
+          "offset": 41,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            104,
+            96,
+            176
+          ],
+          "value": "Machinery Information"
+        },
+        {
+          "offset": 70,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            136,
+            120,
+            240
+          ],
+          "value": "Harvesters are used to harvest crops from fields.  A trailer is required for harvesting and a truck is required to carry the harvest to a silo or the town.  Harvesters cost $400 new and occupy two (2) spaces in a structure."
+        },
+        {
+          "offset": 301,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 322,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 35,
+      "file": "card35.hc",
+      "byteLength": 278,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            39,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            36
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            240,
+            200,
+            14,
+            34
+          ]
+        },
+        {
+          "offset": 41,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            104,
+            96,
+            176
+          ],
+          "value": "Machinery Information"
+        },
+        {
+          "offset": 70,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            136,
+            120,
+            240
+          ],
+          "value": "Trailers are used to store harvested crops while they are being harvested.  A harvester is required for pulling.  Trailers cost $200 new and occupy two (2) spaces in a structure."
+        },
+        {
+          "offset": 256,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 277,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 36,
+      "file": "card36.hc",
+      "byteLength": 242,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            40,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            37
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            240,
+            200,
+            14,
+            35
+          ]
+        },
+        {
+          "offset": 41,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            104,
+            96,
+            176
+          ],
+          "value": "Machinery Information"
+        },
+        {
+          "offset": 70,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            136,
+            120,
+            240
+          ],
+          "value": "Trucks are used to transport harvested crops from fields to silos or the town.  Trucks cost $500 new and occupy two (2) spaces in a structure."
+        },
+        {
+          "offset": 220,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 241,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 37,
+      "file": "card37.hc",
+      "byteLength": 233,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            41,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            14,
+            36
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            104,
+            96,
+            176
+          ],
+          "value": "Machinery Information"
+        },
+        {
+          "offset": 61,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            136,
+            120,
+            240
+          ],
+          "value": "Crop Dusters are used to efficiently spray large numbers of fields.  Crop Dusters cost $6000 and require an airport to be present in the town."
+        },
+        {
+          "offset": 211,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 232,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 40,
+      "file": "card40.hc",
+      "byteLength": 194,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            42,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            41
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            104,
+            96,
+            176
+          ],
+          "value": "Structure Information"
+        },
+        {
+          "offset": 61,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            136,
+            120,
+            240
+          ],
+          "value": "Small Silos are used to store harvests.  They can store one (1) harvested crop.  Small Silos cost $800."
+        },
+        {
+          "offset": 172,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 193,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 41,
+      "file": "card41.hc",
+      "byteLength": 206,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            42,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            42
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            240,
+            200,
+            14,
+            40
+          ]
+        },
+        {
+          "offset": 41,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            104,
+            96,
+            176
+          ],
+          "value": "Structure Information"
+        },
+        {
+          "offset": 70,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            136,
+            120,
+            240
+          ],
+          "value": "Large Silos are used to store harvests.  They can store four (4) harvested crops.  Large Silos cost $2400."
+        },
+        {
+          "offset": 184,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 205,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 42,
+      "file": "card42.hc",
+      "byteLength": 209,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            43,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            43
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            240,
+            200,
+            14,
+            41
+          ]
+        },
+        {
+          "offset": 41,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            104,
+            96,
+            176
+          ],
+          "value": "Structure Information"
+        },
+        {
+          "offset": 70,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            136,
+            120,
+            240
+          ],
+          "value": "Small Sheds are used to store machinery and seed.  They have six (6) storage spaces.  Small Sheds cost $1200."
+        },
+        {
+          "offset": 187,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 208,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 43,
+      "file": "card43.hc",
+      "byteLength": 210,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            43,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            44
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            240,
+            200,
+            14,
+            42
+          ]
+        },
+        {
+          "offset": 41,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            104,
+            96,
+            176
+          ],
+          "value": "Structure Information"
+        },
+        {
+          "offset": 70,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            136,
+            120,
+            240
+          ],
+          "value": "Large Sheds are used to store machinery and seed.  They have nine (9) storage spaces.  Large Sheds cost $1440."
+        },
+        {
+          "offset": 188,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 209,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 44,
+      "file": "card44.hc",
+      "byteLength": 313,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            44,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            45
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            240,
+            200,
+            14,
+            43
+          ]
+        },
+        {
+          "offset": 41,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            104,
+            96,
+            176
+          ],
+          "value": "Structure Information"
+        },
+        {
+          "offset": 70,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            136,
+            120,
+            240
+          ],
+          "value": "Small Barns are used to store sprays, seed and livestock.  Barns protect livestock well.  Livestock will not eat or drink as much if they are in a barn.  Small Barns have nine (9) storage spaces.  They cost $2250."
+        },
+        {
+          "offset": 291,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 312,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 45,
+      "file": "card45.hc",
+      "byteLength": 284,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            44,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            46
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            240,
+            200,
+            14,
+            44
+          ]
+        },
+        {
+          "offset": 41,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            104,
+            96,
+            176
+          ],
+          "value": "Structure Information"
+        },
+        {
+          "offset": 70,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            136,
+            120,
+            240
+          ],
+          "value": "Large Barns are used to store sprays, seed and livestock.  Machinery can also be stored in barns, but sheds are cheaper.  Large Barns have twelve (12) storage spaces.  They cost $2520."
+        },
+        {
+          "offset": 262,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 283,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 46,
+      "file": "card46.hc",
+      "byteLength": 284,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            51,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            47
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            240,
+            200,
+            14,
+            45
+          ]
+        },
+        {
+          "offset": 41,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            104,
+            96,
+            176
+          ],
+          "value": "Structure Information"
+        },
+        {
+          "offset": 70,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            136,
+            120,
+            240
+          ],
+          "value": "Water Pumps can pump water from rivers and lakes to your fields via irrigation ditches.  For further pumping, use more than one pump.  Floods can disable them.  Water Pumps cost $1000."
+        },
+        {
+          "offset": 262,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 283,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 47,
+      "file": "card47.hc",
+      "byteLength": 290,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            45,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            13,
+            48
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            240,
+            200,
+            14,
+            46
+          ]
+        },
+        {
+          "offset": 41,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            104,
+            96,
+            176
+          ],
+          "value": "Structure Information"
+        },
+        {
+          "offset": 70,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            136,
+            120,
+            240
+          ],
+          "value": "Windmills pump water from underground wells.  Water is pumped from Windmills through irrigation ditches to your fields.  Winds must be at least 10 MPH to work the Windmill.  They cost $2000."
+        },
+        {
+          "offset": 268,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 289,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    },
+    {
+      "number": 48,
+      "file": "card48.hc",
+      "byteLength": 299,
+      "commands": [
+        {
+          "offset": 0,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            66,
+            144,
+            24
+          ]
+        },
+        {
+          "offset": 7,
+          "opcode": 134,
+          "name": "itemArt",
+          "arguments": [
+            50,
+            24,
+            120
+          ]
+        },
+        {
+          "offset": 14,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            336,
+            200,
+            3,
+            1
+          ]
+        },
+        {
+          "offset": 23,
+          "opcode": 132,
+          "name": "cardButton",
+          "arguments": [
+            288,
+            200,
+            14,
+            47
+          ]
+        },
+        {
+          "offset": 32,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            104,
+            96,
+            176
+          ],
+          "value": "Structure Information"
+        },
+        {
+          "offset": 61,
+          "opcode": 135,
+          "name": "text",
+          "arguments": [
+            136,
+            120,
+            240
+          ],
+          "value": "Water Towers are used to store water for livestock.  They are filled when they are placed next to a full irrigation ditch.  If a Water Tower is full, water troughs are also kept full.  Water Towers cost $200."
+        },
+        {
+          "offset": 277,
+          "opcode": 138,
+          "name": "soundHotspot",
+          "arguments": [
+            144,
+            24,
+            256,
+            88
+          ],
+          "value": "rooster.voc"
+        },
+        {
+          "offset": 298,
+          "opcode": 255,
+          "name": "end"
+        }
+      ]
+    }
+  ]
+}
