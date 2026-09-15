@@ -25,9 +25,9 @@ xcrun simctl launch booted space.worldengine.simfarm
 
 ### Install on an iPhone
 
-The device ZIP is an **unsigned compilation artifact**, not an installable IPA. Open the generated Xcode project, select the SimFarm target, choose your Apple development team under **Signing & Capabilities**, connect an iPhone, select it as the destination, and run. Xcode will create the necessary development signature/provisioning when your account permits it.
+The device ZIP and `SimFarm-iOS-device-unsigned.ipa` are **unsigned compilation artifacts**, and cannot be installed until signed. Open the generated Xcode project, select the SimFarm target, choose your Apple development team under **Signing & Capabilities**, connect an iPhone, select it as the destination, and run. Xcode will create the necessary development signature/provisioning when your account permits it.
 
-TestFlight or App Store distribution additionally requires an Apple Developer membership, distribution signing, an app record, and an archive/export through Xcode. Those credentials are intentionally absent from this repository. App Store submission also needs final app icons and distribution metadata.
+TestFlight or App Store distribution additionally requires an Apple Developer membership, distribution signing, an app record, and an archive/export through Xcode. Those credentials are intentionally absent from this repository. The app includes a World Engine icon. Distribution still needs App Store Connect metadata and the account setup described in [DISTRIBUTION.md](DISTRIBUTION.md).
 
 ## Design
 

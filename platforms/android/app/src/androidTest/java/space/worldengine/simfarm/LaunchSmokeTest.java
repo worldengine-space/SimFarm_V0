@@ -45,6 +45,9 @@ public final class LaunchSmokeTest {
         waitFor("(()=>{const p=document.getElementById('simfarm').getContext('2d').getImageData(0,0,640,480).data;"
                 + "const c=new Set();for(let i=0;i<p.length;i+=64)c.add(p[i]+','+p[i+1]+','+p[i+2]);return c.size>8;})()");
         screenshot("02-game-title.png");
+        evaluate("window.smokeTouches=[]; document.getElementById('simfarm').addEventListener('pointerdown',e=>{"
+                + "const r=e.target.getBoundingClientRect();smokeTouches.push([(e.clientX-r.left)*640/r.width,"
+                + "(e.clientY-r.top)*480/r.height,e.button]);},true); true");
         // Startup presents/title screens advance on taps; region Play is at (165,244).
         tapCanvas(320, 200);
         SystemClock.sleep(300);
@@ -52,6 +55,9 @@ public final class LaunchSmokeTest {
         SystemClock.sleep(300);
         tapCanvas(165, 244);
         SystemClock.sleep(2000);
+        screenshot("03-after-region-play.png");
+        System.out.println("ANDROID TOUCH COORDINATES " + evaluate("smokeTouches"));
+        System.out.println("ANDROID JS ERRORS " + evaluate("smokeErrors"));
         waitFor("(()=>{const p=document.getElementById('simfarm').getContext('2d').getImageData(639,1,1,1).data;"
                 + "return p[0]===65 && p[1]===65 && p[2]===65;})()");
         screenshot("03-farm.png");
