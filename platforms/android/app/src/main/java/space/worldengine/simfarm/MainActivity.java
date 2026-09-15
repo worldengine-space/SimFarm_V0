@@ -15,6 +15,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -57,7 +60,28 @@ public final class MainActivity extends Activity {
                 if (extension.equals("js")) mime = "text/javascript";
                 if (mime == null) mime = "application/octet-stream";
                 try {
-                    return new WebResourceResponse(mime, "UTF-8", getAssets().open(path));
+                    InputStream resource = getAssets().open(path);
+                    // Instrumented tests observe state without changing player actions.
+                    // The observer is unavailable in ordinary launches and release builds.
+                    boolean smokeTest = (getApplicationInfo().flags
+                            & android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE) != 0
+                            && getIntent().getBooleanExtra("smokeTest", false);
+                    if (smokeTest && path.equals("game.js")) {
+                        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                        try (InputStream input = resource) {
+                            byte[] chunk = new byte[8192];
+                            int count;
+                            while ((count = input.read(chunk)) != -1) bytes.write(chunk, 0, count);
+                        }
+                        String source = new String(bytes.toByteArray(), StandardCharsets.UTF_8);
+                        int end = source.lastIndexOf("})();");
+                        if (end < 0) throw new IOException("Game closure missing");
+                        source = source.substring(0, end)
+                                + "globalThis.__simfarmSmoke = () => ({ready, stage});\n"
+                                + source.substring(end);
+                        resource = new ByteArrayInputStream(source.getBytes(StandardCharsets.UTF_8));
+                    }
+                    return new WebResourceResponse(mime, "UTF-8", resource);
                 } catch (IOException error) {
                     return missingResource();
                 }
@@ -75,9 +99,12 @@ public final class MainActivity extends Activity {
                 return true;
             }
         });
-        setContentView(game);
-        // Keep the game inside cutouts and system gesture insets on newer phones.
-        game.setOnApplyWindowInsetsListener((view, insets) -> {
+        // WebView does not reliably honour its own padding. A padded parent keeps
+        // both its actual viewport and touch coordinates inside system insets.
+        android.widget.FrameLayout safeArea = new android.widget.FrameLayout(this);
+        safeArea.addView(game, new android.widget.FrameLayout.LayoutParams(-1, -1));
+        setContentView(safeArea);
+        safeArea.setOnApplyWindowInsetsListener((view, insets) -> {
             view.setPadding(insets.getSystemWindowInsetLeft(), insets.getSystemWindowInsetTop(),
                     insets.getSystemWindowInsetRight(), insets.getSystemWindowInsetBottom());
             return insets;

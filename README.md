@@ -1,22 +1,32 @@
+<p>
+  <a href="https://github.com/worldengine-space/SimFarm_V0/releases/latest/download/SimFarm-V0-Windows.exe"><img src="docs/downloads/windows.svg" width="150" height="93" alt="Windows — download EXE"></a>
+  <a href="https://github.com/worldengine-space/SimFarm_V0/releases/latest/download/SimFarm-V0-macOS.pkg"><img src="docs/downloads/macos.svg" width="150" height="93" alt="Mac — download installer"></a>
+  <a href="https://github.com/worldengine-space/SimFarm_V0/releases/latest/download/SimFarm-0.1.0-android-debug.apk"><img src="docs/downloads/android.svg" width="150" height="93" alt="Android — download APK"></a>
+  <a href="https://github.com/worldengine-space/SimFarm_V0/releases/latest/download/SimFarm-V0-Web.zip"><img src="docs/downloads/web.svg" width="150" height="93" alt="Web — download ZIP"></a>
+  <a href="docs/APPLE-ENROLLMENT.md"><img src="docs/downloads/ios.svg" width="150" height="93" alt="iPhone and iPad — Apple setup pending"></a>
+</p>
+
 # SimFarm V0
 
 ## [▶ Play now in your browser](https://worldengine-space.github.io/SimFarm_V0/)
 
-**No installation or account needed.** Choose a download if you prefer a desktop or Android app:
+**No installation or account needed to play in your browser.** Click a platform icon above to download the app or web bundle. Native iPhone installation is pending Apple setup; the iPhone card explains what remains.
+
+![SimFarm title screen, captured from the Codex browser reconstruction](docs/screenshots/title.png)
+
+## Downloads and setup
 
 | Platform | Play / download | Getting started |
 | --- | --- | --- |
-| **Web** | [Play now](https://worldengine-space.github.io/SimFarm_V0/) | Open the link and press Play after the World Engine intro. |
+| **Web** | [Play now](https://worldengine-space.github.io/SimFarm_V0/) · [Download ZIP](https://github.com/worldengine-space/SimFarm_V0/releases/latest/download/SimFarm-V0-Web.zip) | Play online immediately. To run the downloaded bundle, extract it and serve its directory with `python3 -m http.server 8000`. |
 | **Windows PC** | [Download Windows EXE](https://github.com/worldengine-space/SimFarm_V0/releases/latest/download/SimFarm-V0-Windows.exe) | Open the one-file app. Everything is included; no installation or extraction. Windows 10/11, 64-bit. |
 | **Mac** | [Download Mac installer](https://github.com/worldengine-space/SimFarm_V0/releases/latest/download/SimFarm-V0-macOS.pkg) | Open the installer, then launch **SimFarm V0** from Applications. Intel and Apple Silicon; macOS 13+. |
 | **Android** | [Download APK](https://github.com/worldengine-space/SimFarm_V0/releases/latest/download/SimFarm-0.1.0-android-debug.apk) | Open the APK and allow installation from your browser when asked. Android 8+. |
-| **iPhone / iPad** | [Play in Safari](https://worldengine-space.github.io/SimFarm_V0/) | For a home-screen app: **Share → Add to Home Screen**. Play in landscape. |
+| **iPhone / iPad** | [Apple setup pending](docs/APPLE-ENROLLMENT.md) · [Play in Safari](https://worldengine-space.github.io/SimFarm_V0/) | Native installation needs Apple enrollment and signing. Safari is available now; use **Share → Add to Home Screen** for a web app. Play in landscape. |
 
 The web app becomes available offline after its first complete download. Keep the page open until it says **Ready to play offline.** Phone controls include a keyboard for save names and a secondary-click control.
 
 The desktop and Android downloads each contain the complete offline game in one file. Your operating system may ask you to confirm opening or installing it. Desktop builds do not yet have publisher signing; if macOS blocks opening, use **System Settings → Privacy & Security → Open Anyway**. A native iPhone install link is pending Apple signing; the Safari game above is available now. See [platform builds](docs/PLATFORMS.md) for native iOS developer builds.
-
-![SimFarm title screen, captured from the Codex browser reconstruction](docs/screenshots/title.png)
 
 ## The Codex reconstruction
 

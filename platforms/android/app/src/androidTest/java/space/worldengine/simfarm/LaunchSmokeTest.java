@@ -28,6 +28,7 @@ public final class LaunchSmokeTest {
 
     @Test public void launchAndPlayOffline() throws Exception {
         Intent intent = new Intent(instrumentation.getTargetContext(), MainActivity.class);
+        intent.putExtra("smokeTest", true);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         Activity activity = instrumentation.startActivitySync(intent);
         instrumentation.runOnMainSync(() -> browser = findWebView(activity.getWindow().getDecorView()));
@@ -40,27 +41,27 @@ public final class LaunchSmokeTest {
                 + "if(String(args[0]).startsWith('data/'))smokeData++; return response;}; true");
         screenshot("01-launcher.png");
         tapElement("document.getElementById('launch-game')", 0.5, 0.5);
-        waitFor("document.getElementById('launch-screen').hidden && window.smokeData >= 5");
-        // The loading/error screen has few colours. The original startup artwork uses a 16-colour palette.
-        waitFor("(()=>{const p=document.getElementById('simfarm').getContext('2d').getImageData(0,0,640,480).data;"
-                + "const c=new Set();for(let i=0;i<p.length;i+=64)c.add(p[i]+','+p[i+1]+','+p[i+2]);return c.size>8;})()");
-        screenshot("02-game-title.png");
+        waitFor("document.getElementById('launch-screen').hidden && !!window.__simfarmSmoke && __simfarmSmoke().ready");
         evaluate("window.smokeTouches=[]; document.getElementById('simfarm').addEventListener('pointerdown',e=>{"
                 + "const r=e.target.getBoundingClientRect();smokeTouches.push([(e.clientX-r.left)*640/r.width,"
                 + "(e.clientY-r.top)*480/r.height,e.button]);},true); true");
-        // Startup presents/title screens advance on taps; region Play is at (165,244).
-        tapCanvas(320, 200);
-        SystemClock.sleep(300);
-        tapCanvas(320, 200);
-        SystemClock.sleep(300);
+        screenshot("02-game-startup.png");
+        if ("\"presents\"".equals(evaluate("__simfarmSmoke().stage"))) {
+            tapCanvas(320, 200);
+            waitFor("__simfarmSmoke().stage !== 'presents'");
+        }
+        if ("\"title\"".equals(evaluate("__simfarmSmoke().stage"))) {
+            tapCanvas(320, 200);
+            waitFor("__simfarmSmoke().stage !== 'title'");
+        }
+        waitFor("__simfarmSmoke().stage === 'region'");
+        screenshot("03-region.png");
         tapCanvas(165, 244);
-        SystemClock.sleep(2000);
-        screenshot("03-after-region-play.png");
         System.out.println("ANDROID TOUCH COORDINATES " + evaluate("smokeTouches"));
-        System.out.println("ANDROID JS ERRORS " + evaluate("smokeErrors"));
-        waitFor("(()=>{const p=document.getElementById('simfarm').getContext('2d').getImageData(639,1,1,1).data;"
-                + "return p[0]===65 && p[1]===65 && p[2]===65;})()");
-        screenshot("03-farm.png");
+        waitFor("__simfarmSmoke().stage === 'game'");
+        waitFor("(()=>{const p=document.getElementById('simfarm').getContext('2d').getImageData(0,0,640,480).data;"
+                + "const c=new Set();for(let i=0;i<p.length;i+=64)c.add(p[i]+','+p[i+1]+','+p[i+2]);return c.size>8;})()");
+        screenshot("04-farm.png");
         assertEquals("No JavaScript or asset failures", "[]", evaluate("smokeErrors"));
         assertTrue("Canvas remains visible", evaluate("!document.getElementById('game-stage').hidden").equals("true"));
         instrumentation.runOnMainSync(activity::finish);
@@ -94,6 +95,9 @@ public final class LaunchSmokeTest {
             if ("true".equals(evaluate(expression))) return;
             SystemClock.sleep(250);
         }
+        screenshot("99-failure.png");
+        System.out.println("ANDROID TOUCH COORDINATES " + evaluate("window.smokeTouches"));
+        System.out.println("ANDROID JS ERRORS " + evaluate("window.smokeErrors"));
         fail("Timed out waiting for: " + expression);
     }
 
@@ -106,8 +110,8 @@ public final class LaunchSmokeTest {
                 +"return [(r.left+r.width*"+x+")*devicePixelRatio,(r.top+r.height*"+y+")*devicePixelRatio];})()"));
         int[] location = new int[2];
         instrumentation.runOnMainSync(() -> browser.getLocationOnScreen(location));
-        float screenX = (float)point.getDouble(0) + location[0] + browser.getPaddingLeft();
-        float screenY = (float)point.getDouble(1) + location[1] + browser.getPaddingTop();
+        float screenX = (float)point.getDouble(0) + location[0];
+        float screenY = (float)point.getDouble(1) + location[1];
         long now = SystemClock.uptimeMillis();
         MotionEvent down = MotionEvent.obtain(now, now, MotionEvent.ACTION_DOWN, screenX, screenY, 0);
         MotionEvent up = MotionEvent.obtain(now, now+80, MotionEvent.ACTION_UP, screenX, screenY, 0);
@@ -124,11 +128,16 @@ public final class LaunchSmokeTest {
         assertNotNull("Android screenshot", bitmap);
         // Stream into shell-owned Downloads so Gradle's app cleanup cannot erase evidence.
         assertTrue("Screenshot export requires Android 12+ test device", android.os.Build.VERSION.SDK_INT >= 31);
+        try (android.os.ParcelFileDescriptor.AutoCloseInputStream output =
+                new android.os.ParcelFileDescriptor.AutoCloseInputStream(instrumentation.getUiAutomation()
+                        .executeShellCommand("mkdir -p /sdcard/Download/SimFarmSmoke"))) {
+            while (output.read() != -1) { /* Wait for directory creation. */ }
+        }
         android.os.ParcelFileDescriptor[] pipes = instrumentation.getUiAutomation()
-                .executeShellCommandRw("mkdir -p /sdcard/Download/SimFarmSmoke; cat > /sdcard/Download/SimFarmSmoke/" + name);
+                .executeShellCommandRw("dd of=/sdcard/Download/SimFarmSmoke/" + name);
         try (android.os.ParcelFileDescriptor.AutoCloseOutputStream output =
                 new android.os.ParcelFileDescriptor.AutoCloseOutputStream(pipes[1])) {
-            assertTrue(bitmap.compress(Bitmap.CompressFormat.PNG, 100, output));
+            assertTrue("Write emulator screenshot", bitmap.compress(Bitmap.CompressFormat.PNG, 100, output));
         }
         try (android.os.ParcelFileDescriptor.AutoCloseInputStream output =
                 new android.os.ParcelFileDescriptor.AutoCloseInputStream(pipes[0])) {

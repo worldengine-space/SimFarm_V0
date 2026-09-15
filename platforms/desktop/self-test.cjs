@@ -15,7 +15,7 @@ module.exports = async function selfTest(window, output, failures) {
   };
   await fs.mkdir(output, { recursive: true });
   await waitFor(
-    "document.getElementById('launch-game') && document.querySelector('#launch-screen img')?.naturalWidth > 0",
+    "document.getElementById('launch-game')?.disabled === false && Array.from(document.querySelectorAll('#launch-screen img')).every(image => image.complete && image.naturalWidth > 0)",
   );
   await fs.writeFile(
     path.join(output, "splash.png"),
