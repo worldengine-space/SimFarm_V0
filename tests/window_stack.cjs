@@ -20,6 +20,7 @@ const source = canonicalSource.replace(
         windowStack: windowStack.filter((name) => name !== editWindowSentinel),
         stage,
         camera: { ...camera },
+        cameraZoom,
         mapMode,
         selectedParcel,
         mapNavigationHeld,
@@ -43,6 +44,36 @@ const source = canonicalSource.replace(
       mapMode = -1;
       camera.x = 21; camera.y = 20;
       mapNavigationHeld = false;
+    },
+    prepareZoom() {
+      activeWindow = null;
+      windowStack = [];
+      editVisible = true;
+      modalNotice = null;
+      currentMenu = null;
+      camera = { x: 20, y: 20, initialX: 20, initialY: 20 };
+      cameraZoom = 1;
+    },
+    mapCellAt(point) {
+      return mapCellForPointer(point);
+    },
+    prepareConservationOverlay() {
+      activeWindow = null;
+      windowStack = [];
+      editVisible = true;
+      modalNotice = null;
+      currentMenu = null;
+      camera = { x: 24, y: 24, initialX: 24, initialY: 24 };
+      cameraZoom = 1;
+      mapDirty = false;
+      farmExtensionState.conservationContracts = [
+        { parcelX: 3, parcelY: 3 },
+      ];
+    },
+    setCameraOrigin(x, y) {
+      camera.x = x;
+      camera.y = y;
+      clampCameraToZoom();
     },
     prepareAnimation() {
       activeWindow = null;
@@ -106,7 +137,7 @@ function createRuntime(bounds = { left: 0, top: 0, width: 640, height: 480 }) {
       drawingCalls.push({ type: "drawImage", args });
     },
     fillRect(...args) {
-      drawingCalls.push({ type: "fillRect", args });
+      drawingCalls.push({ type: "fillRect", args, fillStyle: this.fillStyle });
     },
   };
   const drawingContext = new Proxy(contextTarget, {
@@ -200,6 +231,9 @@ function createRuntime(bounds = { left: 0, top: 0, width: 640, height: 480 }) {
     setNow(value) {
       sandbox.__now = value;
     },
+    setBounds(value) {
+      bounds = value;
+    },
     press(x, y) {
       pointer("pointerdown", x, y);
     },
@@ -218,6 +252,18 @@ function createRuntime(bounds = { left: 0, top: 0, width: 640, height: 480 }) {
     },
     key(key) {
       listeners.get("keydown")({ key, preventDefault: () => {} });
+    },
+    wheel(x, y, deltaY) {
+      let prevented = false;
+      listeners.get("wheel")({
+        clientX: x,
+        clientY: y,
+        deltaY,
+        preventDefault() {
+          prevented = true;
+        },
+      });
+      return prevented;
     },
   };
 }
@@ -360,6 +406,42 @@ async function main() {
   runtime.click(240, 32); // Bring Edit above the retained child stack.
   assert(test.snapshot().activeWindow === null, "Edit did not become active");
   assertEscapeIgnored(runtime, test, "Edit");
+
+  choose(runtime, 496, 22); // View > Zoom In.
+  assert(test.snapshot().cameraZoom === 1.5, "View > Zoom In failed");
+  choose(runtime, 496, 34); // View > Zoom Out.
+  assert(test.snapshot().cameraZoom === 1, "View > Zoom Out failed");
+  choose(runtime, 496, 22);
+  choose(runtime, 496, 46); // View > Reset Zoom.
+  assert(test.snapshot().cameraZoom === 1, "View > Reset Zoom failed");
+
+  choose(runtime, 400, 22); // Programs > Crop Insurance.
+  assert(
+    test.snapshot().activeWindow === "crop-insurance",
+    "Programs did not open Crop Insurance",
+  );
+  runtime.click(360, 322);
+  choose(runtime, 400, 34); // Programs > Conservation Reserve.
+  assert(
+    test.snapshot().activeWindow === "conservation",
+    "Programs did not open Conservation Reserve",
+  );
+
+  test.prepareConservationOverlay();
+  assert(
+    test.snapshot().decodedViewport,
+    "conservation contracts did not activate decoded map rendering",
+  );
+  runtime.clearDraws();
+  test.render();
+  assert(
+    runtime.drawingCalls.some(
+      (call) =>
+        call.type === "fillRect" &&
+        call.fillStyle === "rgba(86, 132, 47, 0.28)",
+    ),
+    "conservation map overlay was not rendered for a static scenario",
+  );
 
   console.log(
     "native window stack: child order, title-close reveal, all Escape rules, and title chrome exact",

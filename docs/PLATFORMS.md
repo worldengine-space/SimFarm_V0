@@ -27,8 +27,8 @@ large downloadable packages are attached to [GitHub releases](https://github.com
 - [iOS / WebKit](../platforms/ios/README.md)
 
 Native mobile apps bundle the game for offline use and use the platform file
-picker and share/save dialog for `.SFM` farms. Windows uses Chromium file
-dialogs; macOS uses native open/save panels.
+picker and share/save dialog for `.SFM`, `.SSM`, and `.SFMX` farms. Windows uses
+Chromium file dialogs; macOS uses native open/save panels.
 
 ## iPhone installation
 

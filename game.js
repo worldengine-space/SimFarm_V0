@@ -1247,6 +1247,24 @@
         "Disable",
       ],
     },
+    {
+      name: "Programs",
+      x: 384,
+      width: 80,
+      dropX: 384,
+      dropWidth: 144,
+      dropHeight: 24,
+      items: ["Crop Insurance", "Conservation Reserve"],
+    },
+    {
+      name: "View",
+      x: 480,
+      width: 48,
+      dropX: 480,
+      dropWidth: 96,
+      dropHeight: 36,
+      items: ["Zoom In", "Zoom Out", "Reset Zoom"],
+    },
   ];
 
   const windowDefinitions = {
@@ -1300,6 +1318,18 @@
       close: [464, 296, 48, 24],
       composite: true,
     },
+    "crop-insurance": {
+      title: "CROP INSURANCE",
+      x: 144,
+      y: 80,
+      close: [328, 312, 64, 20],
+    },
+    conservation: {
+      title: "CONSERVATION",
+      x: 144,
+      y: 80,
+      close: [328, 312, 64, 20],
+    },
   };
   const controlBarWindowButtons = new Map([
     ["buy", 0],
@@ -1326,6 +1356,20 @@
     balance: { title: "BALANCE SHEET", x: 128, y: 96, width: 400, height: 240 },
     market: { title: "MARKET VALUE", x: 144, y: 112, width: 320, height: 224 },
     expert: { title: "FARM EXPERT", x: 128, y: 96, width: 400, height: 240 },
+    "crop-insurance": {
+      title: "CROP INSURANCE",
+      x: 144,
+      y: 80,
+      width: 352,
+      height: 304,
+    },
+    conservation: {
+      title: "CONSERVATION",
+      x: 144,
+      y: 80,
+      width: 352,
+      height: 304,
+    },
     weather: { title: "WEATHER", x: 160, y: 128, width: 336, height: 208 },
     about: { title: "ABOUT", x: 96, y: 96, width: 400, height: 240 },
   };
@@ -1484,6 +1528,7 @@
   let helpData = { cards: [] };
   let cropData = { crops: [] };
   let farmStateBytes = null;
+  let farmExtensionState = freshFarmExtensionState();
   let fontAtlases = null;
   let ready = false;
   let stage = "presents";
@@ -1532,6 +1577,10 @@
   let mapMode = -1;
   let mapNavigationHeld = false;
   let selectedParcel = null;
+  let insuranceSelectedFieldSlot = null;
+  let insuranceListScroll = 0;
+  let conservationSelectedParcel = null;
+  let conservationListScroll = 0;
   let propertySelectionActivated = false;
   let authoredParcelStatuses = [];
   let message = "";
@@ -1702,6 +1751,61 @@
     initialX: 0,
     initialY: 0,
   };
+  const cameraZoomLevels = [0.5, 0.75, 1, 1.5, 2];
+  let cameraZoom = 1;
+
+  function cameraCellSize() {
+    return 16 * cameraZoom;
+  }
+
+  function clampCameraToZoom() {
+    const cellSize = cameraCellSize();
+    const visibleColumns = 544 / cellSize;
+    const visibleRows = 368 / cellSize;
+    const insetColumns = 16 / cellSize;
+    camera.x = Math.max(
+      insetColumns,
+      Math.min(96 - visibleColumns + insetColumns, camera.x),
+    );
+    camera.y = Math.max(0, Math.min(96 - visibleRows, camera.y));
+  }
+
+  function setCameraZoomAtPoint(point, direction) {
+    if (!point || !Number.isFinite(direction) || direction === 0) return false;
+    const viewport = { left: 64, top: 80, right: 608, bottom: 448 };
+    if (
+      point.x < viewport.left ||
+      point.x >= viewport.right ||
+      point.y < viewport.top ||
+      point.y >= viewport.bottom
+    )
+      return false;
+    const currentIndex = cameraZoomLevels.indexOf(cameraZoom);
+    const nextIndex = Math.max(
+      0,
+      Math.min(
+        cameraZoomLevels.length - 1,
+        currentIndex + (direction < 0 ? 1 : -1),
+      ),
+    );
+    if (nextIndex === currentIndex) return false;
+    const oldCellSize = cameraCellSize();
+    const worldX = camera.x + (point.x - 80) / oldCellSize;
+    const worldY = camera.y + (point.y - 80) / oldCellSize;
+    cameraZoom = cameraZoomLevels[nextIndex];
+    const newCellSize = cameraCellSize();
+    camera.x = worldX - (point.x - 80) / newCellSize;
+    camera.y = worldY - (point.y - 80) / newCellSize;
+    clampCameraToZoom();
+    return true;
+  }
+
+  function resetCameraZoomAtPoint(point) {
+    while (cameraZoom !== 1) {
+      if (!setCameraZoomAtPoint(point, cameraZoom > 1 ? 1 : -1)) return false;
+    }
+    return true;
+  }
   let state = {
     funds: 40000,
     day: 0,
@@ -2063,10 +2167,9 @@
     else if (parameters.get("window") === "about") setOnlyGameWindow("about");
     const deltaX = Number.parseInt(parameters.get("dx") || "0", 10);
     const deltaY = Number.parseInt(parameters.get("dy") || "0", 10);
-    if (Number.isFinite(deltaX))
-      camera.x = Math.max(1, Math.min(63, camera.x + deltaX));
-    if (Number.isFinite(deltaY))
-      camera.y = Math.max(0, Math.min(73, camera.y + deltaY));
+    if (Number.isFinite(deltaX)) camera.x += deltaX;
+    if (Number.isFinite(deltaY)) camera.y += deltaY;
+    clampCameraToZoom();
   }
 
   function nativeNewGameDate() {
@@ -7252,7 +7355,7 @@
       saveView.setUint32(
         saveData.format.storedCropSaleIncomeOffset,
         saveView.getUint32(saveData.format.storedCropSaleIncomeOffset, true) +
-          entry.price * 2,
+          entry.price,
         true,
       );
     } else if (entry.categoryKey === "machine") {
@@ -7398,13 +7501,23 @@
       !inside(point, 152, 80, 193, 193)
     )
       return false;
-    // Map callback7a62:0aea maps two overview pixels to one farm cell.
-    // The selected cell becomes the viewport origin (not its center). This
-    // callback's own clamp includes Edit's48/32px client insets, unlike the
-    // scrollbar clamp:96-(48+544)/16=59,96-(32+368)/16=71. camera.x
-    // retains our historical origin+1 convention; the first column usesx-1.
-    camera.x = 1 + Math.max(0, Math.min(59, Math.floor((point.x - 152) / 2)));
-    camera.y = Math.max(0, Math.min(71, Math.floor((point.y - 80) / 2)));
+    // Map callback7a62:0aea maps two overview pixels to one farm cell. The
+    // selected cell becomes the viewport origin. Keep the original 1x limits
+    // and clamp the larger visible area at zoomed-out levels.
+    const visibleColumns = 544 / cameraCellSize();
+    const visibleRows = 368 / cameraCellSize();
+    const insetColumns = 16 / cameraCellSize();
+    camera.x =
+      insetColumns +
+      Math.max(
+        0,
+        Math.min(59, 96 - visibleColumns, Math.floor((point.x - 152) / 2)),
+      );
+    camera.y = Math.max(
+      0,
+      Math.min(71, 96 - visibleRows, Math.floor((point.y - 80) / 2)),
+    );
+    clampCameraToZoom();
     mapDirty = true;
     return true;
   }
@@ -8444,6 +8557,7 @@
   function shouldDrawDecodedViewport() {
     return (
       (generatedWorldActive && farmStateBytes) ||
+      farmExtensionState.conservationContracts.length > 0 ||
       (markerIndex !== null &&
         (cameraMoved() ||
           mapDirty ||
@@ -10888,6 +11002,7 @@
   }
 
   function finishHarvestField(record) {
+    settleCropInsurance(record);
     const view = fieldRecordView(record);
     const definition = cropSimulationDefinitionForSlot(record[14]);
     const perennial = (definition?.perennialFlags & 1) !== 0;
@@ -12150,11 +12265,30 @@
   }
 
   function drawDecodedViewport() {
-    for (let screenY = 0; screenY < 23; screenY += 1) {
-      for (let screenX = -1; screenX < 33; screenX += 1) {
-        const x = camera.x + screenX;
-        const y = Math.min(95, camera.y + screenY);
-        drawMapCell(mapCell(x, y), 80 + screenX * 16, 80 + screenY * 16);
+    const cellSize = cameraCellSize();
+    const firstX = Math.floor(camera.x - 16 / cellSize);
+    const lastX = Math.ceil(camera.x + 528 / cellSize);
+    const firstY = Math.floor(camera.y);
+    const lastY = Math.ceil(camera.y + 368 / cellSize);
+    for (let y = firstY; y < lastY; y += 1) {
+      for (let x = firstX; x < lastX; x += 1) {
+        if (x < 0 || x >= 96 || y < 0 || y >= 96) continue;
+        drawMapCell(
+          mapCell(x, y),
+          80 + (x - camera.x) * cellSize,
+          80 + (y - camera.y) * cellSize,
+          cellSize,
+          cellSize,
+        );
+        if (isConservationCell(x, y)) {
+          context.fillStyle = "rgba(86, 132, 47, 0.28)";
+          context.fillRect(
+            80 + (x - camera.x) * cellSize,
+            80 + (y - camera.y) * cellSize,
+            cellSize,
+            cellSize,
+          );
+        }
       }
     }
   }
@@ -12164,14 +12298,17 @@
     const flight = dusterFlight;
     const displayDirection = (flight.direction + flight.turbulencePhase) & 7;
     const frameX = displayDirection * 33;
+    const cellSize = cameraCellSize();
     // The native client anchors the airplane itself to the flight position.
     // Altitude displaces only its ground shadow southwest: the two 0x9740
     // sprite calls land at (320,264) and (300,284) in the launch oracle.
-    const planeX = 80 + (flight.x - camera.x) * 16 - 16;
-    const planeY = 80 + (flight.y - camera.y) * 16 - 8;
+    const planeX = 80 + (flight.x - camera.x) * cellSize - cellSize;
+    const planeY = 80 + (flight.y - camera.y) * cellSize - cellSize / 2;
     if (flight.spraying) {
-      const dustX = [0, -24, -24, -24, 0, 24, 24, 24][displayDirection];
-      const dustY = [24, 0, -24, -24, -24, 0, 24, 24][displayDirection];
+      const dustX =
+        [0, -24, -24, -24, 0, 24, 24, 24][displayDirection] * cameraZoom;
+      const dustY =
+        [24, 0, -24, -24, -24, 0, 24, 24][displayDirection] * cameraZoom;
       context.drawImage(
         images.cropDustSprite,
         (flight.sprayAnimation & 1) * 33,
@@ -12180,8 +12317,8 @@
         32,
         planeX + dustX,
         planeY + dustY,
-        32,
-        32,
+        32 * cameraZoom,
+        32 * cameraZoom,
       );
     }
     context.drawImage(
@@ -12190,10 +12327,10 @@
       0,
       32,
       32,
-      planeX - flight.altitude * 2,
-      planeY + flight.altitude * 2,
-      32,
-      32,
+      planeX - flight.altitude * 2 * cameraZoom,
+      planeY + flight.altitude * 2 * cameraZoom,
+      32 * cameraZoom,
+      32 * cameraZoom,
     );
     context.drawImage(
       images.airplaneSprite,
@@ -12203,38 +12340,40 @@
       32,
       planeX,
       planeY,
-      32,
-      32,
+      32 * cameraZoom,
+      32 * cameraZoom,
     );
   }
 
   function drawTornadoEvent() {
     if (!tornadoEvent?.active) return;
+    const cellSize = cameraCellSize();
     context.drawImage(
       images.tornadoSprite,
       tornadoEvent.frame * 49,
       0,
       48,
       48,
-      80 + (tornadoEvent.x - camera.x) * 16,
-      80 + (tornadoEvent.y - camera.y) * 16,
-      48,
-      48,
+      80 + (tornadoEvent.x - camera.x) * cellSize,
+      80 + (tornadoEvent.y - camera.y) * cellSize,
+      48 * cameraZoom,
+      48 * cameraZoom,
     );
   }
 
   function drawLocustEvent() {
     if (!locustEvent?.active || locustEvent.startedTick === null) return;
+    const cellSize = cameraCellSize();
     context.drawImage(
       images.locustSprite,
       locustEvent.frame * 65,
       0,
       64,
       40,
-      80 + (locustEvent.x - camera.x) * 16,
-      80 + (locustEvent.y - camera.y) * 16,
-      64,
-      40,
+      80 + (locustEvent.x - camera.x) * cellSize,
+      80 + (locustEvent.y - camera.y) * cellSize,
+      64 * cameraZoom,
+      40 * cameraZoom,
     );
   }
 
@@ -12309,10 +12448,10 @@
   }
 
   function drawOverviewFrame(pixels, indexes) {
-    const left = Math.max(0, (camera.x - 1) * 2);
+    const left = Math.max(0, (camera.x - 16 / cameraCellSize()) * 2);
     const top = Math.max(0, camera.y * 2);
-    const right = left + 67;
-    const bottom = top + 45;
+    const right = left + Math.ceil((544 / cameraCellSize()) * 2) - 1;
+    const bottom = top + Math.ceil((368 / cameraCellSize()) * 2) - 1;
 
     // The native two-pixel viewport outline has driver-specific endpoint
     // omissions, so it is an asymmetric mask rather than two canvas strokes.
@@ -12465,14 +12604,14 @@
     const relativeY = canvasY - viewportTop;
     if (relativeX < 0 || relativeY < 0 || relativeX >= 544 || relativeY >= 368)
       return -1;
-    const screenX = Math.floor(relativeX / 16);
-    const screenY = Math.floor(relativeY / 16);
-    const pixelX = relativeX & 15;
-    const pixelY = relativeY & 15;
-    const cell = mapCell(
-      camera.x - 1 + screenX,
-      Math.min(95, camera.y + screenY),
-    );
+    const cellSize = cameraCellSize();
+    const worldX = camera.x + (relativeX - 16) / cellSize;
+    const worldY = camera.y + relativeY / cellSize;
+    const cellX = Math.floor(worldX);
+    const cellY = Math.floor(worldY);
+    const pixelX = Math.floor((worldX - cellX) * 16);
+    const pixelY = Math.floor((worldY - cellY) * 16);
+    const cell = mapCell(cellX, Math.min(95, cellY));
     if (!cell) return -1;
     const words = tileWords(cell);
     let index = indexedBaseMapTilePixel(
@@ -12528,9 +12667,10 @@
     const position = mapCellForPointer(editPoint);
     if (!position) return false;
     const editPosition = gameWindowPosition(editWindowSentinel);
-    const tileX = editPosition.x + 64 + (position.x - camera.x) * 16;
-    const tileY = editPosition.y + 32 + (position.y - camera.y) * 16;
-    const span = selectedCropSlot === null ? 16 : 128;
+    const cellSize = cameraCellSize();
+    const tileX = editPosition.x + 64 + (position.x - camera.x) * cellSize;
+    const tileY = editPosition.y + 32 + (position.y - camera.y) * cellSize;
+    const span = cellSize * (selectedCropSlot === null ? 1 : 8);
     if (selectedCropSlot !== null && (position.x + 8 > 96 || position.y + 8 > 96))
       return false;
     const outlineLeft = tileX - 1;
@@ -12627,10 +12767,15 @@
     //1d75:1846 uses absolute native origins and integer division, not a
     // rounded displacement from the startup thumb. Edit is608x416 with a
     //544x368 client: horizontal denominator96-34=62, vertical96-23=73.
+    const visibleColumns = 544 / cameraCellSize();
+    const visibleRows = 368 / cameraCellSize();
+    const insetColumns = 16 / cameraCellSize();
+    const horizontalOrigin = camera.x - insetColumns;
+    const horizontalRange = Math.max(1, 96 - visibleColumns);
+    const verticalRange = Math.max(1, 96 - visibleRows);
     const horizontal =
-      32 + Math.floor((Math.max(0, Math.min(62, camera.x - 1)) * 34) / 62) * 16;
-    const vertical =
-      80 + Math.floor((Math.max(0, Math.min(73, camera.y)) * 21) / 73) * 16;
+      32 + Math.round((horizontalOrigin / horizontalRange) * 34) * 16;
+    const vertical = 80 + Math.round((camera.y / verticalRange) * 21) * 16;
     context.drawImage(
       source,
       initialHorizontal,
@@ -12935,6 +13080,8 @@
     else if (name === "expert") drawExpertWindow();
     else if (name === "weather") drawWeatherWindow();
     else if (name === "about") drawAboutWindow();
+    else if (name === "crop-insurance") drawCropInsuranceWindow();
+    else if (name === "conservation") drawConservationWindow();
     else if (windowDefinitions[name]) drawStandardWindow(windowDefinitions[name]);
   }
 
@@ -13380,10 +13527,15 @@
           context.translate(editPosition.x - 16, editPosition.y - 48);
           drawTitleBar(16, 48, 608, "EDIT", activeWindow === null);
           drawEditToolPalette();
+          context.save();
+          context.beginPath();
+          context.rect(64, 80, 544, 368);
+          context.clip();
           if (shouldDrawDecodedViewport()) drawDecodedViewport();
           drawLocustEvent();
           drawTornadoEvent();
           drawCropDusterFlight();
+          context.restore();
           drawScrollbars();
           drawToolCost();
           drawMessage();
@@ -13477,6 +13629,13 @@
 
   function startGame(forceGeneratedRegion = false) {
     fileDialogPauseHeld = false;
+    cameraZoom = 1;
+    clampCameraToZoom();
+    farmExtensionState = freshFarmExtensionState();
+    insuranceSelectedFieldSlot = null;
+    insuranceListScroll = 0;
+    conservationSelectedParcel = null;
+    conservationListScroll = 0;
     const startingGeneratedWorld =
       stage === "designer" && designerRuntime?.generated;
     markerIndex = scenarioMarkers.findIndex(
@@ -13921,21 +14080,110 @@
   }
 
   function normalizeSfmFilename(name) {
-    const leaf = String(name || "")
+    const rawLeaf = String(name || "")
       .split(/[\\/]/)
-      .pop()
-      .replace(/\.(?:sfm|ssm)$/i, "");
+      .pop();
+    const useExtension =
+      /\.sfmx$/i.test(rawLeaf) ||
+      farmExtensionState.cropInsurancePolicies.length > 0 ||
+      farmExtensionState.cropInsurancePremiums > 0 ||
+      farmExtensionState.cropInsuranceClaims > 0 ||
+      farmExtensionState.conservationContracts.length > 0 ||
+      farmExtensionState.conservationPayments > 0 ||
+      farmExtensionState.conservationWithdrawals > 0;
+    const leaf = rawLeaf.replace(/\.(?:sfmx|sfm|ssm)$/i, "");
     const stem = leaf
       .toUpperCase()
       .replace(/[^A-Z0-9_-]/g, "")
       .slice(0, 8);
-    return `${stem || "SIMFARM"}.SFM`;
+    return `${stem || "SIMFARM"}.${useExtension ? "SFMX" : "SFM"}`;
   }
 
   function serializeSfmBytes() {
     if (!farmStateBytes) return null;
     writeDateAndFunds(farmStateBytes);
     return farmStateBytes.slice();
+  }
+
+  function serializeFarmSaveBytes() {
+    const nativeBytes = serializeSfmBytes();
+    if (!nativeBytes) return null;
+    const extension = normalizeFarmExtensionState(farmExtensionState);
+    validateFarmExtensionAgainstNativeBytes(nativeBytes, extension);
+    const hasExtension =
+      extension.cropInsurancePolicies.length > 0 ||
+      extension.cropInsurancePremiums > 0 ||
+      extension.cropInsuranceClaims > 0 ||
+      extension.conservationContracts.length > 0 ||
+      extension.conservationPayments > 0 ||
+      extension.conservationWithdrawals > 0;
+    if (!hasExtension) return nativeBytes;
+    const extensionBytes = new TextEncoder().encode(JSON.stringify(extension));
+    const headerSize = 16;
+    const bytes = new Uint8Array(
+      headerSize + nativeBytes.length + extensionBytes.length,
+    );
+    bytes.set([0x53, 0x46, 0x4d, 0x58], 0); // SFMX
+    const view = new DataView(bytes.buffer);
+    view.setUint16(4, 1, true);
+    view.setUint16(6, headerSize, true);
+    view.setUint32(8, nativeBytes.length, true);
+    view.setUint32(12, extensionBytes.length, true);
+    bytes.set(nativeBytes, headerSize);
+    bytes.set(extensionBytes, headerSize + nativeBytes.length);
+    return bytes;
+  }
+
+  function decodeFarmSaveBytes(input) {
+    let bytes;
+    if (input instanceof ArrayBuffer) bytes = new Uint8Array(input);
+    else if (ArrayBuffer.isView(input)) {
+      bytes = new Uint8Array(input.buffer, input.byteOffset, input.byteLength);
+    } else bytes = new Uint8Array(input);
+    if (bytes.byteLength === saveData.format.fileSize) {
+      return { nativeBytes: bytes.slice(), extension: freshFarmExtensionState() };
+    }
+    if (
+      bytes.byteLength < 16 ||
+      bytes[0] !== 0x53 ||
+      bytes[1] !== 0x46 ||
+      bytes[2] !== 0x4d ||
+      bytes[3] !== 0x58
+    ) {
+      throw new Error(
+        `SimFarm saves must be exactly ${saveData?.format?.fileSize || 139072} bytes or a valid SFMX extension save.`,
+      );
+    }
+    const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+    const version = view.getUint16(4, true);
+    const headerSize = view.getUint16(6, true);
+    const nativeLength = view.getUint32(8, true);
+    const extensionLength = view.getUint32(12, true);
+    if (version !== 1 || headerSize !== 16) {
+      throw new Error("Unsupported SimFarm extension save version.");
+    }
+    if (
+      nativeLength !== saveData.format.fileSize ||
+      extensionLength < 2 ||
+      extensionLength > 65536 ||
+      headerSize + nativeLength + extensionLength !== bytes.byteLength
+    ) {
+      throw new Error("Invalid SimFarm extension save length.");
+    }
+    let extension;
+    try {
+      extension = normalizeFarmExtensionState(
+        JSON.parse(
+          new TextDecoder().decode(bytes.subarray(headerSize + nativeLength)),
+        ),
+      );
+    } catch (error) {
+      throw new Error(`Invalid SimFarm extension data: ${error.message}`);
+    }
+    return {
+      nativeBytes: bytes.slice(headerSize, headerSize + nativeLength),
+      extension,
+    };
   }
 
   function inferMarkerIndexFromSfm(bytes) {
@@ -14178,17 +14426,11 @@
   }
 
   function importSfmBytes(input, filename = "SIMFARM.SFM") {
-    let source;
-    if (input instanceof ArrayBuffer) source = new Uint8Array(input);
-    else if (ArrayBuffer.isView(input)) {
-      source = new Uint8Array(input.buffer, input.byteOffset, input.byteLength);
-    } else source = new Uint8Array(input);
-    if (!saveData || source.byteLength !== saveData.format.fileSize) {
-      throw new Error(
-        `SimFarm saves must be exactly ${saveData?.format?.fileSize || 139072} bytes.`,
-      );
-    }
+    if (!saveData) throw new Error("SimFarm save metadata is unavailable.");
+    const decoded = decodeFarmSaveBytes(input);
+    const source = decoded.nativeBytes;
     const imported = source.slice();
+    validateFarmExtensionAgainstNativeBytes(imported, decoded.extension);
     const importedGeneratedWorld = isDesignerGeneratedSfm(imported);
     const importedMarker = importedGeneratedWorld
       ? null
@@ -14204,6 +14446,8 @@
     };
     resetImportedGameRuntime();
     farmStateBytes = imported;
+    farmExtensionState = decoded.extension;
+    cameraZoom = 1;
     livestockAssetValue = stateView(farmStateBytes).getUint32(
       saveData.format.livestockPurchaseExpenseOffset1,
       true,
@@ -14240,7 +14484,7 @@
   }
 
   function downloadSfmFile(filename = currentSaveName) {
-    const bytes = serializeSfmBytes();
+    const bytes = serializeFarmSaveBytes();
     if (!bytes) return null;
     currentSaveName = normalizeSfmFilename(filename);
     // Native hosts provide their platform's save/share dialog. Browser builds
@@ -14270,7 +14514,7 @@
 
   function openSaveGameDialog(exitAfter = false) {
     beginNativeFileDialogPause();
-    const existingStem = currentSaveName.replace(/\.sfm$/i, "");
+    const existingStem = currentSaveName.replace(/\.sfmx?$/i, "");
     saveDialogName = existingStem === "SIMFARM" ? "" : existingStem.slice(0, 8);
     saveDialogExitAfter = exitAfter;
     saveDialogSavedName = "";
@@ -14347,6 +14591,8 @@
       selectedRegion,
       currentSaveName,
       camera,
+      cameraZoom,
+      farmExtensionState,
       mapDirty,
       randomState: simRandomState,
       secondaryRandomState: simSecondaryRandomState,
@@ -14407,8 +14653,16 @@
           ? isDesignerGeneratedSfm(decodeState(saved.stateBase64))
           : false);
       selectedRegion = saved.selectedRegion;
+      farmExtensionState = normalizeFarmExtensionState(
+        saved.farmExtensionState ?? freshFarmExtensionState(),
+      );
       currentSaveName = normalizeSfmFilename(saved.currentSaveName);
       farmStateBytes = saved.stateBase64 ? decodeState(saved.stateBase64) : null;
+      if (farmStateBytes)
+        validateFarmExtensionAgainstNativeBytes(
+          farmStateBytes,
+          farmExtensionState,
+        );
       generatedWorldBytes =
         generatedWorldActive && farmStateBytes ? farmStateBytes.slice() : null;
       if (farmStateBytes) readDateAndFunds(farmStateBytes);
@@ -14416,6 +14670,10 @@
       readAuthoredWindbreakBytes();
       if (saved.camera) camera = saved.camera;
       else if (farmStateBytes) readStartupCamera(farmStateBytes);
+      cameraZoom = cameraZoomLevels.includes(saved.cameraZoom)
+        ? saved.cameraZoom
+        : 1;
+      clampCameraToZoom();
       mapDirty = saved.mapDirty ?? Boolean(farmStateBytes);
       simRandomState = saved.randomState || seedSimRandom();
       simSecondaryRandomState =
@@ -14633,6 +14891,21 @@
           play(item.toLowerCase());
         }
       }
+    } else if (menu.name === "Programs") {
+      if (item === "Crop Insurance") {
+        insuranceSelectedFieldSlot = null;
+        insuranceListScroll = 0;
+        openGameWindow("crop-insurance");
+      } else if (item === "Conservation Reserve") {
+        conservationSelectedParcel = null;
+        conservationListScroll = 0;
+        openGameWindow("conservation");
+      }
+    } else if (menu.name === "View") {
+      const anchor = { x: 336, y: 264 };
+      if (item === "Zoom In") setCameraZoomAtPoint(anchor, -1);
+      else if (item === "Zoom Out") setCameraZoomAtPoint(anchor, 1);
+      else if (item === "Reset Zoom") resetCameraZoomAtPoint(anchor);
     }
     currentMenu = null;
     menuHover = -1;
@@ -14878,6 +15151,15 @@
         closeActiveWindow();
         saveDialogExitAfter = false;
       }
+      return;
+    }
+
+    if (activeWindow === "crop-insurance") {
+      handleCropInsuranceClick(point);
+      return;
+    }
+    if (activeWindow === "conservation") {
+      handleConservationClick(point);
       return;
     }
 
@@ -15214,8 +15496,9 @@
     ];
     for (const [x, y, deltaX, deltaY] of scrollDirections) {
       if (inside(point, x, y, 16, 16)) {
-        camera.x = Math.max(1, Math.min(63, camera.x + deltaX));
-        camera.y = Math.max(0, Math.min(73, camera.y + deltaY));
+        camera.x += deltaX;
+        camera.y += deltaY;
+        clampCameraToZoom();
         return;
       }
     }
@@ -15340,15 +15623,13 @@
   // This section is assembled into the shared private game closure by scripts/build.mjs.
 
   function mapCellForPointer(point) {
-    // Native Edit's client starts at(64,80); camera.x is the next column
-    // retained by our authored startup fixtures. Native terrain callbacks read
-    // raw DS:171b/171d, which are also the software cursor's image origin.
-    const screenX = Math.floor((point.x - 80) / 16);
-    const screenY = Math.floor((point.y - 80) / 16);
-    if (screenX < -1 || screenX >= 33 || screenY < 0 || screenY >= 23)
+    // Edit's map viewport begins at(64,80); screen x=80 maps to camera.x and
+    // screen y=80 maps to camera.y. Use the inverse of the render transform.
+    if (point.x < 64 || point.x >= 608 || point.y < 80 || point.y >= 448)
       return null;
-    const x = camera.x + screenX;
-    const y = camera.y + screenY;
+    const cellSize = cameraCellSize();
+    const x = Math.floor(camera.x + (point.x - 80) / cellSize);
+    const y = Math.floor(camera.y + (point.y - 80) / cellSize);
     if (x < 0 || x >= 96 || y < 0 || y >= 96) return null;
     return { x, y };
   }
@@ -15805,6 +16086,7 @@
   function removeFieldRecord(field, detachMachinery = false) {
     const record = field?.record;
     if (!record || (record[7] & 1) === 0) return false;
+    cancelCropInsurance(field.slot);
     if (detachMachinery) detachFloodedFieldMachinery(record);
     for (let x = record[10]; x < record[10] + record[12]; x += 1) {
       for (let y = record[11]; y < record[11] + record[13]; y += 1) {
@@ -15884,6 +16166,7 @@
 
   function sellParcel(parcelX, parcelY, taxable = true) {
     if (!farmStateBytes) return false;
+    if (conservationContract(parcelX, parcelY)) return false;
     const record = parcelRecord(parcelX, parcelY);
     if (!record || parcelStatus(parcelX, parcelY) !== 1) return false;
     const value = parcelLandValue(parcelX, parcelY);
@@ -15940,6 +16223,10 @@
     if (parcelHasActiveField(selectedParcel.x, selectedParcel.y)) {
       message = "";
       modalNotice = "property-sale-field";
+      return false;
+    }
+    if (conservationContract(selectedParcel.x, selectedParcel.y)) {
+      message = "Withdraw from the conservation contract before selling land.";
       return false;
     }
     return sellParcel(selectedParcel.x, selectedParcel.y);
@@ -16562,6 +16849,7 @@
     const record = field?.record;
     if (!record || (record[7] & 1) === 0 || record[2] === 0 || record[2] === 4)
       return false;
+    settleCropInsurance(record, 0);
     return removeFieldRecord(field, true);
   }
 
@@ -17280,8 +17568,9 @@
     // Case 4 performs this move only after its blocking warning returns and
     // follows the native AutoGoto byte.
     if (state.options.AutoGoto) {
-      camera.x = Math.max(0, Math.min(63, locustEvent.x - 16));
-      camera.y = Math.max(0, Math.min(73, locustEvent.y - 11));
+      camera.x = locustEvent.x - 544 / cameraCellSize() / 2;
+      camera.y = locustEvent.y - 368 / cameraCellSize() / 2;
+      clampCameraToZoom();
     }
     return true;
   }
@@ -17377,8 +17666,9 @@
     // viewport is active, centering its world cell in the 33x23-cell view.
     // Native tornado case 1 keys this camera move from AutoGoto.
     if (state.options.AutoGoto) {
-      camera.x = Math.max(0, Math.min(63, x - 16));
-      camera.y = Math.max(0, Math.min(73, y - 11));
+      camera.x = x - 544 / cameraCellSize() / 2;
+      camera.y = y - 368 / cameraCellSize() / 2;
+      clampCameraToZoom();
     }
     return true;
   }
@@ -17460,10 +17750,11 @@
       return false;
     const previousX = camera.x;
     const previousY = camera.y;
-    if (pointer.x === 0) camera.x = Math.max(1, camera.x - 2);
-    if (pointer.x > WIDTH - 17) camera.x = Math.min(63, camera.x + 2);
-    if (pointer.y > HEIGHT - 17) camera.y = Math.min(73, camera.y + 2);
-    if (pointer.y === 0) camera.y = Math.max(0, camera.y - 2);
+    if (pointer.x === 0) camera.x -= 2;
+    if (pointer.x > WIDTH - 17) camera.x += 2;
+    if (pointer.y > HEIGHT - 17) camera.y += 2;
+    if (pointer.y === 0) camera.y -= 2;
+    clampCameraToZoom();
     const changed = camera.x !== previousX || camera.y !== previousY;
     if (changed) activityHoldoffPasses = 100;
     return changed;
@@ -17532,6 +17823,7 @@
       return false;
     for (let fieldX = x; fieldX < x + width; fieldX += 1) {
       for (let fieldY = y; fieldY < y + height; fieldY += 1) {
+        if (isConservationCell(fieldX, fieldY)) return false;
         const words = tileWords(mapCell(fieldX, fieldY));
         const tile = words.base & 0x07ff;
         // Recovered footprint tests: ordinary terrain, no base object, and
@@ -17715,6 +18007,7 @@
     if (originTile < 0x19 || originTile > 0x1b) return false;
     for (let machineX = x; machineX < x + item.width; machineX += 1) {
       for (let machineY = y; machineY < y + item.height; machineY += 1) {
+        if (isConservationCell(machineX, machineY)) return false;
         const words = tileWords(mapCell(machineX, machineY));
         if (
           (words.base & 0x0800) !== 0 ||
@@ -17964,14 +18257,17 @@
         writeAirportGroundTile(homeX + dx, homeY + dy);
     }
     // FUN_2000:0378 autogotos the parking position first. The airplane then
-    // enters at the viewport center (width/32, height/32); near a map edge
-    // the clamped camera makes this distinct from the parking coordinates.
-    camera.x = Math.max(0, Math.min(63, homeX - 17));
-    camera.y = Math.max(0, Math.min(73, homeY - 12));
+    // enters at the viewport center; near a map edge the clamped camera makes
+    // this distinct from the parking coordinates at every zoom level.
+    const visibleColumns = 544 / cameraCellSize();
+    const visibleRows = 368 / cameraCellSize();
+    camera.x = homeX - visibleColumns / 2;
+    camera.y = homeY - visibleRows / 2;
+    clampCameraToZoom();
     dusterFlight = {
       machineSlot: selectedMachineSlot,
-      x: camera.x + 17,
-      y: camera.y + 12,
+      x: camera.x + visibleColumns / 2,
+      y: camera.y + visibleRows / 2,
       direction: 6,
       altitude: 10,
       spraying: false,
@@ -18165,10 +18461,15 @@
     }
     advanceDisasterEvents();
 
-    if (flight.x - camera.x < 3) camera.x = Math.max(0, flight.x - 3);
-    else if (flight.x - camera.x > 31) camera.x = Math.min(63, flight.x - 31);
-    if (flight.y - camera.y < 3) camera.y = Math.max(0, flight.y - 3);
-    else if (flight.y - camera.y > 21) camera.y = Math.min(73, flight.y - 21);
+    const visibleColumns = 544 / cameraCellSize();
+    const visibleRows = 368 / cameraCellSize();
+    if (flight.x - camera.x < 3) camera.x = flight.x - 3;
+    else if (flight.x - camera.x > visibleColumns - 3)
+      camera.x = flight.x - visibleColumns + 3;
+    if (flight.y - camera.y < 3) camera.y = flight.y - 3;
+    else if (flight.y - camera.y > visibleRows - 3)
+      camera.y = flight.y - visibleRows + 3;
+    clampCameraToZoom();
     if (flight.endRequested) return finishCropDusterFlight();
     return true;
   }
@@ -18290,6 +18591,7 @@
       return false;
     for (let structureX = x; structureX < x + item.width; structureX += 1) {
       for (let structureY = y; structureY < y + item.height; structureY += 1) {
+        if (isConservationCell(structureX, structureY)) return false;
         const words = tileWords(mapCell(structureX, structureY));
         const tile = words.base & 0x07ff;
         const pristineTerrain = tile >= 0x0f && tile <= 0x1e;
@@ -18337,6 +18639,7 @@
     // ditch, valve, and fence groups admitted by 2957:04f8 still fail here.
     for (let structureX = x; structureX < x + item.width; structureX += 1) {
       for (let structureY = y; structureY < y + item.height; structureY += 1) {
+        if (isConservationCell(structureX, structureY)) return false;
         const words = tileWords(mapCell(structureX, structureY));
         const tile = words.base & 0x07ff;
         if (
@@ -19105,11 +19408,17 @@
     return {
       x: Math.max(
         0,
-        Math.min(95, camera.x + Math.floor((editPointer.x - 80) / 16)),
+        Math.min(
+          95,
+          Math.floor(camera.x + (editPointer.x - 80) / cameraCellSize()),
+        ),
       ),
       y: Math.max(
         0,
-        Math.min(95, camera.y + Math.floor((editPointer.y - 80) / 16)),
+        Math.min(
+          95,
+          Math.floor(camera.y + (editPointer.y - 80) / cameraCellSize()),
+        ),
       ),
     };
   }
@@ -19624,6 +19933,11 @@
     if (!dragState || !farmStateBytes) return;
     const position = mapCellForPointer(point);
     if (!position) return;
+    if (isConservationCell(position.x, position.y)) {
+      message = "This land is enrolled in a conservation contract.";
+      play("uhoh");
+      return;
+    }
     // FUN_1d75_2a4a owns both the per-drag coordinate latch and the common
     // construction-cost gate.  Its unsigned CMP/Jcc sequence rejects an
     // exact balance as well as a smaller one; the bulldozer uses a separate
@@ -20263,6 +20577,7 @@
         rollAnnualFieldSchedule();
         state.year += 1;
         enteredNewYear = true;
+        if (advanceConservationContracts()) mapDirty = true;
         state.bankInterestRate = (nextSimSecondaryRandom() & 7) + 8;
         resetAnnualRainfallEvents();
         state.weatherCategoryCycle = ((state.weatherCategoryCycle ?? 0) + 1) % 5;
@@ -20712,6 +21027,26 @@
     updateMenuHover(pointer);
     render();
   });
+  canvas.addEventListener(
+    "wheel",
+    (event) => {
+      if (
+        stage !== "game" ||
+        activeWindow ||
+        modalNotice ||
+        currentMenu !== null ||
+        !editVisible
+      )
+        return;
+      const point = gameWindowPoint(canvasPoint(event), editWindowSentinel);
+      if (point.x < 64 || point.x >= 608 || point.y < 80 || point.y >= 448)
+        return;
+      setCameraZoomAtPoint(point, event.deltaY);
+      event.preventDefault();
+      render();
+    },
+    { passive: false },
+  );
   canvas.addEventListener("pointerdown", (event) => {
     canvas.focus({ preventScroll: true });
     // Browsers can reject the automatic AMAIN start before the first user
@@ -20991,6 +21326,23 @@
       event.preventDefault();
       return;
     }
+    if (
+      stage === "game" &&
+      !modalNotice &&
+      !activeWindow &&
+      currentMenu === null &&
+      !event.ctrlKey &&
+      !event.altKey &&
+      !event.metaKey &&
+      (event.key === " " || event.code === "Space")
+    ) {
+      const speedMenu = menus.find((menu) => menu.name === "Speed");
+      const nextSpeed = state.speed === "Pause" ? "Normal" : "Pause";
+      if (speedMenu) activateMenuItem(speedMenu, nextSpeed);
+      render();
+      event.preventDefault();
+      return;
+    }
     // The native root handler returns immediately for every Ctrl-modified
     // BIOS key, before dispatching to the active child. T/V post retail
     // QMESSAGE records, J/X retain their missing-file no-op, and the debug
@@ -21000,6 +21352,23 @@
       applyGlobalControlShortcut(event);
       const eventCardOpened = handleDebugEventScanKey(event);
       if (eventCardOpened) render();
+      event.preventDefault();
+      return;
+    }
+    if (
+      stage === "game" &&
+      !activeWindow &&
+      !modalNotice &&
+      (event.key === "+" ||
+        event.key === "=" ||
+        event.key === "-" ||
+        event.key === "_")
+    ) {
+      setCameraZoomAtPoint(
+        gameWindowPoint(pointer, editWindowSentinel),
+        event.key === "+" || event.key === "=" ? -1 : 1,
+      );
+      render();
       event.preventDefault();
       return;
     }
@@ -21085,4 +21454,669 @@
 
   load();
   requestAnimationFrame(frame);
+
+  // ---- src/17-crop-insurance.js ----
+  // Optional, explicitly fictional crop insurance. Its policy state is saved in
+  // the versioned SFMX wrapper; native SFM bytes remain unchanged.
+
+  const cropInsuranceTerms = {
+    premiumRate: 0.05,
+    deductibleRate: 0.2,
+    payoutCapRate: 0.5,
+  };
+
+  function freshFarmExtensionState() {
+    return {
+      version: 1,
+      cropInsurancePolicies: [],
+      cropInsurancePremiums: 0,
+      cropInsuranceClaims: 0,
+      conservationContracts: [],
+      conservationPayments: 0,
+      conservationWithdrawals: 0,
+    };
+  }
+
+  function normalizeFarmExtensionState(value) {
+    if (!value || value.version !== 1) {
+      throw new Error("Unsupported SimFarm extension version.");
+    }
+    if (
+      !Array.isArray(value.cropInsurancePolicies) ||
+      value.cropInsurancePolicies.length > 96
+    ) {
+      throw new Error("Invalid SimFarm crop insurance policy list.");
+    }
+    const policies = [];
+    const seenSlots = new Set();
+    for (const candidate of value.cropInsurancePolicies) {
+      const policy = {
+        fieldSlot: Number(candidate?.fieldSlot),
+        cropSlot: Number(candidate?.cropSlot),
+        referencePrice: Number(candidate?.referencePrice),
+        expectedValue: Number(candidate?.expectedValue),
+        premium: Number(candidate?.premium),
+      };
+      if (
+        !Number.isInteger(policy.fieldSlot) ||
+        policy.fieldSlot < 1 ||
+        policy.fieldSlot >= (saveData?.format?.fieldRecordCount ?? 98) ||
+        seenSlots.has(policy.fieldSlot) ||
+        !Number.isInteger(policy.cropSlot) ||
+        policy.cropSlot < 0 ||
+        policy.cropSlot >= cropImageNames.length ||
+        !Number.isInteger(policy.referencePrice) ||
+        policy.referencePrice < 1 ||
+        policy.referencePrice > 0xffff ||
+        !Number.isSafeInteger(policy.expectedValue) ||
+        policy.expectedValue < 1 ||
+        !Number.isSafeInteger(policy.premium) ||
+        policy.premium < 1
+      ) {
+        throw new Error("Invalid SimFarm crop insurance policy.");
+      }
+      const expectedValue =
+        (cropHarvestQuantities.get(cropSlotName(policy.cropSlot)) ?? 0) *
+        Math.floor(policy.referencePrice / 10);
+      const expectedPremium = Math.max(
+        1,
+        Math.ceil(expectedValue * cropInsuranceTerms.premiumRate),
+      );
+      if (
+        policy.expectedValue !== expectedValue ||
+        policy.premium !== expectedPremium
+      ) {
+        throw new Error("Crop insurance policy terms do not match its quote.");
+      }
+      seenSlots.add(policy.fieldSlot);
+      policies.push(policy);
+    }
+    const premiums = Number(value.cropInsurancePremiums);
+    const claims = Number(value.cropInsuranceClaims);
+    const savedContracts = value.conservationContracts ?? [];
+    if (!Array.isArray(savedContracts) || savedContracts.length > 144) {
+      throw new Error("Invalid SimFarm conservation contract list.");
+    }
+    const contracts = [];
+    const seenParcels = new Set();
+    for (const candidate of savedContracts) {
+      const contract = {
+        parcelX: Number(candidate?.parcelX),
+        parcelY: Number(candidate?.parcelY),
+        startYear: Number(candidate?.startYear),
+        nextPaymentYear: Number(candidate?.nextPaymentYear),
+        endYear: Number(candidate?.endYear),
+        paymentsMade: Number(candidate?.paymentsMade),
+      };
+      const parcelKey = `${contract.parcelX},${contract.parcelY}`;
+      if (
+        !Number.isInteger(contract.parcelX) ||
+        contract.parcelX < 0 ||
+        contract.parcelX >= (saveData?.format?.parcelGridWidth ?? 12) ||
+        !Number.isInteger(contract.parcelY) ||
+        contract.parcelY < 0 ||
+        contract.parcelY >= (saveData?.format?.parcelGridHeight ?? 12) ||
+        seenParcels.has(parcelKey) ||
+        !Number.isInteger(contract.startYear) ||
+        contract.startYear < 1900 ||
+        contract.startYear > 65532 ||
+        contract.endYear !== contract.startYear + 3 ||
+        !Number.isInteger(contract.paymentsMade) ||
+        contract.paymentsMade < 1 ||
+        contract.paymentsMade > 3 ||
+        contract.nextPaymentYear !== contract.startYear + contract.paymentsMade
+      ) {
+        throw new Error("Invalid SimFarm conservation contract.");
+      }
+      seenParcels.add(parcelKey);
+      contracts.push(contract);
+    }
+    const conservationPayments = Number(value.conservationPayments ?? 0);
+    const conservationWithdrawals = Number(value.conservationWithdrawals ?? 0);
+    if (
+      !Number.isSafeInteger(premiums) ||
+      premiums < 0 ||
+      !Number.isSafeInteger(claims) ||
+      claims < 0 ||
+      !Number.isSafeInteger(conservationPayments) ||
+      conservationPayments < 0 ||
+      !Number.isSafeInteger(conservationWithdrawals) ||
+      conservationWithdrawals < 0
+    ) {
+      throw new Error("Invalid SimFarm crop insurance accounting.");
+    }
+    return {
+      version: 1,
+      cropInsurancePolicies: policies,
+      cropInsurancePremiums: premiums,
+      cropInsuranceClaims: claims,
+      conservationContracts: contracts,
+      conservationPayments,
+      conservationWithdrawals,
+    };
+  }
+
+  function validateFarmExtensionAgainstNativeBytes(bytes, extension) {
+    const savedYear = new DataView(
+      bytes.buffer,
+      bytes.byteOffset,
+      bytes.byteLength,
+    ).getUint16(saveData.format.yearOffset, true);
+    for (const policy of extension.cropInsurancePolicies) {
+      const offset =
+        saveData.format.fieldRecordOffset +
+        policy.fieldSlot * saveData.format.fieldRecordSize;
+      const record = bytes.subarray(
+        offset,
+        offset + saveData.format.fieldRecordSize,
+      );
+      if (
+        (record[7] & 1) === 0 ||
+        record[2] === 0 ||
+        record[14] !== policy.cropSlot
+      ) {
+        throw new Error("SFMX policy does not match its saved crop field.");
+      }
+    }
+    for (const contract of extension.conservationContracts) {
+      if (
+        contract.startYear + contract.paymentsMade - 1 !== savedYear ||
+        !conservationParcelValidInBytes(bytes, contract.parcelX, contract.parcelY)
+      ) {
+        throw new Error(
+          "SFMX conservation contract does not match an owned vacant parcel.",
+        );
+      }
+    }
+    return extension;
+  }
+
+  function cropInsurancePolicy(fieldSlot) {
+    return farmExtensionState.cropInsurancePolicies.find(
+      (policy) => policy.fieldSlot === fieldSlot,
+    );
+  }
+
+  function cropInsuranceQuote(fieldSlot) {
+    if (!farmStateBytes || !saveData) return null;
+    const record = fieldRecord(fieldSlot);
+    if (!record || (record[7] & 1) === 0 || record[2] === 0) return null;
+    const cropSlot = record[14];
+    if (!Number.isInteger(cropSlot) || cropSlot < 0 || cropSlot >= 24)
+      return null;
+    const commodity = itemDefinitionForKeyAndId("commodity", 0x80 + cropSlot);
+    const quantity = cropHarvestQuantities.get(cropSlotName(cropSlot)) ?? 0;
+    const price = commodity?.price ?? 0;
+    const expectedValue = quantity * Math.floor(price / 10);
+    if (!Number.isSafeInteger(expectedValue) || expectedValue < 1) return null;
+    const premium = Math.max(
+      1,
+      Math.ceil(expectedValue * cropInsuranceTerms.premiumRate),
+    );
+    return { fieldSlot, cropSlot, referencePrice: price, expectedValue, premium };
+  }
+
+  function purchaseCropInsurance(fieldSlot) {
+    if (cropInsurancePolicy(fieldSlot)) return false;
+    const quote = cropInsuranceQuote(fieldSlot);
+    if (!quote || state.funds < quote.premium) return false;
+    const record = fieldRecord(fieldSlot);
+    if (!record || (record[7] & 1) === 0 || record[14] !== quote.cropSlot)
+      return false;
+    state.funds -= quote.premium;
+    farmExtensionState.cropInsurancePremiums += quote.premium;
+    farmExtensionState.cropInsurancePolicies.push(quote);
+    return true;
+  }
+
+  function cancelCropInsurance(fieldSlot) {
+    const index = farmExtensionState.cropInsurancePolicies.findIndex(
+      (policy) => policy.fieldSlot === fieldSlot,
+    );
+    if (index < 0) return false;
+    farmExtensionState.cropInsurancePolicies.splice(index, 1);
+    return true;
+  }
+
+  function settleCropInsurance(record, actualValue = null) {
+    const fieldSlot = record ? fieldRecordSlot(record) : -1;
+    const policy = cropInsurancePolicy(fieldSlot);
+    if (!policy) return 0;
+    const payout =
+      record[14] === policy.cropSlot
+        ? calculateCropInsurancePayout(
+            policy.expectedValue,
+            actualValue ?? harvestValueAtPrice(record, policy.referencePrice),
+          )
+        : 0;
+    cancelCropInsurance(fieldSlot);
+    if (payout > 0) {
+      state.funds += payout;
+      farmExtensionState.cropInsuranceClaims += payout;
+      message = `Crop insurance paid $${payout}.`;
+    }
+    return payout;
+  }
+
+  function calculateCropInsurancePayout(expectedValue, actualValue) {
+    if (
+      !Number.isSafeInteger(expectedValue) ||
+      expectedValue < 1 ||
+      !Number.isSafeInteger(actualValue) ||
+      actualValue < 0
+    )
+      return 0;
+    const loss = Math.max(0, expectedValue - actualValue);
+    const deductible = Math.floor(
+      expectedValue * cropInsuranceTerms.deductibleRate,
+    );
+    const cap = Math.floor(expectedValue * cropInsuranceTerms.payoutCapRate);
+    return Math.min(cap, Math.max(0, loss - deductible));
+  }
+
+  function fieldRecordSlot(record) {
+    const offset = record?.byteOffset;
+    const base = farmStateBytes?.byteOffset ?? 0;
+    const relative = offset - base - saveData.format.fieldRecordOffset;
+    return Math.floor(relative / saveData.format.fieldRecordSize);
+  }
+
+  function drawCropInsuranceWindow() {
+    const x = 144;
+    const y = 80;
+    const fields = activeFieldRecords();
+    const maxScroll = Math.max(0, fields.length - 8);
+    insuranceListScroll = Math.min(insuranceListScroll, maxScroll);
+    context.fillStyle = "#c3c3c3";
+    context.fillRect(x, y + 16, 352, 288);
+    drawText("Fictional optional crop coverage", x + 16, y + 28);
+    drawText("Premium 5% | deductible 20% | cap 50%", x + 16, y + 40);
+    drawText("Harvest or flood loss | one claim per field", x + 16, y + 52);
+    for (let row = 0; row < 8; row += 1) {
+      const field = fields[insuranceListScroll + row];
+      if (!field) break;
+      const rowY = y + 64 + row * 16;
+      const selected = field.slot === insuranceSelectedFieldSlot;
+      if (selected) {
+        context.fillStyle = "#000000";
+        context.fillRect(x + 12, rowY - 1, 328, 15);
+      }
+      const crop = cropSlotName(field.record[14]) || "unknown";
+      const insured = cropInsurancePolicy(field.slot) ? "INSURED" : "";
+      drawText(
+        `Field ${field.slot}: ${crop.slice(0, 12)} ${insured}`,
+        x + 16,
+        rowY + 2,
+        selected ? "white" : "black",
+      );
+    }
+    const selectedPolicy = cropInsurancePolicy(insuranceSelectedFieldSlot);
+    const quote = cropInsuranceQuote(insuranceSelectedFieldSlot);
+    const action = selectedPolicy
+      ? "Cancel Policy"
+      : quote
+        ? `Insure for $${quote.premium}`
+        : "Select a field";
+    drawText(
+      `Premiums: $${farmExtensionState.cropInsurancePremiums}`,
+      x + 16,
+      y + 196,
+    );
+    drawText(
+      `Claims paid: $${farmExtensionState.cropInsuranceClaims}`,
+      x + 16,
+      y + 208,
+    );
+    drawInsuranceButton(action, x + 32, y + 232, 128);
+    drawInsuranceButton("Close", x + 184, y + 232, 64);
+    if (fields.length > 8) {
+      drawInsuranceButton("Prev", x + 16, y + 260, 48);
+      drawInsuranceButton("Next", x + 272, y + 260, 48);
+    }
+  }
+
+  function drawInsuranceButton(label, x, y, width) {
+    context.fillStyle = "#ffffff";
+    context.fillRect(x, y, width, 20);
+    context.strokeStyle = "#000000";
+    context.strokeRect(x, y, width, 20);
+    drawText(label, x + 4, y + 6, "black");
+  }
+
+  function handleCropInsuranceClick(point) {
+    const fields = activeFieldRecords();
+    if (inside(point, 156, 144, 328, 128)) {
+      const row = Math.floor((point.y - 144) / 16);
+      insuranceSelectedFieldSlot =
+        fields[insuranceListScroll + row]?.slot ?? null;
+      return true;
+    }
+    if (inside(point, 176, 312, 128, 20)) {
+      if (insuranceSelectedFieldSlot === null) return true;
+      if (cropInsurancePolicy(insuranceSelectedFieldSlot)) {
+        cancelCropInsurance(insuranceSelectedFieldSlot);
+      } else if (!purchaseCropInsurance(insuranceSelectedFieldSlot)) {
+        message = "Unable to insure this field.";
+      }
+      return true;
+    }
+    if (inside(point, 328, 312, 64, 20)) {
+      closeActiveWindow();
+      return true;
+    }
+    if (inside(point, 160, 340, 48, 20)) {
+      insuranceListScroll = Math.max(0, insuranceListScroll - 1);
+      return true;
+    }
+    if (inside(point, 416, 340, 48, 20)) {
+      insuranceListScroll = Math.min(
+        Math.max(0, fields.length - 8),
+        insuranceListScroll + 1,
+      );
+      return true;
+    }
+    return true;
+  }
+
+  const conservationTerms = {
+    annualPayment: 100,
+    termYears: 3,
+  };
+
+  function conservationContract(parcelX, parcelY) {
+    return farmExtensionState.conservationContracts.find(
+      (contract) => contract.parcelX === parcelX && contract.parcelY === parcelY,
+    );
+  }
+
+  function parcelHasActiveStructure(parcelX, parcelY) {
+    if (!farmStateBytes || !saveData) return false;
+    const left = parcelX * 8;
+    const top = parcelY * 8;
+    const right = left + 8;
+    const bottom = top + 8;
+    for (let slot = 1; slot < saveData.format.structureRecordCount; slot += 1) {
+      const record = structureRecord(slot);
+      const view = stateView(record);
+      if ((view.getUint16(2, true) & 0x20) === 0) continue;
+      const definition = itemDefinitionForKeyAndId(
+        "structure",
+        view.getUint16(0, true),
+      );
+      if (!definition) continue;
+      if (
+        record[4] < right &&
+        record[4] + definition.width > left &&
+        record[5] < bottom &&
+        record[5] + definition.height > top
+      )
+        return true;
+    }
+    return false;
+  }
+
+  function conservationParcelEligible(parcelX, parcelY) {
+    if (
+      !farmStateBytes ||
+      !saveData ||
+      parcelX < 0 ||
+      parcelY < 0 ||
+      parcelX >= saveData.format.parcelGridWidth ||
+      parcelY >= saveData.format.parcelGridHeight ||
+      parcelStatus(parcelX, parcelY) !== 1 ||
+      conservationContract(parcelX, parcelY)
+    )
+      return false;
+    return (
+      !parcelHasActiveField(parcelX, parcelY) &&
+      !parcelHasActiveStructure(parcelX, parcelY)
+    );
+  }
+
+  function isConservationCell(x, y) {
+    if (!farmExtensionState.conservationContracts.length) return false;
+    return farmExtensionState.conservationContracts.some(
+      (contract) =>
+        x >= contract.parcelX * 8 &&
+        x < contract.parcelX * 8 + 8 &&
+        y >= contract.parcelY * 8 &&
+        y < contract.parcelY * 8 + 8,
+    );
+  }
+
+  function enrollConservationParcel(parcelX, parcelY) {
+    if (!conservationParcelEligible(parcelX, parcelY)) return false;
+    const startYear = Math.trunc(state.year);
+    if (
+      !Number.isInteger(startYear) ||
+      startYear < 1900 ||
+      startYear + conservationTerms.termYears > 0xffff
+    )
+      return false;
+    const contract = {
+      parcelX,
+      parcelY,
+      startYear,
+      nextPaymentYear: startYear + 1,
+      endYear: startYear + conservationTerms.termYears,
+      paymentsMade: 1,
+    };
+    farmExtensionState.conservationContracts.push(contract);
+    farmExtensionState.conservationPayments += conservationTerms.annualPayment;
+    state.funds += conservationTerms.annualPayment;
+    message = `Conservation payment: $${conservationTerms.annualPayment}.`;
+    mapDirty = true;
+    return true;
+  }
+
+  function withdrawConservationParcel(parcelX, parcelY) {
+    const index = farmExtensionState.conservationContracts.findIndex(
+      (contract) => contract.parcelX === parcelX && contract.parcelY === parcelY,
+    );
+    if (index < 0) return false;
+    farmExtensionState.conservationContracts.splice(index, 1);
+    farmExtensionState.conservationWithdrawals += 1;
+    mapDirty = true;
+    return true;
+  }
+
+  function advanceConservationContracts() {
+    let changed = false;
+    const remaining = [];
+    for (const contract of farmExtensionState.conservationContracts) {
+      if (state.year >= contract.endYear) {
+        changed = true;
+        continue;
+      }
+      if (state.year >= contract.nextPaymentYear) {
+        state.funds += conservationTerms.annualPayment;
+        farmExtensionState.conservationPayments +=
+          conservationTerms.annualPayment;
+        contract.paymentsMade += 1;
+        contract.nextPaymentYear += 1;
+        changed = true;
+      }
+      remaining.push(contract);
+    }
+    farmExtensionState.conservationContracts = remaining;
+    return changed;
+  }
+
+  function conservationParcelOptions() {
+    const parcels = [];
+    if (!farmStateBytes || !saveData) return parcels;
+    for (
+      let parcelX = 0;
+      parcelX < saveData.format.parcelGridWidth;
+      parcelX += 1
+    ) {
+      for (
+        let parcelY = 0;
+        parcelY < saveData.format.parcelGridHeight;
+        parcelY += 1
+      ) {
+        if (parcelStatus(parcelX, parcelY) === 1)
+          parcels.push({ x: parcelX, y: parcelY });
+      }
+    }
+    return parcels;
+  }
+
+  function drawConservationWindow() {
+    const x = 144;
+    const y = 80;
+    const parcels = conservationParcelOptions();
+    const maxScroll = Math.max(0, parcels.length - 8);
+    conservationListScroll = Math.min(conservationListScroll, maxScroll);
+    context.fillStyle = "#c3c3c3";
+    context.fillRect(x, y + 16, 352, 288);
+    drawText("Fictional conservation cover", x + 16, y + 28);
+    drawText("1 owned parcel (64 cells) | 3 years", x + 16, y + 40);
+    drawText("$100 now + two year-start payments", x + 16, y + 52);
+    for (let row = 0; row < 8; row += 1) {
+      const parcel = parcels[conservationListScroll + row];
+      if (!parcel) break;
+      const rowY = y + 72 + row * 16;
+      const selected =
+        parcel.x === conservationSelectedParcel?.x &&
+        parcel.y === conservationSelectedParcel?.y;
+      if (selected) {
+        context.fillStyle = "#000000";
+        context.fillRect(x + 12, rowY - 1, 328, 15);
+      }
+      const contract = conservationContract(parcel.x, parcel.y);
+      const status = contract
+        ? `COVER ${contract.endYear - state.year}Y`
+        : conservationParcelEligible(parcel.x, parcel.y)
+          ? "ELIGIBLE"
+          : "IN USE";
+      drawText(
+        `Parcel ${parcel.x},${parcel.y} ${status}`,
+        x + 16,
+        rowY + 2,
+        selected ? "white" : "black",
+      );
+    }
+    const contract = conservationSelectedParcel
+      ? conservationContract(
+          conservationSelectedParcel.x,
+          conservationSelectedParcel.y,
+        )
+      : null;
+    const action = contract
+      ? "Withdraw"
+      : conservationSelectedParcel &&
+          conservationParcelEligible(
+            conservationSelectedParcel.x,
+            conservationSelectedParcel.y,
+          )
+        ? "Enroll"
+        : "Select eligible parcel";
+    drawText(
+      `Payments: $${farmExtensionState.conservationPayments}`,
+      x + 16,
+      y + 208,
+    );
+    drawText(
+      `Active contracts: ${farmExtensionState.conservationContracts.length}`,
+      x + 16,
+      y + 220,
+    );
+    drawInsuranceButton(action, x + 32, y + 232, 128);
+    drawInsuranceButton("Close", x + 184, y + 232, 64);
+    if (parcels.length > 8) {
+      drawInsuranceButton("Prev", x + 16, y + 260, 48);
+      drawInsuranceButton("Next", x + 272, y + 260, 48);
+    }
+  }
+
+  function handleConservationClick(point) {
+    const parcels = conservationParcelOptions();
+    if (inside(point, 156, 152, 328, 128)) {
+      const row = Math.floor((point.y - 152) / 16);
+      conservationSelectedParcel = parcels[conservationListScroll + row] ?? null;
+      return true;
+    }
+    if (inside(point, 176, 312, 128, 20)) {
+      const parcel = conservationSelectedParcel;
+      if (!parcel) return true;
+      if (conservationContract(parcel.x, parcel.y)) {
+        withdrawConservationParcel(parcel.x, parcel.y);
+      } else if (!enrollConservationParcel(parcel.x, parcel.y)) {
+        message = "Parcel must be owned and free of fields or buildings.";
+      }
+      return true;
+    }
+    if (inside(point, 328, 312, 64, 20)) {
+      closeActiveWindow();
+      return true;
+    }
+    if (inside(point, 160, 340, 48, 20)) {
+      conservationListScroll = Math.max(0, conservationListScroll - 1);
+      return true;
+    }
+    if (inside(point, 416, 340, 48, 20)) {
+      conservationListScroll = Math.min(
+        Math.max(0, parcels.length - 8),
+        conservationListScroll + 1,
+      );
+      return true;
+    }
+    return true;
+  }
+
+  function conservationParcelValidInBytes(bytes, parcelX, parcelY) {
+    const format = saveData.format;
+    const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+    const parcelIndex = parcelX * format.parcelGridHeight + parcelY;
+    const parcelOffset =
+      format.parcelRecordOffset + parcelIndex * format.parcelRecordSize;
+    if (bytes[parcelOffset + format.parcelStatusOffset] !== 1) return false;
+    const left = parcelX * 8;
+    const top = parcelY * 8;
+    const right = left + 8;
+    const bottom = top + 8;
+    for (let slot = 1; slot < format.fieldRecordCount; slot += 1) {
+      const offset = format.fieldRecordOffset + slot * format.fieldRecordSize;
+      if ((bytes[offset + 7] & 1) === 0) continue;
+      if (
+        bytes[offset + 10] < right &&
+        bytes[offset + 10] + bytes[offset + 12] > left &&
+        bytes[offset + 11] < bottom &&
+        bytes[offset + 11] + bytes[offset + 13] > top
+      )
+        return false;
+    }
+    for (let slot = 1; slot < format.structureRecordCount; slot += 1) {
+      const offset =
+        format.structureRecordOffset + slot * format.structureRecordSize;
+      if ((view.getUint16(offset + 2, true) & 0x20) === 0) continue;
+      const id = view.getUint16(offset, true);
+      let width = 0;
+      let height = 0;
+      for (
+        let index = 0;
+        index < format.structureItemDefinitionCount;
+        index += 1
+      ) {
+        const definitionOffset =
+          format.structureItemDefinitionOffset +
+          index * format.itemDefinitionRecordSize;
+        if (view.getUint16(definitionOffset + 2, true) !== id) continue;
+        width = bytes[definitionOffset + 8];
+        height = bytes[definitionOffset + 9];
+        break;
+      }
+      if (
+        width > 0 &&
+        height > 0 &&
+        bytes[offset + 4] < right &&
+        bytes[offset + 4] + width > left &&
+        bytes[offset + 5] < bottom &&
+        bytes[offset + 5] + height > top
+      )
+        return false;
+    }
+    return true;
+  }
 })();

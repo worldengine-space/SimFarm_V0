@@ -1242,6 +1242,24 @@ const menus = [
       "Disable",
     ],
   },
+  {
+    name: "Programs",
+    x: 384,
+    width: 80,
+    dropX: 384,
+    dropWidth: 144,
+    dropHeight: 24,
+    items: ["Crop Insurance", "Conservation Reserve"],
+  },
+  {
+    name: "View",
+    x: 480,
+    width: 48,
+    dropX: 480,
+    dropWidth: 96,
+    dropHeight: 36,
+    items: ["Zoom In", "Zoom Out", "Reset Zoom"],
+  },
 ];
 
 const windowDefinitions = {
@@ -1295,6 +1313,18 @@ const windowDefinitions = {
     close: [464, 296, 48, 24],
     composite: true,
   },
+  "crop-insurance": {
+    title: "CROP INSURANCE",
+    x: 144,
+    y: 80,
+    close: [328, 312, 64, 20],
+  },
+  conservation: {
+    title: "CONSERVATION",
+    x: 144,
+    y: 80,
+    close: [328, 312, 64, 20],
+  },
 };
 const controlBarWindowButtons = new Map([
   ["buy", 0],
@@ -1321,6 +1351,20 @@ const windowChromeDefinitions = {
   balance: { title: "BALANCE SHEET", x: 128, y: 96, width: 400, height: 240 },
   market: { title: "MARKET VALUE", x: 144, y: 112, width: 320, height: 224 },
   expert: { title: "FARM EXPERT", x: 128, y: 96, width: 400, height: 240 },
+  "crop-insurance": {
+    title: "CROP INSURANCE",
+    x: 144,
+    y: 80,
+    width: 352,
+    height: 304,
+  },
+  conservation: {
+    title: "CONSERVATION",
+    x: 144,
+    y: 80,
+    width: 352,
+    height: 304,
+  },
   weather: { title: "WEATHER", x: 160, y: 128, width: 336, height: 208 },
   about: { title: "ABOUT", x: 96, y: 96, width: 400, height: 240 },
 };

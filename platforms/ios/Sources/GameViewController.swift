@@ -82,8 +82,13 @@ final class GameViewController: UIViewController, WKScriptMessageHandler,
         guard let file = urls.first else { return }
         do {
             let bytes = try Data(contentsOf: file)
-            guard bytes.count == 139_072 else {
-                showError("A SimFarm save must contain exactly 139,072 bytes.")
+            let isNativeSave = bytes.count == 139_072
+            let isExtensionSave =
+                bytes.count >= 139_088 &&
+                bytes.count <= 1_000_000 &&
+                bytes.prefix(4) == Data("SFMX".utf8)
+            guard isNativeSave || isExtensionSave else {
+                showError("Choose a native SimFarm save or a valid SFMX save.")
                 webView.evaluateJavaScript("window.simfarmCancelImport()")
                 return
             }

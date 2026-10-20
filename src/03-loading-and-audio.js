@@ -299,10 +299,9 @@ function applyLaunchParameters() {
   else if (parameters.get("window") === "about") setOnlyGameWindow("about");
   const deltaX = Number.parseInt(parameters.get("dx") || "0", 10);
   const deltaY = Number.parseInt(parameters.get("dy") || "0", 10);
-  if (Number.isFinite(deltaX))
-    camera.x = Math.max(1, Math.min(63, camera.x + deltaX));
-  if (Number.isFinite(deltaY))
-    camera.y = Math.max(0, Math.min(73, camera.y + deltaY));
+  if (Number.isFinite(deltaX)) camera.x += deltaX;
+  if (Number.isFinite(deltaY)) camera.y += deltaY;
+  clampCameraToZoom();
 }
 
 function nativeNewGameDate() {

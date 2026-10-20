@@ -54,9 +54,23 @@ Open **http://localhost:8000**. The built game is included, so playing does not 
 2. Use **Windows → Edit** for farm tools and **Windows → Buy** for supplies, equipment, buildings, and livestock.
 3. Open **Windows → Farm Expert** for the in-game farming guide, or **Windows → Map** to inspect land and field conditions.
 4. Change the simulation speed—or pause it—from the **Speed** menu.
-5. Use **File → Save / Save As** to download your farm. **File → Load Game** imports `.SFM` and `.SSM` saves.
+5. Use **File → Save / Save As** to download your farm. **File → Load Game** imports native `.SFM` and `.SSM` saves, plus this build's `.SFMX` saves when optional insurance or conservation state is present.
 
-The interface follows the original mouse controls, including press-and-drag tool menus and some hold-to-view help controls. Click the game to give it keyboard focus and enable browser audio.
+The **Programs** menu contains optional, fictional **Crop Insurance** and
+**Conservation Reserve** mechanics. Existing saves without extension state
+remain native `.SFM` files. Saves containing either program use a versioned
+`.SFMX` wrapper that preserves the original native save bytes and stores the
+new state separately. `.SFMX` is specific to this reconstruction and is not a
+format supported by the original game.
+
+The interface follows the original mouse controls, including press-and-drag tool
+menus and some hold-to-view help controls. Click the game to give it keyboard
+focus and enable browser audio. Use **View → Zoom In / Zoom Out / Reset Zoom**
+to change zoom on touch screens, or use the mouse wheel over the farm to zoom
+around the pointer. Press `+` / `-` to zoom around the current pointer. Press
+**Space** to pause or resume at Normal speed; touch players can use **Pause /
+Resume** in the toolbar. Five levels range from 50% to 200%; panning, map
+navigation, placement, and hit testing use the same camera transform.
 
 ## Screenshots
 
@@ -97,6 +111,10 @@ Edit the source files in `src/`, then run `npm run build` to regenerate `game.js
 Use `npm run format` to format the code and `npm run format:check` to check formatting.
 
 See the [code guide](docs/CODE_GUIDE.md) for a map of the source and notes on the simulation's structure.
+
+See the [technical and research notes](docs/TECHNICAL-WHITEPAPER.md) for the
+camera and save architecture, historical sources, accounting review, REA
+reverse-engineering results, and the design of the optional mechanics.
 
 | Path | Purpose |
 | --- | --- |

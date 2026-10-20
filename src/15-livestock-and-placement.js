@@ -658,11 +658,17 @@ function livestockPointerTarget() {
   return {
     x: Math.max(
       0,
-      Math.min(95, camera.x + Math.floor((editPointer.x - 80) / 16)),
+      Math.min(
+        95,
+        Math.floor(camera.x + (editPointer.x - 80) / cameraCellSize()),
+      ),
     ),
     y: Math.max(
       0,
-      Math.min(95, camera.y + Math.floor((editPointer.y - 80) / 16)),
+      Math.min(
+        95,
+        Math.floor(camera.y + (editPointer.y - 80) / cameraCellSize()),
+      ),
     ),
   };
 }
@@ -1177,6 +1183,11 @@ function placeSelectedToolAtPoint(point) {
   if (!dragState || !farmStateBytes) return;
   const position = mapCellForPointer(point);
   if (!position) return;
+  if (isConservationCell(position.x, position.y)) {
+    message = "This land is enrolled in a conservation contract.";
+    play("uhoh");
+    return;
+  }
   // FUN_1d75_2a4a owns both the per-drag coordinate latch and the common
   // construction-cost gate.  Its unsigned CMP/Jcc sequence rejects an
   // exact balance as well as a smaller one; the bulldozer uses a separate

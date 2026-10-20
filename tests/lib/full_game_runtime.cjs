@@ -144,9 +144,15 @@ async function createGameRuntime({ scenario = 0, now = 100_000 } = {}) {
         stage = "game";
         render();
       },
+      setConservationContracts(contracts) {
+        farmExtensionState.conservationContracts = contracts;
+        render();
+      },
       snapshot() {
         return { camera: { ...camera }, state: { ...state }, activeWindow, stage,
-          modalNotice, mapMode, random: simRandomState, secondaryRandom: simSecondaryRandomState,
+          modalNotice, mapMode, decodedViewport: shouldDrawDecodedViewport(),
+          conservationCell: isConservationCell(24, 24), editVisible,
+          random: simRandomState, secondaryRandom: simSecondaryRandomState,
           smallRandom: simSmallRandomState, phase: mapTileAnimationPhase };
       },
     };

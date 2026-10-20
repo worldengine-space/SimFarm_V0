@@ -97,6 +97,21 @@ function activateMenuItem(menu, item) {
         play(item.toLowerCase());
       }
     }
+  } else if (menu.name === "Programs") {
+    if (item === "Crop Insurance") {
+      insuranceSelectedFieldSlot = null;
+      insuranceListScroll = 0;
+      openGameWindow("crop-insurance");
+    } else if (item === "Conservation Reserve") {
+      conservationSelectedParcel = null;
+      conservationListScroll = 0;
+      openGameWindow("conservation");
+    }
+  } else if (menu.name === "View") {
+    const anchor = { x: 336, y: 264 };
+    if (item === "Zoom In") setCameraZoomAtPoint(anchor, -1);
+    else if (item === "Zoom Out") setCameraZoomAtPoint(anchor, 1);
+    else if (item === "Reset Zoom") resetCameraZoomAtPoint(anchor);
   }
   currentMenu = null;
   menuHover = -1;
@@ -342,6 +357,15 @@ function handleGameClick(point) {
       closeActiveWindow();
       saveDialogExitAfter = false;
     }
+    return;
+  }
+
+  if (activeWindow === "crop-insurance") {
+    handleCropInsuranceClick(point);
+    return;
+  }
+  if (activeWindow === "conservation") {
+    handleConservationClick(point);
     return;
   }
 
@@ -678,8 +702,9 @@ function handleGameClick(point) {
   ];
   for (const [x, y, deltaX, deltaY] of scrollDirections) {
     if (inside(point, x, y, 16, 16)) {
-      camera.x = Math.max(1, Math.min(63, camera.x + deltaX));
-      camera.y = Math.max(0, Math.min(73, camera.y + deltaY));
+      camera.x += deltaX;
+      camera.y += deltaY;
+      clampCameraToZoom();
       return;
     }
   }

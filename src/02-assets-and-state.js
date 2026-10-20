@@ -151,6 +151,7 @@ let originalText = null;
 let helpData = { cards: [] };
 let cropData = { crops: [] };
 let farmStateBytes = null;
+let farmExtensionState = freshFarmExtensionState();
 let fontAtlases = null;
 let ready = false;
 let stage = "presents";
@@ -199,6 +200,10 @@ let fileDialogPauseHeld = false;
 let mapMode = -1;
 let mapNavigationHeld = false;
 let selectedParcel = null;
+let insuranceSelectedFieldSlot = null;
+let insuranceListScroll = 0;
+let conservationSelectedParcel = null;
+let conservationListScroll = 0;
 let propertySelectionActivated = false;
 let authoredParcelStatuses = [];
 let message = "";
@@ -369,6 +374,61 @@ let camera = {
   initialX: 0,
   initialY: 0,
 };
+const cameraZoomLevels = [0.5, 0.75, 1, 1.5, 2];
+let cameraZoom = 1;
+
+function cameraCellSize() {
+  return 16 * cameraZoom;
+}
+
+function clampCameraToZoom() {
+  const cellSize = cameraCellSize();
+  const visibleColumns = 544 / cellSize;
+  const visibleRows = 368 / cellSize;
+  const insetColumns = 16 / cellSize;
+  camera.x = Math.max(
+    insetColumns,
+    Math.min(96 - visibleColumns + insetColumns, camera.x),
+  );
+  camera.y = Math.max(0, Math.min(96 - visibleRows, camera.y));
+}
+
+function setCameraZoomAtPoint(point, direction) {
+  if (!point || !Number.isFinite(direction) || direction === 0) return false;
+  const viewport = { left: 64, top: 80, right: 608, bottom: 448 };
+  if (
+    point.x < viewport.left ||
+    point.x >= viewport.right ||
+    point.y < viewport.top ||
+    point.y >= viewport.bottom
+  )
+    return false;
+  const currentIndex = cameraZoomLevels.indexOf(cameraZoom);
+  const nextIndex = Math.max(
+    0,
+    Math.min(
+      cameraZoomLevels.length - 1,
+      currentIndex + (direction < 0 ? 1 : -1),
+    ),
+  );
+  if (nextIndex === currentIndex) return false;
+  const oldCellSize = cameraCellSize();
+  const worldX = camera.x + (point.x - 80) / oldCellSize;
+  const worldY = camera.y + (point.y - 80) / oldCellSize;
+  cameraZoom = cameraZoomLevels[nextIndex];
+  const newCellSize = cameraCellSize();
+  camera.x = worldX - (point.x - 80) / newCellSize;
+  camera.y = worldY - (point.y - 80) / newCellSize;
+  clampCameraToZoom();
+  return true;
+}
+
+function resetCameraZoomAtPoint(point) {
+  while (cameraZoom !== 1) {
+    if (!setCameraZoomAtPoint(point, cameraZoom > 1 ? 1 : -1)) return false;
+  }
+  return true;
+}
 let state = {
   funds: 40000,
   day: 0,

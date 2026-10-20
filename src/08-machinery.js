@@ -1568,6 +1568,7 @@ function clearTruckHarvestPayload(truckSlot, clearStorageReference = true) {
 }
 
 function finishHarvestField(record) {
+  settleCropInsurance(record);
   const view = fieldRecordView(record);
   const definition = cropSimulationDefinitionForSlot(record[14]);
   const perennial = (definition?.perennialFlags & 1) !== 0;

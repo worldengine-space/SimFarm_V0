@@ -1112,7 +1112,7 @@ function sellInventoryEntry(entry) {
     saveView.setUint32(
       saveData.format.storedCropSaleIncomeOffset,
       saveView.getUint32(saveData.format.storedCropSaleIncomeOffset, true) +
-        entry.price * 2,
+        entry.price,
       true,
     );
   } else if (entry.categoryKey === "machine") {

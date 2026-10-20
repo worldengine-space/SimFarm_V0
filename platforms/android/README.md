@@ -22,7 +22,7 @@ adb install -r dist/SimFarm-0.1.0-android-debug.apk
 adb shell am start -n space.worldengine.simfarm/.MainActivity
 ```
 
-The game opens in landscape. Use the shared touch controls and in-game File menu to save or load `.SFM` farms. Keep Android System WebView updated.
+The game opens in landscape. Use the shared touch controls and in-game File menu to save or load `.SFM`, `.SSM`, and this build's optional `.SFMX` farms. Keep Android System WebView updated.
 
 This is a debug-signed development APK. A Google Play release needs a private release signing key and an Android App Bundle. Do not commit signing keys. This project does not configure or publish a store release.
 

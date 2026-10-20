@@ -2,15 +2,13 @@
 // This section is assembled into the shared private game closure by scripts/build.mjs.
 
 function mapCellForPointer(point) {
-  // Native Edit's client starts at(64,80); camera.x is the next column
-  // retained by our authored startup fixtures. Native terrain callbacks read
-  // raw DS:171b/171d, which are also the software cursor's image origin.
-  const screenX = Math.floor((point.x - 80) / 16);
-  const screenY = Math.floor((point.y - 80) / 16);
-  if (screenX < -1 || screenX >= 33 || screenY < 0 || screenY >= 23)
+  // Edit's map viewport begins at(64,80); screen x=80 maps to camera.x and
+  // screen y=80 maps to camera.y. Use the inverse of the render transform.
+  if (point.x < 64 || point.x >= 608 || point.y < 80 || point.y >= 448)
     return null;
-  const x = camera.x + screenX;
-  const y = camera.y + screenY;
+  const cellSize = cameraCellSize();
+  const x = Math.floor(camera.x + (point.x - 80) / cellSize);
+  const y = Math.floor(camera.y + (point.y - 80) / cellSize);
   if (x < 0 || x >= 96 || y < 0 || y >= 96) return null;
   return { x, y };
 }
@@ -467,6 +465,7 @@ function removeBulldozedStructure(structure) {
 function removeFieldRecord(field, detachMachinery = false) {
   const record = field?.record;
   if (!record || (record[7] & 1) === 0) return false;
+  cancelCropInsurance(field.slot);
   if (detachMachinery) detachFloodedFieldMachinery(record);
   for (let x = record[10]; x < record[10] + record[12]; x += 1) {
     for (let y = record[11]; y < record[11] + record[13]; y += 1) {
@@ -546,6 +545,7 @@ function parcelHasActiveField(parcelX, parcelY) {
 
 function sellParcel(parcelX, parcelY, taxable = true) {
   if (!farmStateBytes) return false;
+  if (conservationContract(parcelX, parcelY)) return false;
   const record = parcelRecord(parcelX, parcelY);
   if (!record || parcelStatus(parcelX, parcelY) !== 1) return false;
   const value = parcelLandValue(parcelX, parcelY);
@@ -602,6 +602,10 @@ function sellSelectedParcel() {
   if (parcelHasActiveField(selectedParcel.x, selectedParcel.y)) {
     message = "";
     modalNotice = "property-sale-field";
+    return false;
+  }
+  if (conservationContract(selectedParcel.x, selectedParcel.y)) {
+    message = "Withdraw from the conservation contract before selling land.";
     return false;
   }
   return sellParcel(selectedParcel.x, selectedParcel.y);

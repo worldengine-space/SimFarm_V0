@@ -13,6 +13,7 @@ const suites = [
   "window_drag",
   "window_stack",
   "gameplay",
+  "conservation_rendering",
 ];
 for (const suite of suites) {
   const result = spawnSync(

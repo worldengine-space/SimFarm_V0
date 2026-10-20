@@ -49,13 +49,23 @@ function navigateFromOverview(point) {
     !inside(point, 152, 80, 193, 193)
   )
     return false;
-  // Map callback7a62:0aea maps two overview pixels to one farm cell.
-  // The selected cell becomes the viewport origin (not its center). This
-  // callback's own clamp includes Edit's48/32px client insets, unlike the
-  // scrollbar clamp:96-(48+544)/16=59,96-(32+368)/16=71. camera.x
-  // retains our historical origin+1 convention; the first column usesx-1.
-  camera.x = 1 + Math.max(0, Math.min(59, Math.floor((point.x - 152) / 2)));
-  camera.y = Math.max(0, Math.min(71, Math.floor((point.y - 80) / 2)));
+  // Map callback7a62:0aea maps two overview pixels to one farm cell. The
+  // selected cell becomes the viewport origin. Keep the original 1x limits
+  // and clamp the larger visible area at zoomed-out levels.
+  const visibleColumns = 544 / cameraCellSize();
+  const visibleRows = 368 / cameraCellSize();
+  const insetColumns = 16 / cameraCellSize();
+  camera.x =
+    insetColumns +
+    Math.max(
+      0,
+      Math.min(59, 96 - visibleColumns, Math.floor((point.x - 152) / 2)),
+    );
+  camera.y = Math.max(
+    0,
+    Math.min(71, 96 - visibleRows, Math.floor((point.y - 80) / 2)),
+  );
+  clampCameraToZoom();
   mapDirty = true;
   return true;
 }
@@ -1095,6 +1105,7 @@ function weatherPaletteDiffersFromCapturedScenario() {
 function shouldDrawDecodedViewport() {
   return (
     (generatedWorldActive && farmStateBytes) ||
+    farmExtensionState.conservationContracts.length > 0 ||
     (markerIndex !== null &&
       (cameraMoved() ||
         mapDirty ||

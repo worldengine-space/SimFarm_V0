@@ -718,11 +718,30 @@ function drawMapCell(cell, x, y, width = 16, height = 16) {
 }
 
 function drawDecodedViewport() {
-  for (let screenY = 0; screenY < 23; screenY += 1) {
-    for (let screenX = -1; screenX < 33; screenX += 1) {
-      const x = camera.x + screenX;
-      const y = Math.min(95, camera.y + screenY);
-      drawMapCell(mapCell(x, y), 80 + screenX * 16, 80 + screenY * 16);
+  const cellSize = cameraCellSize();
+  const firstX = Math.floor(camera.x - 16 / cellSize);
+  const lastX = Math.ceil(camera.x + 528 / cellSize);
+  const firstY = Math.floor(camera.y);
+  const lastY = Math.ceil(camera.y + 368 / cellSize);
+  for (let y = firstY; y < lastY; y += 1) {
+    for (let x = firstX; x < lastX; x += 1) {
+      if (x < 0 || x >= 96 || y < 0 || y >= 96) continue;
+      drawMapCell(
+        mapCell(x, y),
+        80 + (x - camera.x) * cellSize,
+        80 + (y - camera.y) * cellSize,
+        cellSize,
+        cellSize,
+      );
+      if (isConservationCell(x, y)) {
+        context.fillStyle = "rgba(86, 132, 47, 0.28)";
+        context.fillRect(
+          80 + (x - camera.x) * cellSize,
+          80 + (y - camera.y) * cellSize,
+          cellSize,
+          cellSize,
+        );
+      }
     }
   }
 }
@@ -732,14 +751,17 @@ function drawCropDusterFlight() {
   const flight = dusterFlight;
   const displayDirection = (flight.direction + flight.turbulencePhase) & 7;
   const frameX = displayDirection * 33;
+  const cellSize = cameraCellSize();
   // The native client anchors the airplane itself to the flight position.
   // Altitude displaces only its ground shadow southwest: the two 0x9740
   // sprite calls land at (320,264) and (300,284) in the launch oracle.
-  const planeX = 80 + (flight.x - camera.x) * 16 - 16;
-  const planeY = 80 + (flight.y - camera.y) * 16 - 8;
+  const planeX = 80 + (flight.x - camera.x) * cellSize - cellSize;
+  const planeY = 80 + (flight.y - camera.y) * cellSize - cellSize / 2;
   if (flight.spraying) {
-    const dustX = [0, -24, -24, -24, 0, 24, 24, 24][displayDirection];
-    const dustY = [24, 0, -24, -24, -24, 0, 24, 24][displayDirection];
+    const dustX =
+      [0, -24, -24, -24, 0, 24, 24, 24][displayDirection] * cameraZoom;
+    const dustY =
+      [24, 0, -24, -24, -24, 0, 24, 24][displayDirection] * cameraZoom;
     context.drawImage(
       images.cropDustSprite,
       (flight.sprayAnimation & 1) * 33,
@@ -748,8 +770,8 @@ function drawCropDusterFlight() {
       32,
       planeX + dustX,
       planeY + dustY,
-      32,
-      32,
+      32 * cameraZoom,
+      32 * cameraZoom,
     );
   }
   context.drawImage(
@@ -758,10 +780,10 @@ function drawCropDusterFlight() {
     0,
     32,
     32,
-    planeX - flight.altitude * 2,
-    planeY + flight.altitude * 2,
-    32,
-    32,
+    planeX - flight.altitude * 2 * cameraZoom,
+    planeY + flight.altitude * 2 * cameraZoom,
+    32 * cameraZoom,
+    32 * cameraZoom,
   );
   context.drawImage(
     images.airplaneSprite,
@@ -771,38 +793,40 @@ function drawCropDusterFlight() {
     32,
     planeX,
     planeY,
-    32,
-    32,
+    32 * cameraZoom,
+    32 * cameraZoom,
   );
 }
 
 function drawTornadoEvent() {
   if (!tornadoEvent?.active) return;
+  const cellSize = cameraCellSize();
   context.drawImage(
     images.tornadoSprite,
     tornadoEvent.frame * 49,
     0,
     48,
     48,
-    80 + (tornadoEvent.x - camera.x) * 16,
-    80 + (tornadoEvent.y - camera.y) * 16,
-    48,
-    48,
+    80 + (tornadoEvent.x - camera.x) * cellSize,
+    80 + (tornadoEvent.y - camera.y) * cellSize,
+    48 * cameraZoom,
+    48 * cameraZoom,
   );
 }
 
 function drawLocustEvent() {
   if (!locustEvent?.active || locustEvent.startedTick === null) return;
+  const cellSize = cameraCellSize();
   context.drawImage(
     images.locustSprite,
     locustEvent.frame * 65,
     0,
     64,
     40,
-    80 + (locustEvent.x - camera.x) * 16,
-    80 + (locustEvent.y - camera.y) * 16,
-    64,
-    40,
+    80 + (locustEvent.x - camera.x) * cellSize,
+    80 + (locustEvent.y - camera.y) * cellSize,
+    64 * cameraZoom,
+    40 * cameraZoom,
   );
 }
 
@@ -877,10 +901,10 @@ function drawOverviewLandmarks(pixels, indexes) {
 }
 
 function drawOverviewFrame(pixels, indexes) {
-  const left = Math.max(0, (camera.x - 1) * 2);
+  const left = Math.max(0, (camera.x - 16 / cameraCellSize()) * 2);
   const top = Math.max(0, camera.y * 2);
-  const right = left + 67;
-  const bottom = top + 45;
+  const right = left + Math.ceil((544 / cameraCellSize()) * 2) - 1;
+  const bottom = top + Math.ceil((368 / cameraCellSize()) * 2) - 1;
 
   // The native two-pixel viewport outline has driver-specific endpoint
   // omissions, so it is an asymmetric mask rather than two canvas strokes.

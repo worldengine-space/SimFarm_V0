@@ -52,6 +52,13 @@ function inside(point, x, y, width, height) {
 
 function startGame(forceGeneratedRegion = false) {
   fileDialogPauseHeld = false;
+  cameraZoom = 1;
+  clampCameraToZoom();
+  farmExtensionState = freshFarmExtensionState();
+  insuranceSelectedFieldSlot = null;
+  insuranceListScroll = 0;
+  conservationSelectedParcel = null;
+  conservationListScroll = 0;
   const startingGeneratedWorld =
     stage === "designer" && designerRuntime?.generated;
   markerIndex = scenarioMarkers.findIndex(
@@ -496,21 +503,110 @@ function endNativeFileDialogPause(loadedState = false) {
 }
 
 function normalizeSfmFilename(name) {
-  const leaf = String(name || "")
+  const rawLeaf = String(name || "")
     .split(/[\\/]/)
-    .pop()
-    .replace(/\.(?:sfm|ssm)$/i, "");
+    .pop();
+  const useExtension =
+    /\.sfmx$/i.test(rawLeaf) ||
+    farmExtensionState.cropInsurancePolicies.length > 0 ||
+    farmExtensionState.cropInsurancePremiums > 0 ||
+    farmExtensionState.cropInsuranceClaims > 0 ||
+    farmExtensionState.conservationContracts.length > 0 ||
+    farmExtensionState.conservationPayments > 0 ||
+    farmExtensionState.conservationWithdrawals > 0;
+  const leaf = rawLeaf.replace(/\.(?:sfmx|sfm|ssm)$/i, "");
   const stem = leaf
     .toUpperCase()
     .replace(/[^A-Z0-9_-]/g, "")
     .slice(0, 8);
-  return `${stem || "SIMFARM"}.SFM`;
+  return `${stem || "SIMFARM"}.${useExtension ? "SFMX" : "SFM"}`;
 }
 
 function serializeSfmBytes() {
   if (!farmStateBytes) return null;
   writeDateAndFunds(farmStateBytes);
   return farmStateBytes.slice();
+}
+
+function serializeFarmSaveBytes() {
+  const nativeBytes = serializeSfmBytes();
+  if (!nativeBytes) return null;
+  const extension = normalizeFarmExtensionState(farmExtensionState);
+  validateFarmExtensionAgainstNativeBytes(nativeBytes, extension);
+  const hasExtension =
+    extension.cropInsurancePolicies.length > 0 ||
+    extension.cropInsurancePremiums > 0 ||
+    extension.cropInsuranceClaims > 0 ||
+    extension.conservationContracts.length > 0 ||
+    extension.conservationPayments > 0 ||
+    extension.conservationWithdrawals > 0;
+  if (!hasExtension) return nativeBytes;
+  const extensionBytes = new TextEncoder().encode(JSON.stringify(extension));
+  const headerSize = 16;
+  const bytes = new Uint8Array(
+    headerSize + nativeBytes.length + extensionBytes.length,
+  );
+  bytes.set([0x53, 0x46, 0x4d, 0x58], 0); // SFMX
+  const view = new DataView(bytes.buffer);
+  view.setUint16(4, 1, true);
+  view.setUint16(6, headerSize, true);
+  view.setUint32(8, nativeBytes.length, true);
+  view.setUint32(12, extensionBytes.length, true);
+  bytes.set(nativeBytes, headerSize);
+  bytes.set(extensionBytes, headerSize + nativeBytes.length);
+  return bytes;
+}
+
+function decodeFarmSaveBytes(input) {
+  let bytes;
+  if (input instanceof ArrayBuffer) bytes = new Uint8Array(input);
+  else if (ArrayBuffer.isView(input)) {
+    bytes = new Uint8Array(input.buffer, input.byteOffset, input.byteLength);
+  } else bytes = new Uint8Array(input);
+  if (bytes.byteLength === saveData.format.fileSize) {
+    return { nativeBytes: bytes.slice(), extension: freshFarmExtensionState() };
+  }
+  if (
+    bytes.byteLength < 16 ||
+    bytes[0] !== 0x53 ||
+    bytes[1] !== 0x46 ||
+    bytes[2] !== 0x4d ||
+    bytes[3] !== 0x58
+  ) {
+    throw new Error(
+      `SimFarm saves must be exactly ${saveData?.format?.fileSize || 139072} bytes or a valid SFMX extension save.`,
+    );
+  }
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  const version = view.getUint16(4, true);
+  const headerSize = view.getUint16(6, true);
+  const nativeLength = view.getUint32(8, true);
+  const extensionLength = view.getUint32(12, true);
+  if (version !== 1 || headerSize !== 16) {
+    throw new Error("Unsupported SimFarm extension save version.");
+  }
+  if (
+    nativeLength !== saveData.format.fileSize ||
+    extensionLength < 2 ||
+    extensionLength > 65536 ||
+    headerSize + nativeLength + extensionLength !== bytes.byteLength
+  ) {
+    throw new Error("Invalid SimFarm extension save length.");
+  }
+  let extension;
+  try {
+    extension = normalizeFarmExtensionState(
+      JSON.parse(
+        new TextDecoder().decode(bytes.subarray(headerSize + nativeLength)),
+      ),
+    );
+  } catch (error) {
+    throw new Error(`Invalid SimFarm extension data: ${error.message}`);
+  }
+  return {
+    nativeBytes: bytes.slice(headerSize, headerSize + nativeLength),
+    extension,
+  };
 }
 
 function inferMarkerIndexFromSfm(bytes) {
@@ -753,17 +849,11 @@ function resetImportedGameRuntime() {
 }
 
 function importSfmBytes(input, filename = "SIMFARM.SFM") {
-  let source;
-  if (input instanceof ArrayBuffer) source = new Uint8Array(input);
-  else if (ArrayBuffer.isView(input)) {
-    source = new Uint8Array(input.buffer, input.byteOffset, input.byteLength);
-  } else source = new Uint8Array(input);
-  if (!saveData || source.byteLength !== saveData.format.fileSize) {
-    throw new Error(
-      `SimFarm saves must be exactly ${saveData?.format?.fileSize || 139072} bytes.`,
-    );
-  }
+  if (!saveData) throw new Error("SimFarm save metadata is unavailable.");
+  const decoded = decodeFarmSaveBytes(input);
+  const source = decoded.nativeBytes;
   const imported = source.slice();
+  validateFarmExtensionAgainstNativeBytes(imported, decoded.extension);
   const importedGeneratedWorld = isDesignerGeneratedSfm(imported);
   const importedMarker = importedGeneratedWorld
     ? null
@@ -779,6 +869,8 @@ function importSfmBytes(input, filename = "SIMFARM.SFM") {
   };
   resetImportedGameRuntime();
   farmStateBytes = imported;
+  farmExtensionState = decoded.extension;
+  cameraZoom = 1;
   livestockAssetValue = stateView(farmStateBytes).getUint32(
     saveData.format.livestockPurchaseExpenseOffset1,
     true,
@@ -815,7 +907,7 @@ function importSfmBytes(input, filename = "SIMFARM.SFM") {
 }
 
 function downloadSfmFile(filename = currentSaveName) {
-  const bytes = serializeSfmBytes();
+  const bytes = serializeFarmSaveBytes();
   if (!bytes) return null;
   currentSaveName = normalizeSfmFilename(filename);
   // Native hosts provide their platform's save/share dialog. Browser builds
@@ -845,7 +937,7 @@ function downloadSfmFile(filename = currentSaveName) {
 
 function openSaveGameDialog(exitAfter = false) {
   beginNativeFileDialogPause();
-  const existingStem = currentSaveName.replace(/\.sfm$/i, "");
+  const existingStem = currentSaveName.replace(/\.sfmx?$/i, "");
   saveDialogName = existingStem === "SIMFARM" ? "" : existingStem.slice(0, 8);
   saveDialogExitAfter = exitAfter;
   saveDialogSavedName = "";
@@ -922,6 +1014,8 @@ function saveGame({ optionalCache = false } = {}) {
     selectedRegion,
     currentSaveName,
     camera,
+    cameraZoom,
+    farmExtensionState,
     mapDirty,
     randomState: simRandomState,
     secondaryRandomState: simSecondaryRandomState,
@@ -982,8 +1076,16 @@ function loadGame() {
         ? isDesignerGeneratedSfm(decodeState(saved.stateBase64))
         : false);
     selectedRegion = saved.selectedRegion;
+    farmExtensionState = normalizeFarmExtensionState(
+      saved.farmExtensionState ?? freshFarmExtensionState(),
+    );
     currentSaveName = normalizeSfmFilename(saved.currentSaveName);
     farmStateBytes = saved.stateBase64 ? decodeState(saved.stateBase64) : null;
+    if (farmStateBytes)
+      validateFarmExtensionAgainstNativeBytes(
+        farmStateBytes,
+        farmExtensionState,
+      );
     generatedWorldBytes =
       generatedWorldActive && farmStateBytes ? farmStateBytes.slice() : null;
     if (farmStateBytes) readDateAndFunds(farmStateBytes);
@@ -991,6 +1093,10 @@ function loadGame() {
     readAuthoredWindbreakBytes();
     if (saved.camera) camera = saved.camera;
     else if (farmStateBytes) readStartupCamera(farmStateBytes);
+    cameraZoom = cameraZoomLevels.includes(saved.cameraZoom)
+      ? saved.cameraZoom
+      : 1;
+    clampCameraToZoom();
     mapDirty = saved.mapDirty ?? Boolean(farmStateBytes);
     simRandomState = saved.randomState || seedSimRandom();
     simSecondaryRandomState =

@@ -1,6 +1,6 @@
 # SimFarm for iPhone and iPad
 
-This native Swift app runs the bundled game in WKWebView, in landscape. All game assets ship inside the app. Saves use the iOS Files picker and share sheet; browser quick saves persist inside the app's data storage. External website links open in the system browser.
+This native Swift app runs the bundled game in WKWebView, in landscape. All game assets ship inside the app. `.SFM`, `.SSM`, and this build's `.SFMX` saves use the iOS Files picker and share sheet; browser quick saves persist inside the app's data storage. External website links open in the system browser.
 
 ## Compile
 

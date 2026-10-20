@@ -169,6 +169,116 @@ async function main() {
     );
   }
 
+  const zoomRuntime = await ready();
+  const zoomApi = zoomRuntime.api;
+  zoomApi.prepareZoom();
+  const anchor = { x: 312, y: 264 };
+  assert.deepEqual(
+    { ...zoomApi.mapCellAt(anchor) },
+    { x: 34, y: 31 },
+    "initial zoom pointer-to-map transform",
+  );
+  assert(zoomRuntime.wheel(anchor.x, anchor.y, -1), "zoom wheel not handled");
+  let zoom = zoomApi.snapshot();
+  assert.equal(zoom.cameraZoom, 1.5, "wheel did not zoom in one level");
+  assert.deepEqual(
+    { ...zoomApi.mapCellAt(anchor) },
+    { x: 34, y: 31 },
+    "zoom failed to preserve the world cell under the cursor",
+  );
+  assert(
+    Math.abs(zoom.camera.x + (anchor.x - 80) / 24 - 34.5) < 1e-9 &&
+      Math.abs(zoom.camera.y + (anchor.y - 80) / 24 - 31.5) < 1e-9,
+    "zoom changed the precise world coordinate under the cursor",
+  );
+  zoomRuntime.clearDraws();
+  zoomApi.render();
+  assert(
+    zoomRuntime.drawingCalls.some(
+      ({ type, args }) =>
+        type === "drawImage" &&
+        args[0]?._src?.endsWith("/ega16til.png") &&
+        args[7] === 24 &&
+        args[8] === 24,
+    ),
+    "zoomed farm tiles were not drawn at the selected cell size",
+  );
+  for (let index = 0; index < 5; index += 1)
+    zoomRuntime.wheel(anchor.x, anchor.y, -1);
+  assert.equal(
+    zoomApi.snapshot().cameraZoom,
+    2,
+    "zoom exceeded its maximum level",
+  );
+  for (let index = 0; index < 10; index += 1)
+    zoomRuntime.wheel(anchor.x, anchor.y, 1);
+  assert.equal(
+    zoomApi.snapshot().cameraZoom,
+    0.5,
+    "zoom exceeded its minimum level",
+  );
+  zoomApi.prepareZoom();
+  for (let index = 0; index < 12; index += 1) {
+    zoomRuntime.wheel(anchor.x, anchor.y, -1);
+    zoomRuntime.wheel(anchor.x, anchor.y, 1);
+  }
+  zoom = zoomApi.snapshot();
+  assert(
+    zoom.cameraZoom === 1 &&
+      Math.abs(zoom.camera.x + (anchor.x - 80) / 16 - 34.5) < 1e-9 &&
+      Math.abs(zoom.camera.y + (anchor.y - 80) / 16 - 31.5) < 1e-9,
+    "repeated zoom-in/out changed the anchored world coordinate",
+  );
+  zoomRuntime.setBounds({ left: 100, top: 50, width: 1280, height: 960 });
+  zoomRuntime.wheel(100 + anchor.x * 2, 50 + anchor.y * 2, -1);
+  zoom = zoomApi.snapshot();
+  assert(
+    zoom.cameraZoom === 1.5 &&
+      Math.abs(zoom.camera.x + (anchor.x - 80) / 24 - 34.5) < 1e-9 &&
+      Math.abs(zoom.camera.y + (anchor.y - 80) / 24 - 31.5) < 1e-9,
+    "CSS viewport resize changed the pointer-to-map zoom transform",
+  );
+  zoomRuntime.setBounds({ left: 0, top: 0, width: 640, height: 480 });
+  zoomApi.prepareZoom();
+  zoomApi.setCameraOrigin(63, 73);
+  zoomRuntime.wheel(607, 447, 1);
+  zoom = zoomApi.snapshot();
+  assert.equal(zoom.cameraZoom, 0.75, "edge zoom used an invalid level");
+  assert(
+    zoom.camera.x <= 52 + 1e-9 &&
+      zoom.camera.y <= 96 - 368 / 12 + 1e-9 &&
+      zoom.camera.x >= 16 / 12 - 1e-9 &&
+      zoom.camera.y >= 0,
+    "zoom failed to clamp at map edges",
+  );
+  zoomRuntime.clearDraws();
+  zoomApi.render();
+  assert(
+    zoomRuntime.drawingCalls.some(
+      ({ type, args }) =>
+        type === "drawImage" &&
+        args[0]?._src?.endsWith("/ega16til.png") &&
+        args[7] === 12 &&
+        args[8] === 12,
+    ),
+    "zoomed-out farm tiles were not drawn at the selected cell size",
+  );
+  zoomApi.prepareZoom();
+  zoomRuntime.key("+");
+  assert.equal(
+    zoomApi.snapshot().cameraZoom,
+    1.5,
+    "keyboard zoom shortcut did not zoom in",
+  );
+  zoomApi.prepareMap();
+  const zoomBeforeMapWheel = zoomApi.snapshot().cameraZoom;
+  zoomRuntime.wheel(anchor.x, anchor.y, -1);
+  assert.equal(
+    zoomApi.snapshot().cameraZoom,
+    zoomBeforeMapWheel,
+    "wheel over a child window changed farm zoom",
+  );
+
   const animation = await ready();
   const api = animation.api;
   animation.setNow(100_000);
@@ -219,7 +329,7 @@ async function main() {
     "resuming did not animate the already-due phase",
   );
   console.log(
-    "basic gameplay: Map click/drag in8 views, strict edges, moved/scaled windows, CLOSE/reopen, cancellation, no charges, actual-frame animation, Pause/resume pass",
+    "basic gameplay: Map navigation, cursor-anchored zoom bounds, moved/scaled windows, cancellation, no charges, animation, and Pause/resume pass",
   );
 }
 main().catch((error) => {

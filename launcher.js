@@ -52,6 +52,9 @@
   };
   keyboardToggle.addEventListener("click", () => showKeyboard(keyboard.hidden));
   document
+    .getElementById("touch-pause")
+    .addEventListener("click", () => sendKey(" "));
+  document
     .getElementById("close-touch-keyboard")
     .addEventListener("click", () => showKeyboard(false));
   input.addEventListener("input", () => {

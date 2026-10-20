@@ -10,14 +10,14 @@ function indexedMapPaletteAtCanvasPixel(canvasX, canvasY) {
   const relativeY = canvasY - viewportTop;
   if (relativeX < 0 || relativeY < 0 || relativeX >= 544 || relativeY >= 368)
     return -1;
-  const screenX = Math.floor(relativeX / 16);
-  const screenY = Math.floor(relativeY / 16);
-  const pixelX = relativeX & 15;
-  const pixelY = relativeY & 15;
-  const cell = mapCell(
-    camera.x - 1 + screenX,
-    Math.min(95, camera.y + screenY),
-  );
+  const cellSize = cameraCellSize();
+  const worldX = camera.x + (relativeX - 16) / cellSize;
+  const worldY = camera.y + relativeY / cellSize;
+  const cellX = Math.floor(worldX);
+  const cellY = Math.floor(worldY);
+  const pixelX = Math.floor((worldX - cellX) * 16);
+  const pixelY = Math.floor((worldY - cellY) * 16);
+  const cell = mapCell(cellX, Math.min(95, cellY));
   if (!cell) return -1;
   const words = tileWords(cell);
   let index = indexedBaseMapTilePixel(
@@ -73,9 +73,10 @@ function drawMapCellCursorOutline() {
   const position = mapCellForPointer(editPoint);
   if (!position) return false;
   const editPosition = gameWindowPosition(editWindowSentinel);
-  const tileX = editPosition.x + 64 + (position.x - camera.x) * 16;
-  const tileY = editPosition.y + 32 + (position.y - camera.y) * 16;
-  const span = selectedCropSlot === null ? 16 : 128;
+  const cellSize = cameraCellSize();
+  const tileX = editPosition.x + 64 + (position.x - camera.x) * cellSize;
+  const tileY = editPosition.y + 32 + (position.y - camera.y) * cellSize;
+  const span = cellSize * (selectedCropSlot === null ? 1 : 8);
   if (selectedCropSlot !== null && (position.x + 8 > 96 || position.y + 8 > 96))
     return false;
   const outlineLeft = tileX - 1;
@@ -172,10 +173,15 @@ function drawScrollbars() {
   //1d75:1846 uses absolute native origins and integer division, not a
   // rounded displacement from the startup thumb. Edit is608x416 with a
   //544x368 client: horizontal denominator96-34=62, vertical96-23=73.
+  const visibleColumns = 544 / cameraCellSize();
+  const visibleRows = 368 / cameraCellSize();
+  const insetColumns = 16 / cameraCellSize();
+  const horizontalOrigin = camera.x - insetColumns;
+  const horizontalRange = Math.max(1, 96 - visibleColumns);
+  const verticalRange = Math.max(1, 96 - visibleRows);
   const horizontal =
-    32 + Math.floor((Math.max(0, Math.min(62, camera.x - 1)) * 34) / 62) * 16;
-  const vertical =
-    80 + Math.floor((Math.max(0, Math.min(73, camera.y)) * 21) / 73) * 16;
+    32 + Math.round((horizontalOrigin / horizontalRange) * 34) * 16;
+  const vertical = 80 + Math.round((camera.y / verticalRange) * 21) * 16;
   context.drawImage(
     source,
     initialHorizontal,
@@ -480,6 +486,8 @@ function drawGameWindow(name) {
   else if (name === "expert") drawExpertWindow();
   else if (name === "weather") drawWeatherWindow();
   else if (name === "about") drawAboutWindow();
+  else if (name === "crop-insurance") drawCropInsuranceWindow();
+  else if (name === "conservation") drawConservationWindow();
   else if (windowDefinitions[name]) drawStandardWindow(windowDefinitions[name]);
 }
 
@@ -925,10 +933,15 @@ function render() {
         context.translate(editPosition.x - 16, editPosition.y - 48);
         drawTitleBar(16, 48, 608, "EDIT", activeWindow === null);
         drawEditToolPalette();
+        context.save();
+        context.beginPath();
+        context.rect(64, 80, 544, 368);
+        context.clip();
         if (shouldDrawDecodedViewport()) drawDecodedViewport();
         drawLocustEvent();
         drawTornadoEvent();
         drawCropDusterFlight();
+        context.restore();
         drawScrollbars();
         drawToolCost();
         drawMessage();

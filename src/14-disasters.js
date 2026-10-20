@@ -203,6 +203,7 @@ function removeFloodedField(field) {
   const record = field?.record;
   if (!record || (record[7] & 1) === 0 || record[2] === 0 || record[2] === 4)
     return false;
+  settleCropInsurance(record, 0);
   return removeFieldRecord(field, true);
 }
 
@@ -921,8 +922,9 @@ function startLocustEvent() {
   // Case 4 performs this move only after its blocking warning returns and
   // follows the native AutoGoto byte.
   if (state.options.AutoGoto) {
-    camera.x = Math.max(0, Math.min(63, locustEvent.x - 16));
-    camera.y = Math.max(0, Math.min(73, locustEvent.y - 11));
+    camera.x = locustEvent.x - 544 / cameraCellSize() / 2;
+    camera.y = locustEvent.y - 368 / cameraCellSize() / 2;
+    clampCameraToZoom();
   }
   return true;
 }
@@ -1018,8 +1020,9 @@ function startTornadoEvent() {
   // viewport is active, centering its world cell in the 33x23-cell view.
   // Native tornado case 1 keys this camera move from AutoGoto.
   if (state.options.AutoGoto) {
-    camera.x = Math.max(0, Math.min(63, x - 16));
-    camera.y = Math.max(0, Math.min(73, y - 11));
+    camera.x = x - 544 / cameraCellSize() / 2;
+    camera.y = y - 368 / cameraCellSize() / 2;
+    clampCameraToZoom();
   }
   return true;
 }
@@ -1101,10 +1104,11 @@ function advanceAutoScroll() {
     return false;
   const previousX = camera.x;
   const previousY = camera.y;
-  if (pointer.x === 0) camera.x = Math.max(1, camera.x - 2);
-  if (pointer.x > WIDTH - 17) camera.x = Math.min(63, camera.x + 2);
-  if (pointer.y > HEIGHT - 17) camera.y = Math.min(73, camera.y + 2);
-  if (pointer.y === 0) camera.y = Math.max(0, camera.y - 2);
+  if (pointer.x === 0) camera.x -= 2;
+  if (pointer.x > WIDTH - 17) camera.x += 2;
+  if (pointer.y > HEIGHT - 17) camera.y += 2;
+  if (pointer.y === 0) camera.y -= 2;
+  clampCameraToZoom();
   const changed = camera.x !== previousX || camera.y !== previousY;
   if (changed) activityHoldoffPasses = 100;
   return changed;
@@ -1173,6 +1177,7 @@ function fieldFootprintIsValid(x, y, width, height) {
     return false;
   for (let fieldX = x; fieldX < x + width; fieldX += 1) {
     for (let fieldY = y; fieldY < y + height; fieldY += 1) {
+      if (isConservationCell(fieldX, fieldY)) return false;
       const words = tileWords(mapCell(fieldX, fieldY));
       const tile = words.base & 0x07ff;
       // Recovered footprint tests: ordinary terrain, no base object, and
@@ -1356,6 +1361,7 @@ function machineFootprintIsValid(item, x, y) {
   if (originTile < 0x19 || originTile > 0x1b) return false;
   for (let machineX = x; machineX < x + item.width; machineX += 1) {
     for (let machineY = y; machineY < y + item.height; machineY += 1) {
+      if (isConservationCell(machineX, machineY)) return false;
       const words = tileWords(mapCell(machineX, machineY));
       if (
         (words.base & 0x0800) !== 0 ||
@@ -1605,14 +1611,17 @@ function startCropDusterFlight() {
       writeAirportGroundTile(homeX + dx, homeY + dy);
   }
   // FUN_2000:0378 autogotos the parking position first. The airplane then
-  // enters at the viewport center (width/32, height/32); near a map edge
-  // the clamped camera makes this distinct from the parking coordinates.
-  camera.x = Math.max(0, Math.min(63, homeX - 17));
-  camera.y = Math.max(0, Math.min(73, homeY - 12));
+  // enters at the viewport center; near a map edge the clamped camera makes
+  // this distinct from the parking coordinates at every zoom level.
+  const visibleColumns = 544 / cameraCellSize();
+  const visibleRows = 368 / cameraCellSize();
+  camera.x = homeX - visibleColumns / 2;
+  camera.y = homeY - visibleRows / 2;
+  clampCameraToZoom();
   dusterFlight = {
     machineSlot: selectedMachineSlot,
-    x: camera.x + 17,
-    y: camera.y + 12,
+    x: camera.x + visibleColumns / 2,
+    y: camera.y + visibleRows / 2,
     direction: 6,
     altitude: 10,
     spraying: false,
@@ -1806,10 +1815,15 @@ function advanceCropDusterFlightTick() {
   }
   advanceDisasterEvents();
 
-  if (flight.x - camera.x < 3) camera.x = Math.max(0, flight.x - 3);
-  else if (flight.x - camera.x > 31) camera.x = Math.min(63, flight.x - 31);
-  if (flight.y - camera.y < 3) camera.y = Math.max(0, flight.y - 3);
-  else if (flight.y - camera.y > 21) camera.y = Math.min(73, flight.y - 21);
+  const visibleColumns = 544 / cameraCellSize();
+  const visibleRows = 368 / cameraCellSize();
+  if (flight.x - camera.x < 3) camera.x = flight.x - 3;
+  else if (flight.x - camera.x > visibleColumns - 3)
+    camera.x = flight.x - visibleColumns + 3;
+  if (flight.y - camera.y < 3) camera.y = flight.y - 3;
+  else if (flight.y - camera.y > visibleRows - 3)
+    camera.y = flight.y - visibleRows + 3;
+  clampCameraToZoom();
   if (flight.endRequested) return finishCropDusterFlight();
   return true;
 }
@@ -1931,6 +1945,7 @@ function structureFootprintIsValid(item, x, y) {
     return false;
   for (let structureX = x; structureX < x + item.width; structureX += 1) {
     for (let structureY = y; structureY < y + item.height; structureY += 1) {
+      if (isConservationCell(structureX, structureY)) return false;
       const words = tileWords(mapCell(structureX, structureY));
       const tile = words.base & 0x07ff;
       const pristineTerrain = tile >= 0x0f && tile <= 0x1e;
@@ -1978,6 +1993,7 @@ function structureWriterFootprintIsValid(item, x, y) {
   // ditch, valve, and fence groups admitted by 2957:04f8 still fail here.
   for (let structureX = x; structureX < x + item.width; structureX += 1) {
     for (let structureY = y; structureY < y + item.height; structureY += 1) {
+      if (isConservationCell(structureX, structureY)) return false;
       const words = tileWords(mapCell(structureX, structureY));
       const tile = words.base & 0x07ff;
       if (
